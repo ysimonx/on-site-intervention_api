@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <h1>Field</h1>
+
+   <table style="width:100%">
+   {% for field in fields %}
+   <tr class="field_entete"><td colspan="3">{{field.field_data.instructions.label}} : <span class="datetime_to_be_adjusted">{{field._internal.time_created_utc}}</span></td></tr>
+   <tr>
+   <td class="field_instruction" width="35%">
+
+      {% if (field.field_data.instructions.instruction != field.field_data.instructions.label) %}
+      <b>{{field.field_data.instructions.instruction}}</b><br /><br />
+      {% endif %}
+
+
+      {% if field.field_data.instructions.item_requirements|length > 1 %}
+         Eléments devant être visibles : 
+         <ul>
+      
+         {% for item_requirement in field.field_data.instructions.item_requirements %}
+            <li>{{item_requirement}}</li>
+         {% endfor %}
+         </ul>
+      {% endif %}
+
+      {% if (field.field_data.instructions.exemple != "assets/icons/renovadmin1024x1024.png") %}
+         Exemple: <br />
+         <img style="width: 350px; margin:5px" src="/static/{{field.field_data.instructions.exemple}}">
+      {% endif %}
+   </td>
+   <td width="35%">
+     
+      {% if field.field_data.commentaire %}
+      <b>Commentaire du MOE : {{ field.field_data.commentaire }}</b><br /><br />
+      {% endif %}
+      {% for photo in field.field_data.photos %}
+      <div>
+      <img style="width: 300px; height: 300px; margin:5px; object-position: top left; object-fit: cover"  src="https://api-renovadmin.kysoe.com/static/photos/{{map_photos[photo.photo_uuid].filename}}" /><br />
+      <span class="datetime_to_be_adjusted">{{map_photos[photo.photo_uuid].get_internal().time_created_utc}}</span> : <a href="https://api-renovadmin.kysoe.com/static/photos/timestamps/{{map_photos[photo.photo_uuid].filename}}.digicert.tsr.txt"> preuve horodatage digicert</a><br >
+      lat:{{map_photos[photo.photo_uuid].latitude}}, long:{{map_photos[photo.photo_uuid].longitude}}<br />
+      
+      <a target="_blank" href="https://www.geoportail.gouv.fr/carte?c={{map_photos[photo.photo_uuid].longitude}},{{map_photos[photo.photo_uuid].latitude}}&z=20&l0=ORTHOIMAGERY.ORTHOPHOTOS::GEOPORTAIL:OGC:WMTS(1)&l1=CADASTRALPARCELS.PARCELLAIRE_EXPRESS::GEOPORTAIL:OGC:WMTS(1)&l2=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2::GEOPORTAIL:OGC:WMTS(1)&permalink=yes">Geoportail</a>
+      <!-- a target="_blank" href="https://www.google.com/maps/@{{map_photos[photo.photo_uuid].latitude}}{{map_photos[photo.photo_uuid].longitude}},17z">Google maps</a -->
+      <a target="_blank" href="https://www.google.com/maps/place/{{map_photos[photo.photo_uuid].latitude}},{{map_photos[photo.photo_uuid].longitude}}">Google maps</a>
+      </div>
+      {% endfor %}
+      {% if (field.field_data.noPhoto == True) %}
+      <div><b>Photo Non Applicable</b></div>
+      {% endif %}
+   </td>
+   <td width="30%" class="field_controle">
+      <fieldset>
+         <legend>Commentaire du controleur : </legend>
+         {{field.controle_status}}
+     </fieldset>
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}
+
+{% block title %}Field{% endblock %}

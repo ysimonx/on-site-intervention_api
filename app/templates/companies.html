@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <h1>Sociétés</h1>
+   {% if message %}
+   <div style="width: 50%; text-align:center; margin-left:auto; margin-right:auto; border: 1px solid red; padding:10px;  margin-top:10px;margin-bottom:10px; color:red">{{message}}</div>
+   {%  endif %}
+   <a href="./users">utilisateurs</a><br /><br />
+    <table style="width:100%">
+        <tr><td><form method="POST"><input type="text" name="new_company"><input type="submit" value="créer"></form></td></tr>
+        {% for company in companies %}
+            <tr>
+                <td><form method="POST"><input type="hidden" name="company_id" value="{{company.id}}"><input type="text" name="company_name" value="{{company.name|upper}}"><input type="submit" value="modifier"></form></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
+
+{% block title %}Sociétés{% endblock %}

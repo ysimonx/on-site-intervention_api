@@ -1,0 +1,12 @@
+[Unit]
+Description=api-renovadmin application
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/var/www/api-renovadmin/
+ExecStart=/usr/bin/bash /var/www/api-renovadmin/run_orig.sh 
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

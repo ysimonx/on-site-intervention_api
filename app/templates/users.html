@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <h1>Utilisateurs</h1>
+   {% if message %}
+   <div style="width: 50%; text-align:center; margin-left:auto; margin-right:auto; border: 1px solid red; padding:10px;  margin-top:10px;margin-bottom:10px; color:red">{{message}}</div>
+   {%  endif %}
+   <a href="./companies">sociétés</a><br /><br />
+    <table style="width:100%">
+        <tr><form method="POST"><td>nom: <input type="text" name="lastname"> prénom: <input type="text" name="firstname"></td>
+            <td><select id="company_id" name="company_id">
+                
+                {% for key, value in dict_companies.items() %}
+                <option value="{{key}}">{{value.name|upper}}</option>
+                {% endfor %}
+            </select></td>
+            <td>email: <input type="text" name="email"></td><td>password: <input type="password" name="password"><input type="submit" value="créer"></td></form></tr>
+        {% for user in users %}
+            <tr>
+                <td>{{user.lastname|upper}}, {{user.firstname|upper}}</td><td>{{user.to_json().company.name|upper}}<td><a href="mailto:{{user.email}}">{{user.email}}</td><td><form method="POST"><input type="hidden" name="user_id" value="{{user.id}}"><input type="password" name="password">&nbsp;<input type="submit" value="modifier mot de passe"></form></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
+
+{% block title %}Utilisateurs{% endblock %}

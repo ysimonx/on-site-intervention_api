@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src=" https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js "></script>
+    <link rel='stylesheet' id='google-fonts-1-css' href='https://fonts.googleapis.com/css?family=Roboto%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto+Slab%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRaleway%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic&#038;display=auto&#038;ver=6.2.2' media='all' />
+
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %} - Renovadmin</title>
+    <style>
+      body
+        {
+            font-family: "Raleway", Sans-serif;
+            font-size:14px;
+            background-color: #E6FCFF;
+        }
+
+
+       .pro_coords {
+        text-transform: uppercase;
+       }
+
+       .pro_coord, .beneficiaire_coords {
+        text-transform: uppercase;
+       }
+
+
+       .liste_chantiers {
+        width: 100%;
+        border: 1px solid black
+       }
+
+      
+       .liste_fields {
+        width: 100%;
+        border: 1px solid black
+       }
+
+       tr.field_entete {
+        background-color: #696969;
+        color: #fff;
+        font-size:18px;
+       }
+
+       td.field_controle, td.field_instruction {
+        vertical-align: top;
+       }
+
+       
+
+       td,
+        th {
+            border: 1px solid rgb(190, 190, 190);
+            padding: 10px;
+            text-align: left;
+            vertical-align:top;
+        }
+
+        th[scope='col'] {
+          background-color: #696969;
+          color: #fff;
+      }
+
+      .liste_chantiers  tr:nth-child(even) {
+          background-color: #eee;
+      }
+
+      td.intervention_moe {
+        background-color: white;
+        text-transform: uppercase;
+        vertical-align:top
+      }
+   
+    
+
+    </style>
+
+    <!-- In the head -->
+    <script>
+    // When the page loads - the Jinja template is already rendered now
+    window.onload = function() {
+      // Get all the elements with the given class, and map through them
+      document.querySelectorAll(".datetime_to_be_adjusted").forEach(function(el){
+        var text = el.innerText;
+        console.log(text);
+        if (text=="None") {
+          el.innerText = "";
+        } else {
+            var utcTime = moment.utc(el.innerText);  // This is the time in UTC
+            utcTime.local();  // Switch to using the browser's local timezone
+            el.innerText = utcTime.format('DD/MM/YYYY HH:mm:ss');  // Write the local time back to the element
+                                                                    // cf https://momentjs.com/docs/#/displaying/
+        }
+          
+      });
+    }
+    </script>
+
+</head>
+<body>
+  <img style="width:20%; height:20%" src="https://renovadmin.fr/wp-content/uploads/2022/05/Logo-2023.png" class="attachment-full size-full wp-image-440" alt="Logo renovadmin" loading="lazy" srcset="https://renovadmin.fr/wp-content/uploads/2022/05/Logo-2023.png 800w, https://renovadmin.fr/wp-content/uploads/2022/05/Logo-2023-300x64.png 300w, https://renovadmin.fr/wp-content/uploads/2022/05/Logo-2023-768x164.png 768w" sizes="(max-width: 800px) 100vw, 800px" width="800" height="171">
+    <nav>
+      {% include 'nav.html' %}
+    </nav>
+    <div class="content">
+        {% block content %} {% endblock %}
+    </div>
+</body>
+</html>

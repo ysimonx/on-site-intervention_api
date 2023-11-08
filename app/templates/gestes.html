@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Chantiers</h1>
+  
+
+<form>
+<ul style="list-style-type: none;  display:flex;  list-style:none ">
+<li style="margin: 5px;"><label for="user_id">Professionnel</label><br />
+<select id="user_id" name="user_id" onchange="this.form.submit()">
+    <option value="">--</option>
+    {% for key, value in dict_users.items() %}
+    <option value="{{key}}"  {% if user_id == key %}selected{% endif %}>{{value.firstname}} {{value.lastname}} ({{value.company.name |upper}})</option>
+    {% endfor %}
+</select>
+</li>
+<li  style="margin: 5px;"><label for="filter_controle_status">Status</label><br />
+<select id="filter_controle_status" name="filter_controle_status" onchange="this.form.submit()">
+    <option value="">--</option>
+    {% for key, value in dict_controle.items() %}
+    <option value="{{key}}" {%if key == filter_controle_status %} selected {% endif %}>{{value}}</option>
+    {% endfor %}
+</select>
+</li>
+<li  style="margin: 5px;">
+<br />
+<input type="submit" value="filter">
+</li>
+</ul>
+</form>
+    <table class="liste_chantiers">
+    <tr>
+        <th scope="col">Date de création</th>
+        <th scope="col">Derniere mise à jour</th>
+        <th scope="col">Professionnel</th>
+        <th scope="col">Bénéficiaire</th>
+        <th scope="col">Chantier</th>
+        <th scope="col">Contrôle</th>
+        <th scope="col">Coordonnées</th>
+    </tr>
+    {% for geste in gestes %}
+    <tr>
+        <td class="datetime_to_be_adjusted">{{geste.get_internal().time_created_utc}}</td>
+        <td class="datetime_to_be_adjusted">{{geste.get_internal().time_updated_utc}}</td>
+        <td class="pro_coords">{{dict_users[geste.get_internal().owner_user_id]["firstname"]}} {{dict_users[geste.get_internal().owner_user_id]["lastname"]}}
+        ({{dict_companies[dict_users[geste.get_internal().owner_user_id]["company_id"]]["name"]}})</td>
+        <td class="beneficiaire_coords">{{geste.beneficiaire.beneficiaire_name}}</td>
+        <td class="geste_name"><a href="/backoffice/v1/geste/{{geste.id}}">{{geste.geste_name}}</a></td>
+        <td class="geste_controle">{{dict_controle[geste.controles[0].controle_status.value]}}</td>
+        <td>Lat: {{geste.average_latitude}} / Lng {{geste.average_longitude}} <br />
+            <a target="_blank" href="https://www.geoportail.gouv.fr/carte?c={{geste.average_longitude}},{{geste.average_latitude}}&z=20&l0=ORTHOIMAGERY.ORTHOPHOTOS::GEOPORTAIL:OGC:WMTS(1)&l1=CADASTRALPARCELS.PARCELLAIRE_EXPRESS::GEOPORTAIL:OGC:WMTS(1)&l2=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2::GEOPORTAIL:OGC:WMTS(1)&permalink=yes">Geoportail</a>
+            <!-- a target="_blank" href="https://www.google.com/maps/@{{geste.average_latitude}},{{geste.average_longitude}},17z">Google maps</a --> 
+            <a target="_blank" href="https://www.google.com/maps/place/{{geste.average_latitude}},{{geste.average_longitude}}">Google maps</a>
+        </td>
+        
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
+
+{% block title %}Liste des chantiers{% endblock %}

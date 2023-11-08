@@ -1,0 +1,673 @@
+openapi: 3.0.0
+info:
+  contact:
+    name: Yannick Simon
+    email: yannick.simon@kysoe.com
+    url: https://yannicksimon.fr
+  title: renovadmin v0
+  description: prototype renovadmin v0
+  version: 1.0.0
+servers:
+  - url: 'http://{{url_base}}'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    noauthAuth:
+      type: http
+      scheme: noauth
+tags:
+  - name: companies
+  - name: users
+  - name: photos
+  - name: gestes
+  - name: fields
+  - name: beneficiaires
+  - name: controles
+  - name: General
+paths:
+  /api/v1/company:
+    post:
+      description: |
+        create company
+      operationId: createCompany
+      tags:
+        - companies
+      summary: create company kysoe
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      description: |
+        list companies
+      operationId: listCompanies
+      tags:
+        - companies
+      summary: list companies
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/user:
+    post:
+      description: create user
+      operationId: createUser
+      tags:
+        - users
+      summary: create user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: yannick.simon2@gmail.com
+                password: '12345678'
+                company: kysoe
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      description: list user
+      operationId: listUsers
+      tags:
+        - users
+      summary: list users
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/photo:
+    post:
+      description: upload photo
+      operationId: uploadPhoto
+      tags:
+        - photos
+      summary: upload photo
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                photo_uuid:
+                  type: string
+                  example: z32b23icxtxx
+                latitude:
+                  type: number
+                  example: 5.123
+                longitude:
+                  type: number
+                  example: -49.23242
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      description: list photos
+      operationId: listPhotos
+      tags:
+        - photos
+      summary: list photos
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/photo/ready:
+    get:
+      description: call an endpoint before uploading photo to be sure that access token is ok before uploading
+      operationId: photoReady
+      tags:
+        - photos
+      summary: is photo ready
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/geste:
+    post:
+      description: create a geste/chantier
+      operationId: createGeste
+      tags:
+        - gestes
+      summary: post geste
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                beneficiaire_uuid: 6954a370-1439-11ee-a9da-db5404bb7d0e
+                beneficiaire_name: Cristiano Ronaldo
+                geste_uuid: 6954f190-1439-11ee-a9da-db5404bb7d0e
+                geste_name: Pompe à Chaleur Air/Eau
+                formulaires:
+                  - formulaire_uuid: 6954f191-1439-11ee-a9da-db5404bb7d0e
+                    formulaire_name: Avant dépose
+                    geste:
+                      geste_uuid: 6954f190-1439-11ee-a9da-db5404bb7d0e
+                      geste_name: Pompe à Chaleur Air/Eau
+                    beneficiaire:
+                      beneficiaire_uuid: 6954a370-1439-11ee-a9da-db5404bb7d0e
+                      beneficiaire_name: Cristiano Ronaldo
+                    average_location:
+                      longitude: 5.6739211
+                      latitude: 43.44475885
+                    fields:
+                      - field_uuid: 695518a0-1439-11ee-a9da-db5404bb7d0e
+                        field_name: piece-identite
+                        commentaire: xx
+                        noPhoto: false
+                        instructions:
+                          type: photo
+                          label: Pièce d’identité du bénéficiaire face recto
+                          instruction: Pièce d’identité du bénéficiaire face recto
+                          item_requirements:
+                            - Prénom
+                            - nom
+                          exemple: assets/images_guides/piece-identite.png
+                        photos:
+                          - photo_uuid: 6dba2070-1439-11ee-a9da-db5404bb7d0e
+                            path: >-
+                              /data/user/0/com.renovadmin.app_renovadmin/cache/CAP746801401290032733.jpg
+                            status: Pending
+                            location:
+                              longitude: 5.6739107
+                              latitude: 43.4447537
+                            created_date: '2023-06-26 15:54:48.094314Z'
+                      - field_uuid: 695566c0-1439-11ee-a9da-db5404bb7d0e
+                        field_name: ancienne-chaudiere
+                        commentaire: ''
+                        noPhoto: false
+                        instructions:
+                          type: photo
+                          label: Ancienne chaudière avant dépose
+                          instruction: Ancienne chaudière avant dépose
+                          item_requirements:
+                            - Chaudière posée
+                          exemple: assets/images_guides/ancienne-chaudiere.png
+                        photos:
+                          - photo_uuid: d07eb400-1439-11ee-a65f-5377ac5a3cb7
+                            path: >-
+                              /data/user/0/com.renovadmin.app_renovadmin/cache/CAP5364025464748322484.jpg
+                            status: Pending
+                            location:
+                              longitude: 5.6739315
+                              latitude: 43.444764
+                            created_date: '2023-06-26 15:55:03.874286Z'
+                      - field_uuid: 695566c1-1439-11ee-a9da-db5404bb7d0e
+                        field_name: plaque-signaletique-ancienne-chaudiere
+                        commentaire: ''
+                        noPhoto: true
+                        instructions:
+                          type: photo
+                          label: Plaque signalétique de l’ancienne chaudière
+                          instruction: Plaque signalétique de l’ancienne chaudière
+                          item_requirements:
+                            - Marque de la chaudière
+                            - Référence
+                          exemple: >-
+                            assets/images_guides/plaque-signaletique-ancienne-chaudiere.png
+                        photos: []
+                      - field_uuid: 695566c2-1439-11ee-a9da-db5404bb7d0e
+                        field_name: futur-emplacement-unite-exterieure
+                        commentaire: ''
+                        noPhoto: true
+                        instructions:
+                          type: photo
+                          label: Emplacement unité extérieure
+                          instruction: Emplacement unité extérieure
+                          item_requirements:
+                            - Espace libre
+                            - Les murs alentours
+                            - Les fenêtres et portes alentours
+                            - La nature du sol si la PAC est posée au sol
+                            - L’espace au mur si la PAC est fixée au mur
+                          exemple: assets/icons/renovadmin1024x1024.png
+                        photos: []
+                      - field_uuid: 69558dd0-1439-11ee-a9da-db5404bb7d0e
+                        field_name: ajout-de-photo
+                        commentaire: ''
+                        noPhoto: true
+                        instructions:
+                          type: photo
+                          label: Toutes photos complémentaires jugées nécessaires
+                          instruction: Toutes photos complémentaires jugées nécessaires
+                          item_requirements:
+                            - ''
+                          exemple: assets/icons/renovadmin1024x1024.png
+                        photos: []
+                  - formulaire_uuid: 69558dd1-1439-11ee-a9da-db5404bb7d0e
+                    formulaire_name: Installation
+                    geste:
+                      geste_uuid: 6954f190-1439-11ee-a9da-db5404bb7d0e
+                      geste_name: Pompe à Chaleur Air/Eau
+                    beneficiaire:
+                      beneficiaire_uuid: 6954a370-1439-11ee-a9da-db5404bb7d0e
+                      beneficiaire_name: Cristiano Ronaldo
+                    average_location:
+                      longitude: 5.6739155
+                      latitude: 43.4447562
+                    fields:
+                      - field_uuid: 69558dd2-1439-11ee-a9da-db5404bb7d0e
+                        field_name: depose-ancienne-chaudiere
+                        commentaire: ''
+                        noPhoto: false
+                        instructions:
+                          type: photo
+                          label: Dépose de l’ancienne chaudière
+                          instruction: Dépose de l’ancienne chaudière
+                          item_requirements:
+                            - >-
+                              L’emplacement vide où se trouvait l’ancienne
+                              chaudière
+                          exemple: assets/icons/renovadmin1024x1024.png
+                        photos:
+                          - photo_uuid: 349baba0-143a-11ee-90c9-89b9679adb87
+                            path: >-
+                              /data/user/0/com.renovadmin.app_renovadmin/cache/CAP167752666621934732.jpg
+                            status: Pending
+                            location:
+                              longitude: 5.6739155
+                              latitude: 43.4447562
+                            created_date: '2023-06-26 15:58:25.996940Z'
+                      - field_uuid: 69558dd3-1439-11ee-a9da-db5404bb7d0e
+                        field_name: vue-d-ensemble-unite-interieure
+                        commentaire: ''
+                        noPhoto: true
+                        instructions:
+                          type: photo
+                          label: Vue d’ensemble
+                          instruction: Vue d’ensemble
+                          item_requirements:
+                            - Absence de chaudière associée à la PAC
+                            - Absence d’obstacle
+                          exemple: >-
+                            assets/images_guides/vue-d-ensemble-unite-interieure.png
+                        photos: []
+                      - field_uuid: 69558dd4-1439-11ee-a9da-db5404bb7d0e
+                        field_name: fixation-unite-interieure
+                        commentaire: ''
+                        noPhoto: true
+                        instructions:
+                          type: photo
+                          label: Montrer l'élément de fixation
+                          instruction: Montrer l'élément de fixation
+                          item_requirements:
+                            - Élément de fixation sur châssis
+                            - ou Fixation au mur
+                            - ou Fixation par tubulures
+                          exemple: assets/images_guides/fixation-unite-interieure.png
+                        photos: []
+                      - field_uuid: 69558dd5-1439-11ee-a9da-db5404bb7d0e
+                        field_name: plaque-signaletique-unite-interieure
+                        commentaire: ''
+                        noPhoto: true
+                        instructions:
+                          type: photo
+                          label: Plaque signalétique de l’unité intérieure
+                          instruction: >-
+                            !! La plaque signalétique doit être lisible. Prendre
+                            la photo pour que les bords de la plaque opposés en
+                            largeur ou en hauteur touchent les bords de l’écran
+                            !!
+                          item_requirements:
+                            - marque
+                            - référence
+                          exemple: >-
+                            assets/images_guides/plaque-signaletique-unite-interieure.png
+                        photos: []
+                      - field_uuid: 69558dd6-1439-11ee-a9da-db5404bb7d0e
+                        field_name: calorifuge-circuit-eau-chaude
+                        commentaire: ''
+                        noPhoto: true
+                        instructions:
+                          type: photo
+                          label: >-
+                            Réseau des tuyauteries « eau chaude » calorifugé
+                            dans les espaces non chauffés
+                          instruction: >-
+                            Réseau des tuyauteries « eau chaude » calorifugé
+                            dans les espaces non chauffés
+                          item_requirements:
+                            - >-
+                              une tranche de tuyauterie calorifugée dans l'espace
+                              non chauffé
+                          exemple: >-
+                            assets/images_guides/calorifuge-circuit-eau-chaude.png
+                        photos: []
+                      - field_uuid: 69558dd7-1439-11ee-a9da-db5404bb7d0e
+                        field_name: calorifuge-circuit-frigorigene
+                        commentaire: ''
+                        noPhoto: true
+                        instructions:
+                          type: photo
+                          label: >-
+                            Réseau des tuyauteries « Frigorigènes » calorifugé
+                            dans les espaces non chauffés
+                          instruction: >-
+                            Réseau des tuyauteries « Frigorigènes » calorifugé
+                            dans les espaces non chauffés
+                          item_requirements:
+                            - >-
+                              Une tranche de tuyauterie calorifugée dans
+                              l’espace non chauffé (la partie blanche dans
+                              l’exemple)
+                          exemple: >-
+                            assets/images_guides/calorifuge-circuit-frigorigene.png
+                        photos: []
+                      - field_uuid: 69558dd8-1439-11ee-a9da-db5404bb7d0e
+                        field_name: dispositifs-reglage-equilibrage-reseau
+                        commentaire: ''
+                        noPhoto: true
+                        instructions:
+                          type: photo
+                          label: >-
+                            Dispositifs de réglage permettant l’équilibrage du
+                            réseau
+                          instruction: >-
+                            Dispositifs de réglage permettant l’équilibrage du
+                            réseau
+                          item_requirements:
+                            - >-
+                              Si radiateurs : Vanne d'équilibrage ou Té de
+                              réglage
+                            - >-
+                              Si plancher chauffant : Vanne sur clarinette si
+                              planché chauffant
+                          exemple: >-
+                            assets/images_guides/dispositifs-reglage-equilibrage-reseau.png
+                        photos: []
+                      - field_uuid: 69558dd9-1439-11ee-a9da-db5404bb7d0e
+                        field_name: vue-d-ensemble-unite-exterieure
+                        commentaire: ''
+                        noPhoto: true
+                        instructions:
+                          type: photo
+                          label: Vue d’ensemble unité extérieure
+                          instruction: Vue d’ensemble unité extérieure
+                          item_requirements:
+                            - L’unité
+                            - >-
+                              Absence d’obstacles pouvant empêcher l’échange
+                              d’air
+                            - Les murs et les cloisons autour de l’unité
+                          exemple: >-
+                            assets/images_guides/vue-d-ensemble-unite-exterieure.png
+                        photos: []
+                      - field_uuid: 69558dda-1439-11ee-a9da-db5404bb7d0e
+                        field_name: unite-exterieure-aeration
+                        commentaire: ''
+                        noPhoto: true
+                        instructions:
+                          type: photo
+                          label: Unité extérieure aération
+                          instruction: Photographier la mesure au mètre ruban
+                          item_requirements:
+                            - >-
+                              Les mesures entre l’unité et les éventuels murs à
+                              proximité
+                            - >-
+                              Arrière, côté, dessus ou devant selon la
+                              configuration.
+                          exemple: assets/images_guides/unite-exterieure-aeration.png
+                        photos: []
+                      - field_uuid: 69558ddb-1439-11ee-a9da-db5404bb7d0e
+                        field_name: plaque-signaletique-unite-exterieure
+                        commentaire: ''
+                        noPhoto: true
+                        instructions:
+                          type: photo
+                          label: Plaque signalétique unité extérieure
+                          instruction: >-
+                            Prendre la photo pour que les bords opposés en
+                            largeur ou en hauteur de la plaque touchent les
+                            bords de l’écran. Dans l’exemple, le haut et le bas
+                            de la plaque touchent les bords hauts et bas de la
+                            photo
+                          item_requirements:
+                            - Référence
+                          exemple: >-
+                            assets/images_guides/plaque-signaletique-unite-exterieure.png
+                        photos: []
+                      - field_uuid: 69558ddc-1439-11ee-a9da-db5404bb7d0e
+                        field_name: fixation-unite-exterieure
+                        commentaire: ''
+                        noPhoto: true
+                        instructions:
+                          type: photo
+                          label: Fixation de l’unité extérieure
+                          instruction: Fixation de l’unité extérieure
+                          item_requirements:
+                            - Eléments de fixation
+                          exemple: assets/images_guides/fixation-unite-exterieure.png
+                        photos: []
+                      - field_uuid: 69558ddd-1439-11ee-a9da-db5404bb7d0e
+                        field_name: radiateur
+                        commentaire: ''
+                        noPhoto: true
+                        instructions:
+                          type: photo
+                          label: Un radiateur
+                          instruction: Un radiateur
+                          item_requirements:
+                            - >-
+                              Si radiateur : Un radiateur dans le contexte des
+                              pièces chauffées par la PAC.
+                            - "-\tSi plancher chauffant : La pièce principale sans radiateurs"
+                          exemple: assets/images_guides/radiateur.png
+                        photos: []
+                      - field_uuid: 69558dde-1439-11ee-a9da-db5404bb7d0e
+                        field_name: facade-maison
+                        commentaire: ''
+                        noPhoto: true
+                        instructions:
+                          type: photo
+                          label: Façade de la maison depuis la rue
+                          instruction: Façade de la maison depuis la rue
+                          item_requirements:
+                            - L’étage ou l’absence d’étage de la maison.
+                          exemple: assets/images_guides/facade-maison.png
+                        photos: []
+                      - field_uuid: 69558ddf-1439-11ee-a9da-db5404bb7d0e
+                        field_name: ajout-de-photo
+                        commentaire: ''
+                        noPhoto: true
+                        instructions:
+                          type: photo
+                          label: Toutes photos complémentaires jugées nécessaires
+                          instruction: Toutes photos complémentaires jugées nécessaires
+                          item_requirements:
+                            - ''
+                          exemple: assets/icons/renovadmin1024x1024.png
+                        photos: []
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      description: list gestes
+      operationId: listeGeste
+      
+      tags:
+        - gestes
+      summary: liste gestes
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+            
+  /backoffice/v1/geste:
+    get:
+      description: list Gestes/chantier for backoffice
+      operationId: backofficeListGestes
+      
+      tags:
+        - gestes
+      summary: liste gestes backoffice
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/field:
+    get:
+      description: list Fields
+      operationId: listFields
+      
+      tags:
+        - fields
+      summary: liste fields
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/beneficiaire:
+    get:
+      description: list Beneficiaires
+      operationId: listBeneficiaires
+      
+      tags:
+        - beneficiaires 
+      summary: liste beneficiaire
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/controle:
+    get:
+      description: list Controles
+      operationId: listControles
+      
+      tags:
+        - controles
+      summary: liste controles
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/controle/filter_by_gestes:
+    post:
+      description: list Controles filtered by gestes uuid
+      operationId: listControlesFiltedredByGestesUUID
+      
+      tags:
+        - controles
+      summary: liste controles for gestes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                gestes:
+                  - geste_uuid: 1cc69451-15c9-11ee-b40c-fd0c80dc8a99
+                  - geste_uuid: 188dd731-15ca-11ee-b40c-fd0c80dc8a99
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/init:
+    get:
+      description: create and init database
+      operationId: initDatabase
+      
+      tags:
+        - General
+      summary: init
+      security:
+        - noauthAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/login:
+    post:
+      description: login process
+      operationId: login
+      
+      tags:
+        - General
+      summary: login yannick
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: yannick.simon@gmail.com
+                password: '12345678'
+      parameters:
+        - name: Content-ty
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/token/refresh:
+    post:
+      description: refresh access token
+      operationId: refreshAccessToken
+      
+      tags:
+        - General
+      summary: refresh token
+      requestBody:
+        content: {}
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <h1>Photos</h1>
+
+   <table style="width:100%">
+   {% for photo in photos %}
+   <tr>
+    <td style="width:300px"><a href="https://api-renovadmin.kysoe.com/static/photos/{{photo.filename}}" target="_blank"><img src="https://api-renovadmin.kysoe.com/static/photos/{{photo.filename}}" style="width:300px" loading="lazy"></a></td>
+    <td>
+        {{dict_users[photo.get_internal().owner_user_id]["firstname"]}} {{dict_users[photo.get_internal().owner_user_id]["lastname"]}} ({{dict_companies[dict_users[photo.get_internal().owner_user_id]["company_id"]]["name"]}})<br />
+        <span class="datetime_to_be_adjusted">{{photo.get_internal().time_created_utc}}</span> : <a href="https://api-renovadmin.kysoe.com/static/photos/timestamps/{{photo.filename}}.digicert.tsr.txt"> preuve horodatage digicert</a><br >
+        {% if photo.photo_uuid in photoTABCertigna %}<span class="datetime_to_be_adjusted">{{photo.get_internal().time_created_utc}}</span> : <a href="https://api-renovadmin.kysoe.com/static/photos/timestamps/{{photo.filename}}.certigna.tsr.txt"> preuve horodatage certigna</a><br > {% endif %}
+        <a target="_blank" href="https://www.geoportail.gouv.fr/carte?c={{photo.longitude}},{{photo.latitude}}&z=20&l0=ORTHOIMAGERY.ORTHOPHOTOS::GEOPORTAIL:OGC:WMTS(1)&l1=CADASTRALPARCELS.PARCELLAIRE_EXPRESS::GEOPORTAIL:OGC:WMTS(1)&l2=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2::GEOPORTAIL:OGC:WMTS(1)&permalink=yes">Geoportail</a>
+         <a target="_blank" href="https://www.google.com/maps/place/{{photo.latitude}},{{photo.longitude}}">Google maps</a><br />
+         <a tarket="_blank" href="https://www.verexif.com/en/ver.php?foto_file=&foto_url=https://api-renovadmin.kysoe.com/static/photos/{{photo.filename}}">Exif Viewer</a>
+        
+    </td>    
+</tr>
+    {% endfor %}
+    </table>
+
+{% endblock %}
+
+{% block title %}Photos{% endblock %}

@@ -1,0 +1,368 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <h1><a href="/backoffice/v1/geste">Liste des chantiers</a> > {{geste.geste_name}} : contrôle {{dict_controle[controle.controle_status.value]}}</h1>
+   <form action="/backoffice/v1/controle" method="post">
+   
+   {% if message %}
+   <div style="width: 50%; text-align:center; margin-left:auto; margin-right:auto; border: 1px solid red; padding:10px;  margin-top:10px;margin-bottom:10px; color:red">{{message}}</div>
+   {%  endif %}
+   <div>
+   <div style="float:left; width:50%">
+   <table style="font-size: 18px; width:80%">
+      <tr>
+         <td style="vertical-align:top; text-align: right">Beneficiaire:</td>
+         <td class="geste_moe" style="">
+            {{geste.beneficiaire.beneficiaire_name}}<br/>
+            <table>
+            <tr><td style="margin: 1px; border: 0px solid white">N° fiscal local:</td><td style="margin: 1px; border: 0px solid white"><input type="text" name="beneficiaire_numero_fiscal_local" value="{{controle.numero_fiscal_local}}" /></a></td></tr>
+            <tr><td style="margin: 1px; border: 0px solid white">adresse:</td><td style="margin: 1px; border: 0px solid white"><input type="text" name="beneficiaire_address" value="{{controle.adresse}}" /></td></tr>
+            <tr><td style="margin: 1px; border: 0px solid white">code_postal:</td><td style="margin: 1px; border: 0px solid white"><input type="text" name="beneficiaire_zip" value="{{controle.zip}}" /></td></tr>
+            <tr><td style="margin: 1px; border: 0px solid white">ville:</td><td style="margin: 1px; border: 0px solid white"><input type="text" name="beneficiaire_ville" value="{{controle.ville}}" /></a></td></tr>
+            
+            </table>
+         </td>
+      </tr>
+   </table>
+   </div>
+   <div style="float:right; width:40%;">
+   <table style="font-size: 18px; width:80%">
+      <tr>
+         <td style="vertical-align:top; text-align: right">MOE:</td>
+         <td class="geste_moe" style="">
+            {{moe.company.name}}<br/>
+            {{moe.firstname}}<br />
+            {{moe.lastname}}<br>
+            <a href="mailto:{{moe.email}}">{{moe.email}}</a></br>
+         </td>
+      </tr>
+   </table>
+   <table style="font-size: 18px; width:80%">
+      <tr>
+         <td style="vertical-align:top; text-align: right">ATTENDUS :</td>
+         <td><textarea name="controle-attendus" cols=40 rows=10{% if controle.attendus == None or controle.attendus == "None" %}
+>- Longitude (entre -5 et +9) :
+- Lattitude (entre 42 et 51) :
+- Marque :
+- Unité intérieur :
+- Unité extérieure :
+- Distance du mur : 
+            {% else %}>{{controle.attendus}}{% endif %}</textarea></td>
+      </tr>
+   </table>
+   </div>
+   <div style="clear:both; " />
+</div>
+<p /><p />
+<table style="font-size: 18px; width:40%">
+   <tr>
+      <td style="vertical-align:top; text-align: right">Date du controle:</td>
+      <td class="geste_moe" style="">
+         <span class="datetime_to_be_adjusted">{{date_controle}}</span>
+      </td>
+   </tr>
+</table>
+   <p /><p />
+
+   
+   <script>
+
+      var tab_sr={{list_photos_geoloc  | safe }};
+
+  </script>
+  <script>
+      var markers = [];//some array
+
+      function initMap() {
+      const myLatLng = { lat: {{geste.average_latitude}}, lng:{{geste.average_longitude}} };
+      const infoContent = "";
+
+      const map = new google.maps.Map(document.getElementById("map"), {
+         zoom: 15,
+         center: myLatLng,
+         mapTypeId: 'terrain'
+
+      });
+
+      map.setOptions({ styles: styles["hide"] });
+
+      const tab_marker = [];
+      const tab_infowindows = [];
+
+      // console.log(tab_sr);
+
+      const infoWindow = new google.maps.InfoWindow({
+         maxWidth: 300,
+         content: ""
+      });
+
+      
+      for(var i=0; i < tab_sr.length; i++) {
+            var sr = tab_sr[i];
+            markers.push(createMarker( map, sr["latitude"], sr["longitude"], sr["infoContent"]));
+      }
+         
+      var bounds = new google.maps.LatLngBounds();
+      for (var i = 0; i < markers.length; i++) {
+            bounds.extend(markers[i]);
+      }
+
+      map.fitBounds(bounds);
+      }
+
+      const styles = {
+      default: [],
+      hide: [
+         {
+            featureType: "poi.business",
+            stylers: [{ visibility: "off" }],
+         },
+         {
+            featureType: "transit",
+            elementType: "labels.icon",
+            stylers: [{ visibility: "off" }],
+         },
+      ],
+      };
+
+      function createMarker(map, lat, lon, html) {
+      var newmarker = new google.maps.Marker({
+            position: new google.maps.LatLng(lat, lon),
+            map: map,
+            title: html
+      });
+
+      newmarker['infowindow'] = new google.maps.InfoWindow({
+               content: html
+            });
+
+      google.maps.event.addListener(newmarker, 'click', function() {
+            for(var i=0; i<markers.length; i++) {
+            markers[i]['infowindow'].close();
+            }
+            this['infowindow'].open(map, this);
+      });
+      return newmarker;
+      }
+
+      window.initMap = initMap;
+   </script>
+
+   <script
+   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAG3oViOURJJlJHPKsOg8U-oTO0I2-CmVQ&callback=initMap&v=weekly"
+   defer></script>
+   <p /><p />
+
+   <input type="hidden" name="geste_id" value="{{geste.id}}" />
+   <table class="liste_fields">
+      <tr class="field_entete"><td colspan="3">Geolocalisation</td></tr>
+      <tr>
+         <td class="field_instruction" width="35%">
+            Geolocalisation<br />
+            <a href="http://maps.google.com/?q={{controle.adresse}}, {{controle.zip}} {{controle.ville}}">Ouvrir Google Maps sur l'adresse</a>
+            
+         </td>
+         <td width="35%">
+            <div id="map" style="height:400px"></div>
+            {% for field in fields %}
+               {% for photo in field.photos %}
+               <a target="_blank" href="https://api-renovadmin.kysoe.com/static/photos/{{map_photos[photo.photo_uuid].filename}}">lat:{{map_photos[photo.photo_uuid].latitude}}, long:{{map_photos[photo.photo_uuid].longitude}}</a>
+               <a target="_blank" href="https://www.geoportail.gouv.fr/carte?c={{map_photos[photo.photo_uuid].longitude}},{{map_photos[photo.photo_uuid].latitude}}&z=20&l0=ORTHOIMAGERY.ORTHOPHOTOS::GEOPORTAIL:OGC:WMTS(1)&l1=CADASTRALPARCELS.PARCELLAIRE_EXPRESS::GEOPORTAIL:OGC:WMTS(1)&l2=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2::GEOPORTAIL:OGC:WMTS(1)&permalink=yes">Geoportail</a>
+               <!-- a target="_blank" href="https://www.google.com/maps/@{{map_photos[photo.photo_uuid].latitude}}{{map_photos[photo.photo_uuid].longitude}},17z">Google maps</a><br / --> 
+               <a target="_blank" href="https://www.google.com/maps/place/{{map_photos[photo.photo_uuid].latitude}},{{map_photos[photo.photo_uuid].longitude}}">Google maps</a><br />
+         
+               {% endfor%}
+            {% endfor %}
+         </td>
+         <td  class="field_controle">
+            <fieldset>
+               <legend>Commentaire du controleur :</legend>
+           
+               <div>
+                 <input type="radio" id="geoloc-satisfaisant" name="geoloc" value="satisfaisant"
+                        checked>
+                 <label for="geoloc-satisfaisant">Satisfaisant</label>
+               </div>
+           
+               <div>
+                 <input type="radio" id="geoloc-nonsatisfaisant" name="geoloc" value="non_satisfaisant">
+                 <label for="geoloc-nonsatisfaisant">Non Satisfaisant</label>
+               </div>
+           
+               <div>
+                 <input type="radio" id="geoloc-non_verifiable" name="geoloc" value="non_verifiable">
+                 <label for="geoloc-non_verifiable">Non Vérifiable</label>
+               </div>
+               <div>
+                  <input type="radio" id="geoloc-non_applicable" name="geoloc" value="non_applicable">
+                  <label for="geoloc-non_applicable">Non Applicable</label>
+                </div>
+           </fieldset>
+           
+         </td>
+      </tr>
+
+   {% for field in fields %}
+      <tr class="field_entete"><td colspan="3">{{field.instructions.label}}</td></tr>
+      <tr>
+      <td class="field_instruction" width="35%">
+
+         {% if (field.instructions.instruction != field.instructions.label) %}
+         <b>{{field.instructions.instruction}}</b><br /><br />
+         {% endif %}
+
+
+         {% if field.instructions.item_requirements|length > 1 %}
+            Eléments devant être visibles : 
+            <ul>
+         
+            {% for item_requirement in field.instructions.item_requirements %}
+               <li>{{item_requirement}}</li>
+            {% endfor %}
+            </ul>
+         {% endif %}
+
+         {% if (field.instructions.exemple != "assets/icons/renovadmin1024x1024.png") %}
+            Exemple: <br />
+            <img style="width: 350px; margin:5px" src="/static/{{field.instructions.exemple}}">
+         {% endif %}
+      </td>
+      <td width="35%">
+         {% if dict_field_histo[field.field_uuid]|length > 1 %}
+         <b>Historique : <a href="/backoffice/v1/field/histo_by_field_uuid/{{field.field_uuid}}" >{{ dict_field_histo[field.field_uuid]|length }} saisies différentes</a> </b><br /><br />
+         {% endif %}
+         {% if field.commentaire %}
+         <b>Commentaire du MOE : {{ field.commentaire }}</b><br /><br />
+         {% endif %}
+         {% for photo in field.photos %}
+         <div>
+         <a href="https://api-renovadmin.kysoe.com/static/photos/{{map_photos[photo.photo_uuid].filename}}" target="_blank">
+            <img style="width: 300px; height: 300px; margin:5px; object-position: top left; object-fit: cover"  src="https://api-renovadmin.kysoe.com/static/photos/{{map_photos[photo.photo_uuid].filename}}" />
+         </a>
+         <br />
+         <span class="datetime_to_be_adjusted">{{map_photos[photo.photo_uuid].get_internal().time_created_utc}}</span> : <a href="https://api-renovadmin.kysoe.com/static/photos/timestamps/{{map_photos[photo.photo_uuid].filename}}.digicert.tsr.txt"> preuve horodatage digicert</a><br >
+         {% if photo.photo_uuid in photoTABCertigna %}<span class="datetime_to_be_adjusted">{{map_photos[photo.photo_uuid].get_internal().time_created_utc}}</span> : <a href="https://api-renovadmin.kysoe.com/static/photos/timestamps/{{map_photos[photo.photo_uuid].filename}}.certigna.tsr.txt"> preuve horodatage certigna</a><br >{% endif %}
+
+         lat:{{map_photos[photo.photo_uuid].latitude}}, long:{{map_photos[photo.photo_uuid].longitude}}<br />
+         
+         <a target="_blank" href="https://www.geoportail.gouv.fr/carte?c={{map_photos[photo.photo_uuid].longitude}},{{map_photos[photo.photo_uuid].latitude}}&z=20&l0=ORTHOIMAGERY.ORTHOPHOTOS::GEOPORTAIL:OGC:WMTS(1)&l1=CADASTRALPARCELS.PARCELLAIRE_EXPRESS::GEOPORTAIL:OGC:WMTS(1)&l2=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2::GEOPORTAIL:OGC:WMTS(1)&permalink=yes">Geoportail</a>
+         <!-- a target="_blank" href="https://www.google.com/maps/@{{map_photos[photo.photo_uuid].latitude}}{{map_photos[photo.photo_uuid].longitude}},17z">Google maps</a -->
+         <a target="_blank" href="https://www.google.com/maps/place/{{map_photos[photo.photo_uuid].latitude}},{{map_photos[photo.photo_uuid].longitude}}">Google maps</a><br />
+         <a tarket="_blank" href="https://www.verexif.com/en/ver.php?foto_file=&foto_url=https://api-renovadmin.kysoe.com/static/photos/{{map_photos[photo.photo_uuid].filename}}">Exif Viewer</a>
+         </div>
+         {% endfor %}
+         {% if (field.noPhoto == True) %}
+         <div><b>Photo Non Applicable</b></div>
+         {% endif %}
+      </td>
+      <td width="30%" class="field_controle">
+         <fieldset>
+            <legend>Commentaire du controleur : </legend>
+
+            <div style="display:none">
+               <input type="radio" id="{{field.field_uuid}}-non_saisi" name="field|{{field.field_uuid}}|{{dict_field_md5[field.field_uuid]}}" value="non_saisi"
+                      {% if field.controle_status == "non_saisi" %}checked{% endif %}>
+               <label for="{{field.field_uuid}}-non_saisi">Non Saisi</label>
+            </div>
+
+            <div>
+              <input type="radio" id="{{field.field_uuid}}-satisfaisant" name="field|{{field.field_uuid}}|{{dict_field_md5[field.field_uuid]}}" value="satisfaisant"
+                     {% if field.controle_status == "satisfaisant" %}checked{% endif %}>
+              <label for="{{field.field_uuid}}-satisfaisant">Satisfaisant</label>
+            </div>
+        
+            <div>
+              <input type="radio" id="{{field.field_uuid}}-nonsatisfaisant" name="field|{{field.field_uuid}}|{{dict_field_md5[field.field_uuid]}}" value="non_satisfaisant"
+              {% if field.controle_status == "non_satisfaisant" %}checked{% endif %}>
+              <label for="{{field.field_uuid}}-nonsatisfaisant">Non Satisfaisant</label>
+            </div>
+        
+            <div>
+              <input type="radio" id="{{field.field_uuid}}-non_verifiable" name="field|{{field.field_uuid}}|{{dict_field_md5[field.field_uuid]}}" value="non_verifiable"
+              {% if field.controle_status == "non_verifiable" %}checked{% endif %}>
+              <label for="{{field.field_uuid}}-non_verifiable">Non Vérifiable</label>
+            </div>
+            <div>
+               <input type="radio" id="{{field.field_uuid}}-non_applicable" name="field|{{field.field_uuid}}|{{dict_field_md5[field.field_uuid]}}" value="non_applicable"
+               {% if field.controle_status == "non_applicable" %}checked{% endif %}>
+               <label for="{{field.field_uuid}}-non_applicable">Non Applicable</label>
+             </div>
+        </fieldset>
+
+       
+       </td>
+   </tr>
+   {% endfor %}
+   <tr><td></td><td></td><td>&nbsp;</td></tr>
+   <tr class="field_entete"><td>BILAN CONTROLE</td><td></td><td>&nbsp;</td></tr>
+   
+   <tr><td></td><td></td><td>
+
+      <fieldset>
+         <legend><b>BILAN DU CONTROLE : </b></legend>
+
+         <div style="display:none">
+            <input type="radio" id="controle-non_saisi" name="controle-status" value="non_saisi"
+            {% if (controle.controle_status.value == 0) %}
+               checked
+           {% endif %}
+           >  
+            <label for="controle-non_saisi">Non Saisi</label>
+         </div>
+
+         <div>
+           <input type="radio" id="controle-en_cours" name="controle-status" value="en_cours"
+           {% if (controle.controle_status.value == 1) %}
+               checked
+           {% endif %}
+           >  
+           <label for="controle-en_cours">En cours</label>
+         </div>
+     
+         <div>
+           <input type="radio" id="controle-accepte" name="controle-status" value="accepte"
+           {% if (controle.controle_status.value == 2) %}
+           checked
+            {% endif %}
+            >  
+           <label for="controle-accepté">Accepté</label>
+         </div>
+     
+         <div>
+           <input type="radio" id="controle-refuse" name="controle-status" value="refuse"
+           {% if (controle.controle_status.value == 3) %}
+           checked
+            {% endif %}
+            >  
+          
+           <label for="controle-refuse">Refusé</label>
+         </div>
+         <div>
+            <input type="radio" id="controle-a_refaire" name="controle-status" value="a_refaire"
+            {% if (controle.controle_status.value == 4) %}
+            checked
+             {% endif %}
+             >  
+ 
+            <label for="controle-a_refaire">A refaire</label>
+          </div>
+          <div>
+            <input type="radio" id="controle-non_applicable" name="controle-status" value="non_applicable"
+            {% if (controle.controle_status.value == 5) %}
+            checked
+             {% endif %}
+             >  
+ 
+            <label for="controle-non_applicable">Non applicable</label>
+          </div>
+          <br /><br />
+          <textarea name="controle-commentaires" cols=30 rows=3>{{controle.commentaires}}</textarea>
+     </fieldset>
+   </td></tr>
+   </table>
+
+   <input style="float: right;margin: 20px;font-size: 20px;" type="submit" value="Enregistrer">
+</form>
+{% endblock %}
+
+{% block title %}{{geste.beneficiaire.beneficiaire_name}} : {{geste.geste_name}}{% endblock %}
