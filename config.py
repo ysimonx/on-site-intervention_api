@@ -31,5 +31,5 @@ config = {
     'testing': TestingConfig,
     'production': ProductionConfig,
     'default': DevelopmentConfig,
-    'upload_dir': '/Users/ysimonx/Developpement/renovadmin-api/app/static/photos'
+    'upload_dir': '/Users/ysimonx/Developpement/api_intervention_on_site/app/static/photos'
 }

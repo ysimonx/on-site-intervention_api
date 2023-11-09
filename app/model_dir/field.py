@@ -11,7 +11,8 @@ class Field(db.Model, MyMixin):
     field_on_site_uuid          = db.Column(db.String(255), unique=True)
     field_data                  = db.Column(db.Text())
     field_data_md5              = db.Column(db.String(32))
-    report_id                   = db.Column(db.String(36),  db.ForeignKey("reports.id"))
+    report_on_site_uuid         = db.Column(db.String(36), index=True)
+    report_id                   = db.Column(db.String(36), db.ForeignKey("reports.id"), nullable=True)
     average_latitude            = db.Column(db.Float)
     average_longitude           = db.Column(db.Float)
     

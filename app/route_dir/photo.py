@@ -19,7 +19,7 @@ import piexif
 from fractions import Fraction
 
 
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'jpg', 'jpeg'}
 
 # Setup upload folder
 UPLOAD_FOLDER = config["upload_dir"]
@@ -147,32 +147,22 @@ def create_photo():
        
     if not 'photo_on_site_uuid' in request.form:
         abort(400,"miss photo_on_site_uuid parameter")
-       
-    file = request.files['file']
-    filename = secure_filename(file.filename)
-    print(filename)  
-    print(get_extension(filename))
+    
     photo_on_site_uuid = request.form.get('photo_on_site_uuid')
-    
     photo= Photo.query.filter(Photo.photo_on_site_uuid == photo_on_site_uuid).first()
-    
-    print(photo)
     if photo is not None:
         print("photo already uploaded")
         abort(400,"photo already uploaded")
     
+    file = request.files['file']
+    filename = secure_filename(file.filename)
     latitude = request.form.get('latitude')
     longitude = request.form.get('longitude')
-    
     field_on_site_uuid = request.form.get('field_on_site_uuid')
     report_on_site_uuid = request.form.get('report_on_site_uuid')
     intervention_on_site_uuid = request.form.get('intervention_on_site_uuid')
-    
     newfilename = photo_on_site_uuid+get_extension(filename)
-    
     file.save(os.path.join(UPLOAD_FOLDER, newfilename))
-    
-    
     add_geolocation(os.path.join(UPLOAD_FOLDER, newfilename), float(latitude), float(longitude))
     
     

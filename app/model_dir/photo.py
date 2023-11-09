@@ -24,24 +24,24 @@ class Photo(db.Model, MyMixin):
     
     def to_json(self):
         return {
-            'id':           self.id,
-            '_internal' :   self.get_internal(),
-            'photo_on_site_uuid':   self.photo_on_site_uuid,
-            'field_on_site_uuid':  self.field_on_site_uuid,
-            'report_on_site_uuid':  self.report_on_site_uuid,
-            'intervention_on_site_uuid': self.intervention_on_site_uuid,
-            'filename':     self.filename
+            'id':                           self.id,
+            '_internal' :                   self.get_internal(),
+            'photo_on_site_uuid':           self.photo_on_site_uuid,
+            'field_on_site_uuid':           self.field_on_site_uuid,
+            'report_on_site_uuid':          self.report_on_site_uuid,
+            'intervention_on_site_uuid':    self.intervention_on_site_uuid,
+            'filename':                     self.filename
         }
         
     def to_json_light(self):
         return {
-            'id':           self.id,
-            '_internal' :   self.get_internal(),
-            'photo_on_site_uuid':   self.photo_on_site_uuid,
-            'field_on_site_uuid':  self.field_on_site_uuid,
-            'report_on_site_uuid':  self.report_on_site_uuid,
-            'intervention_on_site_uuid': self.intervention_on_site_uuid,
-            'filename':     self.filename
+            'id':                           self.id,
+            '_internal' :                   self.get_internal(),
+            'photo_on_site_uuid':           self.photo_on_site_uuid,
+            'field_on_site_uuid':           self.field_on_site_uuid,
+            'report_on_site_uuid':          self.report_on_site_uuid,
+            'intervention_on_site_uuid':    self.intervention_on_site_uuid,
+            'filename':                     self.filename
         }
 
 
