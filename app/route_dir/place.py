@@ -19,7 +19,7 @@ import cv2
 
 
 @app_file_place.route("/place", methods=["GET"])
-def get_placex():
+def get_places():
     placex = Place.query.all()
     return jsonify([item.to_json() for item in placex])
 

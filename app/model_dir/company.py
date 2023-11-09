@@ -6,31 +6,28 @@ from sqlalchemy.orm import declarative_base, relationship, backref
 class Company(db.Model, MyMixin):
     __tablename__ = 'companies'
    
-    name = db.Column(db.String(255), unique=True, nullable=False)
-    
-
     users   = relationship("User",   
-                                cascade="all, delete", 
-                                backref=backref("users",lazy="joined")
-                                )
+                            cascade="all, delete", 
+                            backref=backref("users",lazy="joined")
+                            )
     
     def to_json(self):
         return {
-            'id': self.id,
-            '_internal' : self.get_internal(),
-            'name': self.name,
+            'id':               self.id,
+            '_internal' :       self.get_internal(),
+            'name':     self.name,
             'users':  [{"user": item.to_json_light()} for item in self.users] 
         }
 
     def to_json_light(self):
         return {
-            'id': self.id,
-            'name': self.name
+            'id':               self.id,
+            'name':     self.name
         }
         
     def to_json_anonymous(self):
         return {
-            'id': self.id,
+            'id':               self.id,
         }
 
 

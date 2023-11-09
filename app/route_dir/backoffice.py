@@ -15,7 +15,6 @@ from ..model_dir.field import Field
 from ..model_dir.field_histo import FieldHisto, dict_controle_field, dict_controle_field_for_export
 from ..model_dir.user import User
 from ..model_dir.company import Company
-from ..model_dir.controle import Controle, dict_controle, dict_EnumInverse
 
 from flask import jsonify, request, abort, send_from_directory
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -113,7 +112,7 @@ def get_interventions_details_backoffice():
             dict_intervention_controle_field[controle_name]=dict_controle_field_for_export[0] # default value : non saisi
 
             for field in fields:
-                if (field.field_name == controle_name):
+                if (field.name == controle_name):
                     # print(field.field_uuid)
                     for field_histo in fields_histo:
                         if field.field_uuid == field_histo.field_uuid:
@@ -246,11 +245,11 @@ def create_or_update_company():
     if "company_id" in request.form:
         print("update")
         company = getByIdOrByName(obj=Company, id=request.form.get("company_id"))
-        last_name = company.name
+        lastcompany_name = company.name
         company.name = request.form.get("company_name").lower()
         db.session.add(company)
         db.session.commit()
-        return redirect("/backoffice/v1/companies?message=société%20modifiée%20"+last_name.upper()+"%20en%20"+company.name.upper())
+        return redirect("/backoffice/v1/companies?message=société%20modifiée%20"+lastcompany_name.upper()+"%20en%20"+company.name.upper())
         
     new_company = request.form.get("new_company").lower()
     company = getByIdOrByName(obj=Company, id=new_company)

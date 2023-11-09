@@ -15,11 +15,11 @@ from .route_dir.user import app_file_user
 from .route_dir.company import app_file_company
 from .route_dir.photo import app_file_photo
 from .route_dir.intervention import app_file_intervention
+from .route_dir.type_intervention import app_file_type_intervention
 from .route_dir.place import app_file_place
 from .route_dir.formulaire import app_file_formulaire
 from .route_dir.field import app_file_field
 from .route_dir.field_histo import app_file_field_histo
-from .route_dir.controle import app_file_controle
 
 from .route_dir.backoffice import app_file_backoffice
 
@@ -61,7 +61,6 @@ app.register_blueprint(app_file_intervention,          url_prefix=url_prefix)
 app.register_blueprint(app_file_formulaire,     url_prefix=url_prefix)
 app.register_blueprint(app_file_field,      url_prefix=url_prefix)
 app.register_blueprint(app_file_field_histo,      url_prefix=url_prefix)
-app.register_blueprint(app_file_controle    , url_prefix=url_prefix)
 
 url_prefix_backoffice = "/backoffice/v1"
 app.register_blueprint(app_file_backoffice, url_prefix=url_prefix_backoffice)

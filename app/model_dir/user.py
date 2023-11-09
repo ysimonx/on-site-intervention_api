@@ -17,31 +17,31 @@ class User(db.Model, MyMixin):
 
     def to_json(self):
         return {
-            'id': self.id,
-            '_internal' : self.get_internal(),
-            'email': self.email,
-            'password': self.password,
-            'company_id': self.company_id,
-            'firstname': self.firstname,
-            'lastname': self.lastname,
-            'company': self.company.to_json_light()
+            'id':           self.id,
+            '_internal' :   self.get_internal(),
+            'email':        self.email,
+            'password':     self.password,
+            'company_id':   self.company_id,
+            'firstname':    self.firstname,
+            'lastname':     self.lastname,
+            'company':      self.company.to_json_light()
             
         }
 
     def to_json_light(self):
         return {
-            'id': self.id,
-            'email': self.email,
-            'company_id': self.company_id,
-            'firstname': self.firstname,
-            'lastname': self.lastname,
-            'company': self.company.to_json_light()
+            'id':           self.id,
+            'email':        self.email,
+            'company_id':   self.company_id,
+            'firstname':    self.firstname,
+            'lastname':     self.lastname,
+            'company':      self.company.to_json_light()
             
         }
         
     def to_json_anonymous(self):
         return {
-            'id': self.id,
+            'id':           self.id,
         }
 
 

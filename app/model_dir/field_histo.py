@@ -36,7 +36,6 @@ class FieldHisto(db.Model, MyMixin):
     __tablename__ = 'fields_histo'
     
     field_uuid= db.Column(db.String(255),index=True)
-    field_name = db.Column(db.String(255))
     field_data = db.Column(db.Text())
     field_data_md5 = db.Column(db.String(32), index=True)
     intervention_uuid = db.Column(db.String(255), db.ForeignKey("interventions.intervention_uuid"))
@@ -48,9 +47,9 @@ class FieldHisto(db.Model, MyMixin):
     def to_json(self):
         return {
             'id': self.id,
+            'name': self.name,
             '_internal' : self.get_internal(),
             'field_uuid': self.field_uuid,
-            'field_name': self.field_name,
             'field_data': json.loads(self.field_data),
             'field_data_md5': self.field_data_md5,
             'formulaire_id': self.formulaire_id,
@@ -64,8 +63,8 @@ class FieldHisto(db.Model, MyMixin):
     def to_json_light(self):
         return {
             'id': self.id,
+            'name': self.name,
             'field_uuid': self.field_uuid,
-            'field_name': self.field_name,
             'field_data': json.loads(self.field_data),
             'field_data_md5': self.field_data_md5,
             'formulaire_id': self.formulaire_id,

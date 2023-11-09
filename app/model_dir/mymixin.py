@@ -14,10 +14,12 @@ def formatted_date_iso(date):
     
 
 class MyMixin(object):
-    id = db.Column(db.String(36), primary_key=True, default=uuid.uuid4)
-    time_created = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
-    time_updated = db.Column(db.DateTime(timezone=True), onupdate=db.func.now())
-    owner_user_id = db.Column(db.String(255), default="")
+    id              = db.Column(db.String(36), primary_key=True, default=uuid.uuid4)
+    name            = db.Column(db.String(255), index=True)
+
+    time_created    = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
+    time_updated    = db.Column(db.DateTime(timezone=True), onupdate=db.func.now())
+    owner_user_id   = db.Column(db.String(255), default="")
 
     def map_owner(mapper, connect, target):
         verify_jwt_in_request(optional=True)
@@ -33,7 +35,7 @@ class MyMixin(object):
                 
                 'time_created_utc': formatted_date_iso(self.time_created),
                 'time_updated_utc': formatted_date_iso(self.time_updated),
-                'owner_user_id': self.owner_user_id
+                'owner_user_id':    self.owner_user_id
             }
         
         

@@ -11,7 +11,6 @@ from ..model_dir.place import Place
 from ..model_dir.formulaire import Formulaire
 from ..model_dir.field import Field
 from ..model_dir.field_histo import FieldHisto
-from ..model_dir.controle import Controle
 from flask import jsonify, request, abort, send_from_directory
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from werkzeug.utils import secure_filename
@@ -44,7 +43,7 @@ def create_intervention():
     place = Place.query.filter(Place.place_uuid == place_uuid).first()
     
     if place is None:
-        place = Place(place_uuid = place_uuid, place_name = place_name )
+        place = Place(place_uuid = place_uuid, name = place_name )
         db.session.add(place)
         db.session.commit()  
          
@@ -53,7 +52,7 @@ def create_intervention():
     intervention= Intervention.query.filter(Intervention.intervention_uuid == intervention_uuid).first()
     if intervention is None:
         intervention = Intervention(intervention_uuid = intervention_uuid,
-                      intervention_name = intervention_name, 
+                      name = intervention_name, 
                       intervention_data_md5 = md5Intervention,  
                       place_id = place.id)
         db.session.add(intervention)
@@ -92,7 +91,7 @@ def create_intervention():
             print("creation formulaire")
             formulaire = Formulaire(formulaire_uuid = formulaire_uuid,
                                     intervention_id = intervention.id,
-                                    formulaire_name = formulaire_name,
+                                    name = formulaire_name,
                                     formulaire_data = json.dumps(formulaire_json),
                                     formulaire_data_md5 = md5,
                                     average_latitude = average_latitude,
@@ -122,7 +121,7 @@ def create_intervention():
                 print("creation field")
                 
                 field=Field(field_uuid = field_uuid, 
-                            field_name=field_name, 
+                            name=field_name, 
                             field_data=json.dumps(field_json), 
                             intervention_uuid= intervention_uuid,
                             field_data_md5=md5)
@@ -145,7 +144,7 @@ def create_intervention():
                       field_uuid = field.field_uuid,
                       field_data = field.field_data,
                       field_data_md5 = md5,
-                      field_name= field.field_name,
+                      name = field.field_name,
                       intervention_uuid=intervention_uuid,
                       controle_status='non_saisi' # TODO : dictionnaire des valeurs possibles
                   )

@@ -34,7 +34,7 @@ def create_field_histo():
             
     field_histo=FieldHisto(field_uuid = field_uuid, 
                            intervention_uuid=intervention_uuid,
-                            field_name=field_name, 
+                            name=field_name, 
                             field_data=json.dumps(field_json), 
                             field_data_md5=md5)
 
