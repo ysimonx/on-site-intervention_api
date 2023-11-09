@@ -22,7 +22,7 @@ class Company(db.Model, MyMixin):
     def to_json_light(self):
         return {
             'id':               self.id,
-            'name':     self.name
+            'name':             self.name
         }
         
     def to_json_anonymous(self):

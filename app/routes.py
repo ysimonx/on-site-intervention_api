@@ -6,7 +6,7 @@ from app.model_dir.company import Company
 from app.model_dir.photo import Photo
 from app.model_dir.intervention import Intervention
 from app.model_dir.place import Place
-from app.model_dir.formulaire import Formulaire
+from app.model_dir.report import Report
 
 from . import db, getByIdOrEmail, getByIdOrByName
 from . import create_app
@@ -17,7 +17,7 @@ from .route_dir.photo import app_file_photo
 from .route_dir.intervention import app_file_intervention
 from .route_dir.type_intervention import app_file_type_intervention
 from .route_dir.place import app_file_place
-from .route_dir.formulaire import app_file_formulaire
+from .route_dir.report import app_file_report
 from .route_dir.field import app_file_field
 from .route_dir.field_histo import app_file_field_histo
 
@@ -58,7 +58,7 @@ app.register_blueprint(app_file_company,        url_prefix=url_prefix)
 app.register_blueprint(app_file_photo,          url_prefix=url_prefix)
 app.register_blueprint(app_file_place,   url_prefix=url_prefix)
 app.register_blueprint(app_file_intervention,          url_prefix=url_prefix)
-app.register_blueprint(app_file_formulaire,     url_prefix=url_prefix)
+app.register_blueprint(app_file_report,     url_prefix=url_prefix)
 app.register_blueprint(app_file_field,      url_prefix=url_prefix)
 app.register_blueprint(app_file_field_histo,      url_prefix=url_prefix)
 

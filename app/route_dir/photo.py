@@ -127,8 +127,8 @@ def create_photo():
     if request.files.get("file") is None:
         abort(400, "miss file parameter")
         
-    if not 'photo_uuid' in request.form:
-        abort(400, "miss photo_uuid parameter")
+    if not 'photo_on_site_uuid' in request.form:
+        abort(400, "miss photo_on_site_uuid parameter")
         
     if not 'latitude' in request.form:
         abort(400,"miss latitude parameter")
@@ -136,19 +136,25 @@ def create_photo():
     if not 'longitude' in request.form:
         abort(400,"miss longitude parameter")
 
-    if not 'intervention_uuid' in request.form:
-        abort(400,"miss intervention_uuid parameter")
+    if not 'intervention_on_site_uuid' in request.form:
+        abort(400,"miss intervention_on_site_uuid parameter")
+
+    if not 'report_on_site_uuid' in request.form:
+        abort(400,"miss report_on_site_uuid parameter")
        
-    if not 'field_uuid' in request.form:
-        abort(400,"miss field_uuid parameter")
+    if not 'field_on_site_uuid' in request.form:
+        abort(400,"miss field_on_site_uuid parameter")
+       
+    if not 'photo_on_site_uuid' in request.form:
+        abort(400,"miss photo_on_site_uuid parameter")
        
     file = request.files['file']
     filename = secure_filename(file.filename)
     print(filename)  
     print(get_extension(filename))
-    photo_uuid = request.form.get('photo_uuid')
+    photo_on_site_uuid = request.form.get('photo_on_site_uuid')
     
-    photo= Photo.query.filter(Photo.photo_uuid == photo_uuid).first()
+    photo= Photo.query.filter(Photo.photo_on_site_uuid == photo_on_site_uuid).first()
     
     print(photo)
     if photo is not None:
@@ -158,10 +164,11 @@ def create_photo():
     latitude = request.form.get('latitude')
     longitude = request.form.get('longitude')
     
-    intervention_uuid = request.form.get('intervention_uuid')
-    field_uuid = request.form.get('field_uuid')
+    field_on_site_uuid = request.form.get('field_on_site_uuid')
+    report_on_site_uuid = request.form.get('report_on_site_uuid')
+    intervention_on_site_uuid = request.form.get('intervention_on_site_uuid')
     
-    newfilename = photo_uuid+get_extension(filename)
+    newfilename = photo_on_site_uuid+get_extension(filename)
     
     file.save(os.path.join(UPLOAD_FOLDER, newfilename))
     
@@ -169,7 +176,7 @@ def create_photo():
     add_geolocation(os.path.join(UPLOAD_FOLDER, newfilename), float(latitude), float(longitude))
     
     
-    photo = Photo(  photo_uuid=photo_uuid, latitude=latitude, longitude=longitude, filename= newfilename, intervention_uuid = intervention_uuid, field_uuid=field_uuid )
+    photo = Photo(  photo_on_site_uuid=photo_on_site_uuid, latitude=latitude, longitude=longitude, filename= newfilename, field_on_site_uuid=field_on_site_uuid, report_on_site_uuid=report_on_site_uuid, intervention_on_site_uuid=intervention_on_site_uuid )
     db.session.add(photo)
     db.session.commit() 
     return jsonify(photo.to_json()), 201

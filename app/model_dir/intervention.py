@@ -8,7 +8,7 @@ class Intervention(db.Model, MyMixin):
     
     __tablename__ = 'interventions'
     
-    intervention_uuid       = db.Column(db.String(255), unique=True)
+    intervention_on_site_uuid = db.Column(db.String(255), index=True)
     intervention_data_md5   = db.Column(db.String(32))
     average_latitude        = db.Column(db.Float);
     average_longitude       = db.Column(db.Float);
@@ -16,18 +16,10 @@ class Intervention(db.Model, MyMixin):
     type_intervention_id    = db.Column(db.String(36), db.ForeignKey("types_interventions.id"));
     
     place                   = relationship("Place",                    viewonly=True, back_populates="interventions")
-    
     type_intervention       = relationship("TypeIntervention",         viewonly=True, back_populates="interventions")
-    
-    formulaires             = relationship("Formulaire",   
+    reports                 = relationship("Report",   
                                                 cascade="all, delete", 
-                                                backref=backref("formulaires",lazy="joined"))
-    fields                  = relationship("Field",   
-                                                cascade="all, delete", 
-                                                backref=backref("fields",lazy="joined"))
-    fields_histo            = relationship("FieldHisto",   
-                                                cascade="all, delete", 
-                                                backref=backref("fields_histo",lazy="joined"))
+                                                backref=backref("reports",lazy="joined"))
     
     
     def to_json(self):
@@ -35,14 +27,12 @@ class Intervention(db.Model, MyMixin):
             'id':                           self.id,
             'name':                         self.name,
             '_internal' :                   self.get_internal(),
-            'intervention_uuid':            self.intervention_uuid,
+            'intervention_on_site_uuid':    self.intervention_on_site_uuid,
             'intervention_data_md5':        self.intervention_data_md5,
             'place':                        self.place.to_json_light(),
             'average_latitude':             self.average_latitude,
             'average_longitude':            self.average_longitude,
-            'formulaires':  [{"formulaire": item.to_json_light()} for item in self.formulaires],    
-            'fields':       [{"field":      item.to_json_light()} for item in self.fields],
-            'fields_histo': [{"field":      item.to_json_light()} for item in self.fields_histo],  
+            'reports':  [{"reports": item.to_json_light()} for item in self.reports],    
         }
         
     def to_json_light(self):

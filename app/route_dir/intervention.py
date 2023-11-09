@@ -8,7 +8,7 @@ from config import config
 
 from ..model_dir.intervention import Intervention
 from ..model_dir.place import Place
-from ..model_dir.formulaire import Formulaire
+from ..model_dir.report import Report
 from ..model_dir.field import Field
 from ..model_dir.field_histo import FieldHisto
 from flask import jsonify, request, abort, send_from_directory
@@ -64,17 +64,17 @@ def create_intervention():
     intervention_average_longitude = 0;
     intervention_average_latitude = 0;
     
-    formulaires= request.json.get('formulaires') 
-    # TODO : JL a envoyé un formulaire des 2 formulaires avec aucune photo ... du coup, l'average est = 0.0 et 0.0 et du coup, la moyenne de 2 formulaires n'est pas bonne
+    reports= request.json.get('reports') 
+    # TODO : JL a envoyé un formulaire des 2 reports avec aucune photo ... du coup, l'average est = 0.0 et 0.0 et du coup, la moyenne de 2 reports n'est pas bonne
     
-    print(len(formulaires))
+    print(len(reports))
     nb_formulaire_with_averagelocation=0
-    for formulaire_json in formulaires:
+    for formulaire_json in reports:
         print(formulaire_json)
         print(formulaire_json.get("formulaire_uuid"))
         formulaire_uuid = formulaire_json.get("formulaire_uuid");
         formulaire_name = formulaire_json.get("formulaire_name");
-        formulaire = Formulaire.query.filter(Formulaire.formulaire_uuid == formulaire_uuid).first()
+        formulaire = Report.query.filter(Report.formulaire_uuid == formulaire_uuid).first()
         average_location = formulaire_json.get("average_location");
         average_latitude = average_location.get("latitude")
         average_longitude = average_location.get("longitude")
@@ -89,7 +89,7 @@ def create_intervention():
             
         if formulaire is None:
             print("creation formulaire")
-            formulaire = Formulaire(formulaire_uuid = formulaire_uuid,
+            formulaire = Report(formulaire_uuid = formulaire_uuid,
                                     intervention_id = intervention.id,
                                     name = formulaire_name,
                                     formulaire_data = json.dumps(formulaire_json),
@@ -137,7 +137,7 @@ def create_intervention():
                 
             # si la valeur de ce champ n'a pas encore été archivée, je l'archive ! 
             # (field_uuid et field_data_md5)
-            field_histo = FieldHisto.query.filter(FieldHisto.field_uuid == field.field_uuid).filter(FieldHisto.field_data_md5 == md5).first()
+            field_histo = FieldHisto.query.filter(FieldHisto.field_on_site_uuid == field.field_uuid).filter(FieldHisto.field_data_md5 == md5).first()
             if field_histo is None:
                   print("field_histo is none", field.field_uuid, md5 )
                   field_histo = FieldHisto(

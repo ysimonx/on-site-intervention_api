@@ -10,7 +10,7 @@ from config import config
 from ..model_dir.intervention import Intervention
 from ..model_dir.photo import Photo
 from ..model_dir.place import Place
-from ..model_dir.formulaire import Formulaire
+from ..model_dir.report import Report
 from ..model_dir.field import Field
 from ..model_dir.field_histo import FieldHisto, dict_controle_field, dict_controle_field_for_export
 from ..model_dir.user import User
@@ -127,7 +127,7 @@ def get_interventions_details_backoffice():
 
 @app_file_backoffice.route("/field/histo_by_field_uuid/<field_uuid>", methods=["GET"])
 def get_field_histo_by_uuid(field_uuid):
-    fields_histo = FieldHisto.query.filter(FieldHisto.field_uuid == field_uuid).all()
+    fields_histo = FieldHisto.query.filter(FieldHisto.field_on_site_uuid == field_uuid).all()
     print(fields_histo)
     fields=[]
     for field_histo in fields_histo:
@@ -326,7 +326,7 @@ def post_controle_backoffice():
         # ce qui signifie que le controleur donne un status pour un champ donné pour un contenu (question ET reponses/photos/commentaires donnés)
         if (k.startswith("field|")): 
             field_entete, field_uuid, md5 = k.split("|")
-            field_histo = FieldHisto.query.filter(FieldHisto.field_uuid == field_uuid).filter(FieldHisto.field_data_md5 == md5).first()
+            field_histo = FieldHisto.query.filter(FieldHisto.field_on_site_uuid == field_uuid).filter(FieldHisto.field_data_md5 == md5).first()
             field_histo.controle_status=v
             db.session.add(field_histo)
             db.session.commit()
@@ -364,7 +364,7 @@ def get_intervention_backoffice(id):
     dict_field_histo={}
     
     dict_field_histo_status = {}
-    fields_historiques = FieldHisto.query.filter(FieldHisto.intervention_uuid == intervention.intervention_uuid).all()
+    fields_historiques = FieldHisto.query.filter(FieldHisto.intervention_on_site_uuid == intervention.intervention_uuid).all()
     for field_historique in fields_historiques:
         l=[]
         if field_historique.field_uuid in dict_field_histo:
@@ -411,14 +411,14 @@ def get_intervention_backoffice(id):
             
     
     # re ordering des champs pour privilégier le formulaure avant-depose avant celui de l'installation
-    formulaires=intervention.formulaires
+    reports=intervention.reports
     fields=[]
-    ordre_formulaires=['Avant dépose','Installation']
-    for ordre_formulaire in ordre_formulaires:
+    ordre_reports=['Avant dépose','Installation']
+    for ordre_report in ordre_reports:
         
-        for formulaire in formulaires:
-            if formulaire.formulaire_name == ordre_formulaire:
-                formulaire_data = formulaire.formulaire_data
+        for report in reports:
+            if report.formulaire_name == ordre_report:
+                formulaire_data = report.formulaire_data
                 formulaire_json=json.loads(formulaire_data)
                 fields_json=formulaire_json["fields"]
                 for field_json in fields_json:
@@ -432,7 +432,6 @@ def get_intervention_backoffice(id):
     return render_template('intervention.html', message=message, 
                                          intervention=intervention,
                                          controle=controle,
-                                         dict_controle=dict_controle,
                                          dict_controle_field=dict_controle_field,
                                          fields=fields,
                                          dict_field_md5=dict_field_md5,

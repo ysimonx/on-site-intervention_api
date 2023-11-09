@@ -6,7 +6,7 @@ import os
 from config import config
 
 from ..model_dir.field import Field
-from ..model_dir.formulaire import Formulaire
+from ..model_dir.report import Report
 from flask import jsonify, request, abort, send_from_directory
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from werkzeug.utils import secure_filename
