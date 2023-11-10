@@ -43,7 +43,6 @@ def create_intervention():
     place_name = request.json.get('place_name')
     
     place = Place.query.filter(Place.place_uuid == place_uuid).first()
-    
     if place is None:
         place = Place(place_uuid = place_uuid, name = place_name )
         db.session.add(place)
@@ -153,18 +152,6 @@ def create_intervention():
                   db.session.add(field_histo)
                   db.session.commit()  
           
-
-            controle = Controle.query.filter(Controle.intervention_uuid == intervention_uuid).first()
-            if controle is None:
-                controle=Controle(intervention_uuid = intervention_uuid, controle_status='non_saisi')
-                db.session.add(controle)
-                db.session.commit()
-            else:
-                controle.controle_status='a_refaire' # il s'agit d'un nouvel envoi 
-                                                     # de la part du pro : controle à refaire
-                controle.commentaires=''
-                db.session.add(controle)
-                db.session.commit()
                 
     if nb_formulaire_with_averagelocation > 0:
         intervention.average_latitude = intervention_average_latitude / nb_formulaire_with_averagelocation
@@ -174,7 +161,6 @@ def create_intervention():
         intervention.average_longitude = 0.0 
         
     db.session.commit()  
-    
     return jsonify({ "intervention_id":intervention.id}), 201
 
 
@@ -184,8 +170,6 @@ def get_intervention(id):
     intervention = Intervention.query.get(id)
     if intervention is None:
         abort(make_response(jsonify(error="intervention is not found"), 404))
-
-
     return jsonify(intervention.to_json())
 
 @app_file_intervention.route("/intervention/<id>", methods=["DELETE"])

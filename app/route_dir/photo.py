@@ -111,7 +111,6 @@ def add_geolocation(image_path, latitude, longitude):
 
 
 
-
 @app_file_photo.route("/photo", methods=["GET"])
 def get_photos():
     photos = Photo.query.all()
@@ -149,11 +148,10 @@ def create_photo():
         abort(make_response(jsonify(error="missing photo_on_site_uuid parameter"), 400))
     
     photo_on_site_uuid = request.form.get('photo_on_site_uuid')
-    photo= Photo.query.filter(Photo.photo_on_site_uuid == photo_on_site_uuid).first()
+    photo = Photo.query.filter(Photo.photo_on_site_uuid == photo_on_site_uuid).first()
     if photo is not None:
         print("photo already uploaded")
         abort(make_response(jsonify(error="photo already uploaded"), 400))
-    
     
     file = request.files['file']
     filename = secure_filename(file.filename)
@@ -198,7 +196,6 @@ def get_ready():
     return jsonify(message="ready");
     
     
-
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
