@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session,abort, current_app
+from flask import Blueprint, render_template, session,abort, current_app, make_response
 
 import uuid
 import numpy
@@ -24,7 +24,8 @@ import cv2
 def create_field_histo():
     if not request.json:
         print("not json")
-        abort(400)
+        abort(make_response(jsonify(error="missing json body"), 400))
+
 
     field_uuid=request.json.get("field_uuid")
     intervention_uuid=request.json.get("intervention_uuid")
@@ -53,7 +54,7 @@ def get_fields_histo():
 def get_field_histo(id):
     field_histo = FieldHisto.query.get(id)
     if field_histo is None:
-        abort(404, "field_histo is not found")
+        abort(make_response(jsonify(error="field_histo is not found"), 404))
     return jsonify(field_histo.to_json())
 
 @app_file_field_histo.route("/field_histo/<id>", methods=["DELETE"])
@@ -61,7 +62,7 @@ def get_field_histo(id):
 def delete_field(id):
     field_histo = FieldHisto.query.get(id)
     if field_histo is None:
-        abort(404, "field_histo is not found")
+        abort(make_response(jsonify(error="field_histo is not found"), 404))
     db.session.delete(field_histo)
     db.session.commit()
     return jsonify({'result': True, 'id': id})

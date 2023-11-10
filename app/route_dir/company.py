@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session,abort
+from flask import Blueprint, render_template, session,abort, make_response
 from ..model_dir.company import Company
 from flask import jsonify, request, abort
 from .. import db, getByIdOrEmail, getByIdOrByName
@@ -32,8 +32,12 @@ def get_company_list():
 def create_user():
     if not request.json:
         print("not json")
-        abort(400)
+        abort(make_response(jsonify(error="no json provided in request"), 400))
 
+    company_name = request.json.get('name')
+    if company_name is None:
+        abort(make_response(jsonify(error="missing company_name parameter"), 400))
+     
     company = Company(
         name=request.json.get('name')
     )

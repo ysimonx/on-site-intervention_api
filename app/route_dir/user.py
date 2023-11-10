@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session,abort
+from flask import Blueprint, render_template, session,abort, make_response
 from ..model_dir.user import User
 from ..model_dir.company import Company
 from flask import jsonify, request, abort
@@ -31,11 +31,12 @@ def login():
     user =    getByIdOrEmail(obj=User,  id=email)
     
     if user is None:
-        abort(401)
+        abort(make_response(jsonify(error="error login"), 401))
         
     result_check = user.check_password(password)
     if not result_check:
-        abort(401)
+        abort(make_response(jsonify(error="error login"), 401))
+        
     
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
@@ -55,11 +56,11 @@ def get_user_list():
 @app_file_user.route('/user', methods=['POST'])
 def create_user():
     if not request.json:
-        abort(400, "not json")
+        abort(make_response(jsonify(error="missing json body"), 400))
         
     company = getByIdOrByName(obj=Company, id=request.json.get('company'))
     if company is None:
-        abort(404, "company is not found")
+        abort(make_response(jsonify(error="company is not found"), 400))
 
     user = User(
         email=request.json.get('email'),

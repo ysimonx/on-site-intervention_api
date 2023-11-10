@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session,abort, current_app
+from flask import Blueprint, render_template, session,abort, current_app, make_response
 
 import uuid
 import hashlib
@@ -33,8 +33,10 @@ def get_interventions():
 def create_intervention():
     
     if not request.json:
-        abort(400, "not json")
-        
+        print("not json")
+        abort(make_response(jsonify(error="no json provided in request"), 400))
+
+
     intervention_uuid = request.json.get('intervention_uuid')
     intervention_name = request.json.get('intervention_name')
     place_uuid = request.json.get('place_uuid')
@@ -181,7 +183,9 @@ def create_intervention():
 def get_intervention(id):
     intervention = Intervention.query.get(id)
     if intervention is None:
-        abort(404, "intervention is not found")
+        abort(make_response(jsonify(error="intervention is not found"), 404))
+
+
     return jsonify(intervention.to_json())
 
 @app_file_intervention.route("/intervention/<id>", methods=["DELETE"])
@@ -189,7 +193,7 @@ def get_intervention(id):
 def delete_intervention(id):
     intervention = Intervention.query.get(id)
     if intervention is None:
-        abort(404, "intervention is not found")
+        abort(make_response(jsonify(error="intervention is not found"), 404))
     db.session.delete(intervention)
     db.session.commit()
     return jsonify({'result': True, 'id': id})

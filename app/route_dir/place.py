@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session,abort, current_app
+from flask import Blueprint, render_template, session,abort, current_app, make_response
 
 import uuid
 import numpy
@@ -35,7 +35,7 @@ def create_place():
 def get_place(id):
     place = Place.query.get(id)
     if place is None:
-        abort(404, "place is not found")
+        abort(make_response(jsonify(error="place is not found"), 404))
     return jsonify(place.to_json())
 
 @app_file_place.route("/place/<id>", methods=["DELETE"])
@@ -43,7 +43,7 @@ def get_place(id):
 def delete_place(id):
     place = Place.query.get(id)
     if place is None:
-        abort(404, "place is not found")
+       abort(make_response(jsonify(error="place is not found"), 404))
     db.session.delete(place)
     db.session.commit()
     return jsonify({'result': True, 'id': id})

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, session,abort, current_app
+from flask import Blueprint, render_template, redirect, session,abort, current_app, make_response
 
 import uuid
 import hashlib
@@ -341,7 +341,8 @@ def get_intervention_backoffice(id):
     intervention = Intervention.query.get(id)
     
     if intervention is None:
-        abort(404, "intervention is not found")
+        abort(make_response(jsonify(error="intervention is not found"), 404))
+
     
     # le owner_user_id est celui qui a créé ce intervention
     owner_user_id = intervention.get_internal()["owner_user_id"]

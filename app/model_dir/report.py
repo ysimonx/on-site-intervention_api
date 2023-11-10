@@ -14,7 +14,7 @@ class Report(db.Model, MyMixin):
     report_data_md5     = db.Column(db.String(32))
     average_latitude    = db.Column(db.Float)
     average_longitude   = db.Column(db.Float)
-    intervention_uuid   = db.Column(db.String(255))
+    intervention_on_site_uuid   = db.Column(db.String(36))
    
 
     def to_json(self):
@@ -25,6 +25,7 @@ class Report(db.Model, MyMixin):
             'report_on_site_uuid':  self.report_on_site_uuid,
             'report_data':          self.report_data,
             'report_data_md5':      self.report_data_md5,
+            'intervention_on_site_uuid':      self.intervention_on_site_uuid,
             'intervention_id':      self.intervention_id,
             'average_latitude':     self.average_latitude,
             'average_longitude':    self.average_longitude,
@@ -38,6 +39,7 @@ class Report(db.Model, MyMixin):
             'report_on_site_uuid':  self.report_on_site_uuid,
             'report_data':          self.report_data,
             'report_data_md5':      self.report_data_md5,
+            'intervention_on_site_uuid':      self.intervention_on_site_uuid,
             'intervention_id':      self.intervention_id,
             'intervention_uuid':    self.intervention_uuid,
             'average_latitude':     self.average_latitude,

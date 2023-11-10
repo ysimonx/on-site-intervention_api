@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session,abort, current_app
+from flask import Blueprint, render_template, session,abort, current_app, make_response
 
 import uuid
 import numpy
@@ -125,34 +125,35 @@ def get_photos():
 def create_photo():
 
     if request.files.get("file") is None:
-        abort(400, "miss file parameter")
+        abort(make_response(jsonify(error="missing file parameter"), 400))
         
     if not 'photo_on_site_uuid' in request.form:
-        abort(400, "miss photo_on_site_uuid parameter")
-        
+        abort(make_response(jsonify(error="missing photo_on_site_uuid parameter"), 400))
+
     if not 'latitude' in request.form:
-        abort(400,"miss latitude parameter")
+        abort(make_response(jsonify(error="missing latitude parameter"), 400))
         
     if not 'longitude' in request.form:
-        abort(400,"miss longitude parameter")
+        abort(make_response(jsonify(error="missing longitude parameter"), 400))
 
     if not 'intervention_on_site_uuid' in request.form:
-        abort(400,"miss intervention_on_site_uuid parameter")
+        abort(make_response(jsonify(error="missing intervention_on_site_uuid parameter"), 400))
 
     if not 'report_on_site_uuid' in request.form:
-        abort(400,"miss report_on_site_uuid parameter")
+        abort(make_response(jsonify(error="missing report_on_site_uuid parameter"), 400))
        
     if not 'field_on_site_uuid' in request.form:
-        abort(400,"miss field_on_site_uuid parameter")
+        abort(make_response(jsonify(error="missing field_on_site_uuid parameter"), 400))
        
     if not 'photo_on_site_uuid' in request.form:
-        abort(400,"miss photo_on_site_uuid parameter")
+        abort(make_response(jsonify(error="missing photo_on_site_uuid parameter"), 400))
     
     photo_on_site_uuid = request.form.get('photo_on_site_uuid')
     photo= Photo.query.filter(Photo.photo_on_site_uuid == photo_on_site_uuid).first()
     if photo is not None:
         print("photo already uploaded")
-        abort(400,"photo already uploaded")
+        abort(make_response(jsonify(error="photo already uploaded"), 400))
+    
     
     file = request.files['file']
     filename = secure_filename(file.filename)
@@ -177,7 +178,8 @@ def create_photo():
 def get_photo(id):
     photo = Photo.query.get(id)
     if photo is None:
-        abort(404, "photo is not found")
+        abort(make_response(jsonify(error="photo is not found"), 404))
+
     return jsonify(photo.to_json_to_root())
 
 @app_file_photo.route("/photo/<id>", methods=["DELETE"])
@@ -185,7 +187,7 @@ def get_photo(id):
 def delete_photo(id):
     photo = Photo.query.get(id)
     if photo is None:
-        abort(404, "photo is not found")
+        abort(make_response(jsonify(error="photo is not found"), 404))
     db.session.delete(photo)
     db.session.commit()
     return jsonify({'result': True, 'id': id})

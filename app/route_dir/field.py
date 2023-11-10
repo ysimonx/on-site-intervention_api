@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session,abort, current_app
+from flask import Blueprint, render_template, session,abort, current_app, make_response
 
 import uuid
 import numpy
@@ -29,7 +29,7 @@ def get_fields():
 def get_field(id):
     field = Field.query.get(id)
     if field is None:
-        abort(404, "field is not found")
+        abort(make_response(jsonify(error="field is not found"), 404))
     return jsonify(field.to_json())
 
 @app_file_field.route("/field/<id>", methods=["DELETE"])
@@ -37,7 +37,7 @@ def get_field(id):
 def delete_field(id):
     field = Field.query.get(id)
     if field is None:
-        abort(404, "field is not found")
+        abort(make_response(jsonify(error="field is not found"), 404))
     db.session.delete(field)
     db.session.commit()
     return jsonify({'result': True, 'id': id})
@@ -48,15 +48,16 @@ def delete_field(id):
 def create_field():
     field_on_site_uuid = request.json.get("field_on_site_uuid", None)
     if field_on_site_uuid is None:
-        abort(400, "miss field_on_site_uuid parameter")
+        abort(make_response(jsonify(error="missing field_on_site_uuid parameter"), 400))
         
     field = Field.query.filter(Field.field_on_site_uuid == field_on_site_uuid).first()
     if field is not None:
-        abort(400, "miss field_on_site_uuid already created")
+        abort(make_response(jsonify(error="missing field_on_site_uuid already created"), 400))
+        
     
     field_data          = request.json.get("field_data", None)
     field_data_md5      = request.json.get("field_data_md5", None)
-    report_on_site_uuid = request.json.get("field_data_md5", None)
+    report_on_site_uuid = request.json.get("report_on_site_uuid", None)
     report_id           = request.json.get("report_id",None)
     average_latitude    = request.json.get("average_latitude", None)
     average_longitude   = request.json.get("average_longitude", None)
