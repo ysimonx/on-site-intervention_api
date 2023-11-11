@@ -32,9 +32,7 @@ class Thingsboard():
         
     def createAsset(self, instance):
     
-        print(instance.__class__.__name__)
-        print("- - - - - - - ")
- 
+        
         asset_profile=instance.__class__.__name__
         asset_name=instance.__class__.__name__ + "_" + instance.id
         
