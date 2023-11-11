@@ -4,6 +4,7 @@ from tb_rest_client.rest_client_ce import *
 from tb_rest_client.rest import ApiException
 
 import logging
+import os
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(levelname)s - %(module)s - %(lineno)d - %(message)s',
@@ -20,6 +21,13 @@ class Thingsboard():
     username = "yannick.simon+sandbox@kysoe.com"
     password = "sandbox"
 
+
+    def __init__(self):
+        self.url = os.getenv('TB_URL')
+        self.username = os.getenv('TB_TENANT_USER')
+        self.password = os.getenv('TB_TENANT_PASSWORD')
+        
+        
     def createAsset(self, asset_profile, asset_name):
     
         # Creating the REST client object with context manager to get auto token refresh
