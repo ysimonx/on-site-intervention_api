@@ -5,6 +5,8 @@ from tb_rest_client.rest import ApiException
 
 import logging
 import os
+from sqlalchemy import inspect
+
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(levelname)s - %(module)s - %(lineno)d - %(message)s',
@@ -28,8 +30,14 @@ class Thingsboard():
         self.password = os.getenv('TB_TENANT_PASSWORD')
         
         
-    def createAsset(self, asset_profile, asset_name):
+    def createAsset(self, instance):
     
+        print(instance.__class__.__name__)
+        print("- - - - - - - ")
+ 
+        asset_profile=instance.__class__.__name__
+        asset_name=instance.__class__.__name__ + "_" + instance.id
+        
         # Creating the REST client object with context manager to get auto token refresh
         with RestClientCE(base_url=self.url) as rest_client:
             try:
@@ -68,13 +76,21 @@ class Thingsboard():
                     asset = Asset(name=asset_name, asset_profile_id=asset_profile.id)
                     asset = rest_client.save_asset(asset)
                     logging.info("Asset was created")
-                    return asset
+                    
                 except ApiException as e:
                     logging.exception(e)
                     raise Exception(e)
             else:
                 raise Exception("asset creation failed")
 
+            dict_attributes={}
+            mapper = inspect(instance)
+            for column in mapper.attrs:
+                dict_attributes[column.key]=column.value
+        
+            rest_client.save_entity_attributes_v2(asset.id, "SERVER_SCOPE", dict_attributes  )
+            
+            return asset
  
 
 if __name__ == '__main__':

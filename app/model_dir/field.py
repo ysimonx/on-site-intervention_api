@@ -2,6 +2,8 @@ from .. import db
 from .mymixin import MyMixin
 
 from sqlalchemy.orm import declarative_base, relationship, backref
+from sqlalchemy import inspect
+
 import uuid
 
 

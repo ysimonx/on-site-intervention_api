@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, session,abort, current_app, make_response
 
+
 import uuid
 import numpy
 import os
@@ -77,7 +78,9 @@ def create_field():
     
     db.session.commit()
     
-    tb.createAsset(asset_profile="field", asset_name="field_" + field.id)
+    
+   
+    tb.createAsset(field)
 
     return jsonify({ "message":"ok"}), 201
 
