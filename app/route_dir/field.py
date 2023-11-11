@@ -10,12 +10,12 @@ from ..model_dir.report import Report
 from flask import jsonify, request, abort, send_from_directory
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from werkzeug.utils import secure_filename
+from ..thingsboard.connector_thingsboard import Thingsboard
 
 from .. import db,  getByIdOrByName, getByIdOrFilename
 app_file_field= Blueprint('field',__name__)
 
-import cv2
-
+tb=Thingsboard()
 
 
 @app_file_field.route("/field", methods=["GET"])
@@ -52,9 +52,9 @@ def create_field():
         
     field = Field.query.filter(Field.field_on_site_uuid == field_on_site_uuid).first()
     if field is not None:
-        abort(make_response(jsonify(error="missing field_on_site_uuid already created"), 400))
+        abort(make_response(jsonify(error="field_on_site_uuid already created"), 400))
         
-    
+    field_name          = request.json.get("name", None)
     field_data          = request.json.get("field_data", None)
     field_data_md5      = request.json.get("field_data_md5", None)
     report_on_site_uuid = request.json.get("report_on_site_uuid", None)
@@ -63,6 +63,7 @@ def create_field():
     average_longitude   = request.json.get("average_longitude", None)
     
     field = Field(
+        name=field_name,
         field_on_site_uuid=request.json.get('field_on_site_uuid'),
         report_id=report_id,
         field_data=field_data,
@@ -74,6 +75,9 @@ def create_field():
     
     db.session.add(field)
     db.session.commit()
+    
+    tb.createAsset(asset_profile="field", asset_name="field_" + field.id)
+
     return jsonify({ "message":"ok"}), 201
 
 
