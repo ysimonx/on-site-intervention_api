@@ -75,10 +75,7 @@ def create_field():
         )
     
     db.session.add(field)
-    
     db.session.commit()
-    
-    
    
     tb.createAsset(field)
 
