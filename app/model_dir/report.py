@@ -32,7 +32,7 @@ class Report(db.Model, MyMixin):
             'intervention_id':                self.intervention_id,
             'average_latitude':               self.average_latitude,
             'average_longitude':              self.average_longitude,
-            
+            'fields':  [{"field": item.to_json_light()} for item in self.fields] ,
         }
         
     def to_json_light(self):

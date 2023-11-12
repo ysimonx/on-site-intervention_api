@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, session,abort, current_app, make_response
 
-
+import json
+import jsonpickle
 import uuid
 import numpy
 import os
@@ -17,6 +18,8 @@ from ..thingsboard.connector_thingsboard import ThingsboardConnector
 from .. import db,  getByIdOrByName, getByIdOrFilename
 app_file_field= Blueprint('field',__name__)
 
+from sqlalchemy import inspect
+
 tb=ThingsboardConnector()
 
 
@@ -30,6 +33,7 @@ def get_fields():
 @jwt_required()
 def get_field(id):
     field = Field.query.get(id)
+    print(field.reports)
     if field is None:
         abort(make_response(jsonify(error="field is not found"), 404))
     return jsonify(field.to_json())

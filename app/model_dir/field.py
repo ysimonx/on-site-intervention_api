@@ -38,7 +38,9 @@ class Field(db.Model, MyMixin):
             'report_id':            self.report_id,
             'average_latitude':     self.average_latitude,
             'average_longitude':    self.average_longitude,
-            'photos':  [{"photo": item.to_json_light()} for item in self.photos] 
+            'photos':  [{"photo": item.to_json_light()} for item in self.photos] ,
+            'report':               self.reports.to_json()
+            
         }
         
     def to_json_light(self):
