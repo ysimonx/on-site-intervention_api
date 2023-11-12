@@ -45,6 +45,19 @@ def delete_field(id):
     return jsonify({'result': True, 'id': id})
 
 
+#   {
+#    "field_on_site_uuid": "field_on_site_uuid_value_with_photo_14",
+#    "field_data": "{\"hauteur\": 100}",
+#    "field_data_md5": "field_data_md5_value",
+#    "report_on_site_uuid": "report_on_site_uuid_value",
+#    "average_latitude": 0.1,
+#    "average_longitude": 0.2,
+#    "photos_on_site_uuid": [
+#        "photo_on_site_uuid_valueb"
+#    ]
+#   }
+
+
 @app_file_field.route('/field', methods=['POST'])
 @jwt_required()
 def create_field():
