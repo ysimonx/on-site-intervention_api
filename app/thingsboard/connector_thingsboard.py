@@ -52,7 +52,33 @@ class ThingsboardConnector():
             
             except ApiException as e:
                 current_app.logger.exception(e.reason)
+     
+     
+    def saveAttribute(self, instance:Any, dict_attributes: Any):
+        asset_name=instance.__class__.__name__ + "_" + instance.id
         
+        # Creating the REST client object with context manager to get auto token refresh
+        with RestClientCE(base_url=self.url) as rest_client:
+            try:
+                # Auth with credentials
+                rest_client.login(username=self.username, password=self.password)
+            except ApiException as e:
+                current_app.logger.exception(e.reason)
+                
+            try:
+                asset = rest_client.get_tenant_asset(asset_name)
+            except ApiException as e:
+                if (e.status==404):
+                    asset=None
+                else:
+                    current_app.logger.exception(e.reason)
+                    
+            # 
+            if asset is not None:
+                rest_client.save_entity_attributes_v2(asset.id, "SERVER_SCOPE", dict_attributes  )
+            
+
+         
 
     def createAsset(self, instance: Any):
     
@@ -108,6 +134,7 @@ class ThingsboardConnector():
                 raise Exception("asset creation failed")
 
             dict_attributes=instance.get_attributes_for_thingsboard()
+            
             rest_client.save_entity_attributes_v2(asset.id, "SERVER_SCOPE", dict_attributes  )
             
             return asset

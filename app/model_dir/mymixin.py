@@ -40,7 +40,6 @@ class MyMixin(object):
         
     def get_attributes_for_thingsboard(self):
         
-        print("mymixin")
         dict_attributes={}
         mapper = inspect(self)
         for column in mapper.attrs:
@@ -53,7 +52,6 @@ class MyMixin(object):
 def do_stuff(mapper, connect, target):
 
     verify_jwt_in_request(optional=True)
-    print(current_user)
     current_user = get_jwt_identity()
     if (not current_user is None):
         target.owner_user_id = current_user

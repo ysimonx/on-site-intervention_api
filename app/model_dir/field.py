@@ -33,11 +33,12 @@ class Field(db.Model, MyMixin):
             'name':                 self.name,
             '_internal' :           self.get_internal(),
             'field_name':           self.field_name,
-            'field_value':          self.field_value_as_string,
+            'field_value':          self.field_value,
             'field_type':           self.field_type,
             'report_id':            self.report_id,
             'average_latitude':     self.average_latitude,
             'average_longitude':    self.average_longitude,
+            'photos':  [{"photo": item.to_json_light()} for item in self.photos] 
         }
         
     def to_json_light(self):
@@ -46,11 +47,12 @@ class Field(db.Model, MyMixin):
             'name':                 self.name,
             '_internal' :           self.get_internal(),
             'field_name':           self.field_name,
-            'field_value':          self.field_value_as_string,
+            'field_value':          self.field_value,
             'field_type':           self.field_type,
             'report_id':            self.report_id,
             'average_latitude':     self.average_latitude,
             'average_longitude':    self.average_longitude,
+            'photos':  [{"photo": item.to_json_light()} for item in self.photos] 
         }
 
     def get_attributes_for_thingsboard(self):
@@ -58,6 +60,8 @@ class Field(db.Model, MyMixin):
         
         # remove relationship
         del dict_attributes["photos"]
+        del dict_attributes["reports"]
+        
         
         # convert field_value to value usefull for thingsboard
         new_value = self.field_value

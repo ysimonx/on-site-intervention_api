@@ -10,7 +10,7 @@ import uuid
 class Photo(db.Model, MyMixin):
     __tablename__ = 'photos'
     
-    field_id                   = db.Column(db.String(36),  db.ForeignKey("fields.id"), nullable=True)
+    field_id                    = db.Column(db.String(36),  db.ForeignKey("fields.id"), nullable=True)
     
     photo_on_site_uuid          = db.Column(db.String(36), unique=True)
     field_on_site_uuid          = db.Column(db.String(36),  index=True)

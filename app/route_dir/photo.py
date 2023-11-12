@@ -158,18 +158,26 @@ def create_photo():
         print("photo already uploaded")
         abort(make_response(jsonify(error="photo already uploaded"), 400))
     
-    file = request.files['file']
-    filename = secure_filename(file.filename)
-    latitude = request.form.get('latitude')
-    longitude = request.form.get('longitude')
-    field_on_site_uuid = request.form.get('field_on_site_uuid')
-    report_on_site_uuid = request.form.get('report_on_site_uuid')
-    intervention_on_site_uuid = request.form.get('intervention_on_site_uuid')
-    newfilename = photo_on_site_uuid+get_extension(filename)
+    file        = request.files['file']
+    filename    = secure_filename(file.filename)
+    latitude    = request.form.get('latitude')
+    longitude   = request.form.get('longitude')
+    field_on_site_uuid          = request.form.get('field_on_site_uuid')
+    report_on_site_uuid         = request.form.get('report_on_site_uuid')
+    intervention_on_site_uuid   = request.form.get('intervention_on_site_uuid')
+    newfilename                 = photo_on_site_uuid+get_extension(filename)
+    
     file.save(os.path.join(UPLOAD_FOLDER, newfilename))
     add_geolocation(os.path.join(UPLOAD_FOLDER, newfilename), float(latitude), float(longitude))
     
-    photo = Photo(  photo_on_site_uuid=photo_on_site_uuid, latitude=latitude, longitude=longitude, filename= newfilename, field_on_site_uuid=field_on_site_uuid, report_on_site_uuid=report_on_site_uuid, intervention_on_site_uuid=intervention_on_site_uuid )
+    photo = Photo(  photo_on_site_uuid=photo_on_site_uuid,
+                    latitude=latitude, 
+                    longitude=longitude, 
+                    filename= newfilename, 
+                    field_on_site_uuid=field_on_site_uuid, 
+                    report_on_site_uuid=report_on_site_uuid, 
+                    intervention_on_site_uuid=intervention_on_site_uuid
+                )
     db.session.add(photo)
     db.session.commit() 
 

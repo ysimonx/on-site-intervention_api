@@ -84,8 +84,8 @@ def create_field():
         abort(make_response(jsonify(error="field_on_site_uuid already created"), 400))
         
     field_name          = request.json.get("field_name", None)
-    field_value          = request.json.get("field_value", None)
-    field_type      = request.json.get("field_type", None)
+    field_value         = request.json.get("field_value", None)
+    field_type          = request.json.get("field_type", None)
     report_on_site_uuid = request.json.get("report_on_site_uuid", None)
     report_id           = request.json.get("report_id",None)
     average_latitude    = request.json.get("average_latitude", None)
@@ -101,33 +101,37 @@ def create_field():
         average_latitude=average_latitude,
         average_longitude=average_longitude
     )
-    
+
     db.session.add(field)
+    db.session.commit()
     
-    tb_photos=[]
+ 
+    arr_thingsboard_photos=[]
     photos_on_site_uuid = request.json.get("photos_on_site_uuid", None)
     if photos_on_site_uuid is not None:
-        
         for photo_on_site_uuid in photos_on_site_uuid:
-            # print(photo_on_site_uuid)
             photo = Photo.query.filter(Photo.photo_on_site_uuid == photo_on_site_uuid).first()
             if photo is not None:
-                # print("photo found !")    
-                tb_photos.append(photo)    
+                
+                # update de la clé étrangère photo->field et annule et écrasement de photo.field_on_site_uuid
+                photo.field_id=field.id 
+                photo.field_on_site_uuid=field.field_on_site_uuid
+                db.session.commit()
+                
+                # ajoute dans un tableau des photos pour remonter thingsboard
+                arr_thingsboard_photos.append(photo)    
                 current_app.logger.debug('photo found while creating field with photo_on_site_uuid = ' + photo_on_site_uuid)
             else:
-                current_app.logger.error('photo not found while creating field with photo_on_site_uuid = ' + photo_on_site_uuid)
-               
+                current_app.logger.error('photo not found while creating field with photo_on_site_uuid = ' + photo_on_site_uuid)      
     db.session.commit()
-   
-    tb.createAsset(instance=field)
     
-    # link des photos si besoin
-    for photo in tb_photos:
+    # update Thingsboard
+    tb.createAsset(instance=field)
+    for photo in arr_thingsboard_photos:
         tb.linkAssets(instanceFrom=field, instanceTo=photo)
     
+    
     current_app.logger.info('field created for field_on_site_uuid=' + field_on_site_uuid)
-        
     return jsonify({ "message":"ok"}), 201
 
 
