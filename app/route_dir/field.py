@@ -12,12 +12,12 @@ from ..model_dir.report import Report
 from flask import jsonify, request, abort, send_from_directory
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from werkzeug.utils import secure_filename
-from ..thingsboard.connector_thingsboard import Thingsboard
+from ..thingsboard.connector_thingsboard import ThingsboardConnector
 
 from .. import db,  getByIdOrByName, getByIdOrFilename
 app_file_field= Blueprint('field',__name__)
 
-tb=Thingsboard()
+tb=ThingsboardConnector()
 
 
 @app_file_field.route("/field", methods=["GET"])
@@ -58,6 +58,20 @@ def delete_field(id):
 #   }
 
 
+#   {
+#    "field_on_site_uuid": "field_on_site_uuid_value_with_photo_14",
+#    "field_name": "hauteur"
+#    "field_value": "100"
+#    "field_type": "double/string/json/boolean"
+#    "report_on_site_uuid": "report_on_site_uuid_value",
+#    "average_latitude": 0.1,
+#    "average_longitude": 0.2,
+#    "photos_on_site_uuid": [
+#        "photo_on_site_uuid_valueb"
+#    ]
+#   }
+
+
 @app_file_field.route('/field', methods=['POST'])
 @jwt_required()
 def create_field():
@@ -69,20 +83,20 @@ def create_field():
     if field is not None:
         abort(make_response(jsonify(error="field_on_site_uuid already created"), 400))
         
-    field_name          = request.json.get("name", None)
-    field_data          = request.json.get("field_data", None)
-    field_data_md5      = request.json.get("field_data_md5", None)
+    field_name          = request.json.get("field_name", None)
+    field_value          = request.json.get("field_value", None)
+    field_type      = request.json.get("field_type", None)
     report_on_site_uuid = request.json.get("report_on_site_uuid", None)
     report_id           = request.json.get("report_id",None)
     average_latitude    = request.json.get("average_latitude", None)
     average_longitude   = request.json.get("average_longitude", None)
     
     field = Field(
-        name=field_name,
+        field_name=field_name,
         field_on_site_uuid=request.json.get('field_on_site_uuid'),
         report_id=report_id,
-        field_data=field_data,
-        field_data_md5=field_data_md5,
+        field_value=field_value,
+        field_type=field_type,
         report_on_site_uuid=report_on_site_uuid,
         average_latitude=average_latitude,
         average_longitude=average_longitude
@@ -95,14 +109,15 @@ def create_field():
     if photos_on_site_uuid is not None:
         
         for photo_on_site_uuid in photos_on_site_uuid:
-            print(photo_on_site_uuid)
+            # print(photo_on_site_uuid)
             photo = Photo.query.filter(Photo.photo_on_site_uuid == photo_on_site_uuid).first()
             if photo is not None:
-                print("photo found !")    
+                # print("photo found !")    
                 tb_photos.append(photo)    
+                current_app.logger.debug('photo found while creating field with photo_on_site_uuid = ' + photo_on_site_uuid)
             else:
-                print("photo not found !")
-    
+                current_app.logger.error('photo not found while creating field with photo_on_site_uuid = ' + photo_on_site_uuid)
+               
     db.session.commit()
    
     tb.createAsset(instance=field)
@@ -110,6 +125,8 @@ def create_field():
     # link des photos si besoin
     for photo in tb_photos:
         tb.linkAssets(instanceFrom=field, instanceTo=photo)
+    
+    current_app.logger.info('field created for field_on_site_uuid=' + field_on_site_uuid)
         
     return jsonify({ "message":"ok"}), 201
 

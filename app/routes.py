@@ -66,21 +66,25 @@ url_prefix_backoffice = "/backoffice/v1"
 app.register_blueprint(app_file_backoffice, url_prefix=url_prefix_backoffice)
 
  
-# @app.before_request
+@app.before_request
 def before_request():
     app.logger.info("before_request")
 
-# @app.after_request
+@app.after_request
 def after_request(response):
     app.logger.info("after_request")
     return response
 
 # Setup log folder
-# @app.before_first_request
+@app.before_first_request
 def before_first_request():
 
     log_level = logging.INFO
  
+    logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s - %(levelname)s - %(module)s - %(lineno)d - %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S')
+
     for handler in app.logger.handlers:
         app.logger.removeHandler(handler)
  
@@ -89,8 +93,10 @@ def before_first_request():
     if not os.path.exists(logdir):
         os.mkdir(logdir)
     log_file = os.path.join(logdir, 'app.log')
+    
     handler = logging.FileHandler(log_file)
     handler.setLevel(log_level)
+    handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(module)s - %(lineno)d - %(message)s"))
     app.logger.addHandler(handler)
     app.logger.setLevel(log_level)
 

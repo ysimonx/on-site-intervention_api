@@ -3,18 +3,16 @@ from tb_rest_client.rest_client_ce import *
 # Importing the API exception
 from tb_rest_client.rest import ApiException
 
-import logging
+from flask import current_app
+
+
+
 import os
 from sqlalchemy import inspect
 
 
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s - %(levelname)s - %(module)s - %(lineno)d - %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S')
 
-
-
-class Thingsboard():
+class ThingsboardConnector():
 
     # ThingsBoard REST API URL
     url = "https://cloud.kysoe.com"
@@ -22,7 +20,6 @@ class Thingsboard():
     # Default Tenant Administrator credentials
     username = "yannick.simon+sandbox@kysoe.com"
     password = "sandbox"
-
 
     def __init__(self):
         self.url = os.getenv('TB_URL')
@@ -32,9 +29,8 @@ class Thingsboard():
         
     def linkAssets(self, instanceFrom: Any, instanceTo: Any):
         
-        asset_name_from         =instanceFrom.__class__.__name__ + "_" + instanceFrom.id
-        asset_name_to           =instanceTo.__class__.__name__ + "_" + instanceTo.id
-        
+        asset_name_from  = instanceFrom.__class__.__name__ + "_" + instanceFrom.id
+        asset_name_to    = instanceTo.__class__.__name__ + "_" + instanceTo.id
         
         # Creating the REST client object with context manager to get auto token refresh
         with RestClientCE(base_url=self.url) as rest_client:
@@ -42,24 +38,21 @@ class Thingsboard():
                 # Auth with credentials
                 rest_client.login(username=self.username, password=self.password)
             except ApiException as e:
-                logging.exception(e)
+                current_app.logger.exception(e.reason)
+                return
 
-            # try:   
-            asset_from = rest_client.get_tenant_asset(asset_name_from)
-            asset_to = rest_client.get_tenant_asset(asset_name_to)
+            try:   
+                asset_from = rest_client.get_tenant_asset(asset_name_from)
+                asset_to = rest_client.get_tenant_asset(asset_name_to)
+                
+               
+                # Creating relations from device to asset
+                relation = EntityRelation(_from=asset_from.id, to=asset_to.id, type="Contains")
+                rest_client.save_relation(relation)
             
-            print("-> ASSET TO")
-            print(asset_to)
-            
-            # Creating relations from device to asset
-            relation = EntityRelation(_from=asset_from.id, to=asset_to.id, type="Contains")
-            rest_client.save_relation(relation)
-            
-            # except ApiException as e:
-            #     logging.exception(e)
-            # except Exception as e:
-            #     logging.exception(e)
-
+            except ApiException as e:
+                current_app.logger.exception(e.reason)
+        
 
     def createAsset(self, instance: Any):
     
@@ -73,8 +66,9 @@ class Thingsboard():
                 # Auth with credentials
                 rest_client.login(username=self.username, password=self.password)
             except ApiException as e:
-                logging.exception(e)
-
+                current_app.logger.exception(e.reason)
+          
+         
             # est-ce que le profile existe ?
             try:        
                 # recherche sur le nom du profile d'asset
@@ -85,8 +79,8 @@ class Thingsboard():
                 else:
                     asset_profile = asset_profile_list.data[0] 
             except ApiException as e:
-                logging.exception(e)
-            
+                current_app.logger.exception(e.reason)
+                
             # est-ce que l'asset existe ?
             try:
                 asset = rest_client.get_tenant_asset(asset_name)
@@ -95,7 +89,8 @@ class Thingsboard():
                 if (e.status==404):
                     asset=None
                 else:
-                    logging.exception(e.status)
+                    current_app.logger.exception(e.reason)
+
              
 
             # non, alors je le créé  
@@ -104,26 +99,21 @@ class Thingsboard():
                     default_asset_profile_id = rest_client.get_default_asset_profile_info().id
                     asset = Asset(name=asset_name, asset_profile_id=asset_profile.id)
                     asset = rest_client.save_asset(asset)
-                    logging.info("Asset was created")
-                    
+                    current_app.logger.info("Asset was created")
+
                 except ApiException as e:
-                    logging.exception(e)
+                    current_app.logger.exception(e.reason)
                     raise Exception(e)
             else:
                 raise Exception("asset creation failed")
 
-            dict_attributes={}
-            mapper = inspect(instance)
-            for column in mapper.attrs:
-                dict_attributes[column.key]=column.value
-        
-            print(dict_attributes)
+            dict_attributes=instance.get_attributes_for_thingsboard()
             rest_client.save_entity_attributes_v2(asset.id, "SERVER_SCOPE", dict_attributes  )
             
             return asset
  
 
 if __name__ == '__main__':
-    tb=Thingsboard()
+    tb=ThingsboardConnector()
     x = tb.createAsset("profileB","assetC3")
     print(x)

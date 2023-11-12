@@ -5,7 +5,7 @@ from sqlalchemy.orm import declarative_base, relationship, declared_attr
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager, verify_jwt_in_request
 import uuid
 from datetime import date, datetime
-
+from sqlalchemy import inspect
 
 def formatted_date_iso(date):
     if date is None:
@@ -25,7 +25,6 @@ class MyMixin(object):
         verify_jwt_in_request(optional=True)
         current_user = get_jwt_identity()
         if (not current_user is None):
-            print(current_user)
             target.owner_user_id = current_user
             
     def get_internal(self):
@@ -37,6 +36,16 @@ class MyMixin(object):
                 'time_updated_utc': formatted_date_iso(self.time_updated),
                 'owner_user_id':    self.owner_user_id
             }
+        
+        
+    def get_attributes_for_thingsboard(self):
+        
+        print("mymixin")
+        dict_attributes={}
+        mapper = inspect(self)
+        for column in mapper.attrs:
+            dict_attributes[column.key]=column.value
+        return dict_attributes
         
         
         

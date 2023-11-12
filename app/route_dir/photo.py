@@ -12,8 +12,8 @@ from werkzeug.utils import secure_filename
 
 from .. import db,  getByIdOrByName, getByIdOrFilename
 
-from ..thingsboard.connector_thingsboard import Thingsboard
-tb=Thingsboard()
+from ..thingsboard.connector_thingsboard import ThingsboardConnector
+tb=ThingsboardConnector()
 
 
 app_file_photo= Blueprint('photo',__name__)
