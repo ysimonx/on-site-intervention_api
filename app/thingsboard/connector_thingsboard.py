@@ -30,7 +30,38 @@ class Thingsboard():
         self.password = os.getenv('TB_TENANT_PASSWORD')
         
         
-    def createAsset(self, instance):
+    def linkAssets(self, instanceFrom: Any, instanceTo: Any):
+        
+        asset_name_from         =instanceFrom.__class__.__name__ + "_" + instanceFrom.id
+        asset_name_to           =instanceTo.__class__.__name__ + "_" + instanceTo.id
+        
+        
+        # Creating the REST client object with context manager to get auto token refresh
+        with RestClientCE(base_url=self.url) as rest_client:
+            try:
+                # Auth with credentials
+                rest_client.login(username=self.username, password=self.password)
+            except ApiException as e:
+                logging.exception(e)
+
+            # try:   
+            asset_from = rest_client.get_tenant_asset(asset_name_from)
+            asset_to = rest_client.get_tenant_asset(asset_name_to)
+            
+            print("-> ASSET TO")
+            print(asset_to)
+            
+            # Creating relations from device to asset
+            relation = EntityRelation(_from=asset_from.id, to=asset_to.id, type="Contains")
+            rest_client.save_relation(relation)
+            
+            # except ApiException as e:
+            #     logging.exception(e)
+            # except Exception as e:
+            #     logging.exception(e)
+
+
+    def createAsset(self, instance: Any):
     
         
         asset_profile=instance.__class__.__name__
@@ -86,6 +117,7 @@ class Thingsboard():
             for column in mapper.attrs:
                 dict_attributes[column.key]=column.value
         
+            print(dict_attributes)
             rest_client.save_entity_attributes_v2(asset.id, "SERVER_SCOPE", dict_attributes  )
             
             return asset

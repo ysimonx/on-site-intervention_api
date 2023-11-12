@@ -169,13 +169,11 @@ def create_photo():
     file.save(os.path.join(UPLOAD_FOLDER, newfilename))
     add_geolocation(os.path.join(UPLOAD_FOLDER, newfilename), float(latitude), float(longitude))
     
-    
     photo = Photo(  photo_on_site_uuid=photo_on_site_uuid, latitude=latitude, longitude=longitude, filename= newfilename, field_on_site_uuid=field_on_site_uuid, report_on_site_uuid=report_on_site_uuid, intervention_on_site_uuid=intervention_on_site_uuid )
     db.session.add(photo)
     db.session.commit() 
 
     tb.createAsset(photo)
-
 
     return jsonify(photo.to_json()), 201
 

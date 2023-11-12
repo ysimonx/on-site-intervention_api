@@ -6,6 +6,7 @@ import numpy
 import os
 from config import config
 
+from ..model_dir.photo import Photo
 from ..model_dir.field import Field
 from ..model_dir.report import Report
 from flask import jsonify, request, abort, send_from_directory
@@ -72,13 +73,31 @@ def create_field():
         report_on_site_uuid=report_on_site_uuid,
         average_latitude=average_latitude,
         average_longitude=average_longitude
-        )
+    )
     
     db.session.add(field)
+    
+    tb_photos=[]
+    photos_on_site_uuid = request.json.get("photos_on_site_uuid", None)
+    if photos_on_site_uuid is not None:
+        
+        for photo_on_site_uuid in photos_on_site_uuid:
+            print(photo_on_site_uuid)
+            photo = Photo.query.filter(Photo.photo_on_site_uuid == photo_on_site_uuid).first()
+            if photo is not None:
+                print("photo found !")    
+                tb_photos.append(photo)    
+            else:
+                print("photo not found !")
+    
     db.session.commit()
    
-    tb.createAsset(field)
-
+    tb.createAsset(instance=field)
+    
+    # link des photos si besoin
+    for photo in tb_photos:
+        tb.linkAssets(instanceFrom=field, instanceTo=photo)
+        
     return jsonify({ "message":"ok"}), 201
 
 
