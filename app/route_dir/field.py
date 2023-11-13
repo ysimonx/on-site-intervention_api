@@ -24,6 +24,7 @@ tb=ThingsboardConnector()
 
 
 @app_file_field.route("/field", methods=["GET"])
+@jwt_required()
 def get_fields():
     fields = Field.query.all()
     return jsonify([item.to_json() for item in fields])

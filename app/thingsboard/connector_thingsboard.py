@@ -79,7 +79,55 @@ class ThingsboardConnector():
             
 
          
+    def updateAsset(self, instance: Any):
+        
+        asset_name=instance.__class__.__name__ + "_" + instance.id
+        
+         # Creating the REST client object with context manager to get auto token refresh
+        with RestClientCE(base_url=self.url) as rest_client:
+            try:
+                # Auth with credentials
+                rest_client.login(username=self.username, password=self.password)
+            except ApiException as e:
+                current_app.logger.exception(e.reason)
+          
+            # est-ce que l'asset existe ?
+            try:
+                asset = rest_client.get_tenant_asset(asset_name)
+                dict_attributes=instance.get_attributes_for_thingsboard()
+                
+                cloud_attributes = rest_client.get_attributes(asset.id, keys=','.join(dict_attributes.keys()))
+                
+                
+                cloud_attributes_updated={}
+                for attribute_key in dict_attributes.keys():
+                    bln_found=False
+                    for cloud_attribute in cloud_attributes:
+                        if cloud_attribute["key"] == attribute_key:
+                            if cloud_attribute["value"] != dict_attributes[attribute_key]:
+                                # need update of this attribute value
+                                cloud_attributes_updated[attribute_key] = dict_attributes[attribute_key]
+                                bln_found=True
+                    if bln_found == False:
+                        # need insert this new attribute key and value
+                        cloud_attributes_updated[attribute_key]= dict_attributes[attribute_key]
+                        
+                    
+                            
+                print("* * * * * apres")
+                
+                rest_client.save_entity_attributes_v2(asset.id, "SERVER_SCOPE", cloud_attributes_updated  )
+                return asset
+            except ApiException as e:
+                if (e.status==404):
+                    asset=None
+                    return asset
+                else:
+                    current_app.logger.exception(e.reason)
+                    raise Exception("already exists")
 
+         
+        
     def createAsset(self, instance: Any):
     
         
@@ -93,7 +141,7 @@ class ThingsboardConnector():
                 rest_client.login(username=self.username, password=self.password)
             except ApiException as e:
                 current_app.logger.exception(e.reason)
-          
+                
          
             # est-ce que le profile existe ?
             try:        

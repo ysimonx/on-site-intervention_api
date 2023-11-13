@@ -25,6 +25,7 @@ app_file_report= Blueprint('report',__name__)
 
 
 @app_file_report.route("/report", methods=["GET"])
+@jwt_required()
 def get_reports():
     reports = Report.query.all()
     return jsonify([item.to_json() for item in reports])
@@ -39,6 +40,8 @@ def get_report(id):
        
     return jsonify(report.to_json())
 
+    
+    
 @app_file_report.route("/report/<id>", methods=["DELETE"])
 @jwt_required()
 def delete_report(id):
@@ -49,6 +52,33 @@ def delete_report(id):
     db.session.commit()
     return jsonify({'result': True, 'id': id})
 
+
+
+
+@app_file_report.route('/report', methods=['PUT'])
+@jwt_required()
+def update_report():
+    
+    # update report
+    report_on_site_uuid = request.json.get("report_on_site_uuid", None)
+    if report_on_site_uuid is None:
+        abort(make_response(jsonify(error="missing report_on_site_uuid parameter"), 400))
+        
+    report = Report.query.filter(Report.report_on_site_uuid == report_on_site_uuid).first()
+    if report is None:
+        abort(make_response(jsonify(error="report_on_site_uuid does not exist"), 404))
+    
+    report.report_name                 = request.json.get("report_name",        report.report_name)
+    report.average_latitude            = request.json.get("average_latitude",   report.average_latitude)
+    report.average_longitude           = request.json.get("average_longitude",  report.average_longitude)
+    report.intervention_on_site_uuid   = request.json.get("intervention_on_site_uuid", report.intervention_on_site_uuid)
+    db.session.commit()
+    
+    asset = tb.updateAsset(instance=report)
+    print("asset = ")
+    print(asset)
+              
+    return jsonify({ "message":"ok"}), 200
 
 
 @app_file_report.route('/report', methods=['POST'])
@@ -64,10 +94,10 @@ def create_report():
     if report is not None:
         abort(make_response(jsonify(error="report_on_site_uuid already created"), 400))
     
-    report_name         = request.json.get("report_name", None)
-    average_latitude    = request.json.get("average_latitude", None)
-    average_longitude   = request.json.get("average_longitude", None)
-    intervention_on_site_uuid= request.json.get("intervention_on_site_uuid", None)
+    report_name                 = request.json.get("report_name", None)
+    average_latitude            = request.json.get("average_latitude", None)
+    average_longitude           = request.json.get("average_longitude", None)
+    intervention_on_site_uuid   = request.json.get("intervention_on_site_uuid", None)
     report = Report(
         report_on_site_uuid=report_on_site_uuid,
         report_name=report_name,
@@ -79,7 +109,7 @@ def create_report():
     db.session.commit()
     
     # fields management 
-    arr_thingsboard_fields=[]
+    arr_fields_created=[]
     dict_photos_for_field={}
     
     fields = request.json.get("fields", None)
@@ -100,7 +130,7 @@ def create_report():
                 db.session.add(field)
                 db.session.commit()
                 
-                arr_thingsboard_photos=[]
+                arr_photos_linked=[]
                 if "photos_on_site_uuid" in item:
                     photos_on_site_uuid = item["photos_on_site_uuid"]
                     
@@ -114,17 +144,22 @@ def create_report():
                             db.session.commit()
                 
                             # ajoute dans un tableau des photos pour remonter thingsboard
-                            arr_thingsboard_photos.append(photo) 
+                            arr_photos_linked.append(photo) 
                             
-                    dict_photos_for_field[field.id]=arr_thingsboard_photos
+                    dict_photos_for_field[field.id]=arr_photos_linked
                                 
                 
-                arr_thingsboard_fields.append(field)
-                
- 
-    tb.createAsset(instance=report)
+                arr_fields_created.append(field)
     
-    for field in arr_thingsboard_fields:
+    # resultat ici : 
+    # - - - - - - - - 
+    # report : contient l'instance report de classe Report
+    #   --> arr_fields_created : contient la liste des instances Field créés pour ce report
+    #          --> dict_photos_for_field : contient la liste des instances Photo deja uploadées pour chacun de ces fields            
+ 
+    # synchro thingsboard
+    tb.createAsset(instance=report)
+    for field in arr_fields_created:
             tb.createAsset(instance=field)
             tb.linkAssets(instanceFrom=report, instanceTo=field)
             dict_photos=dict_photos_for_field[field.id]
