@@ -74,7 +74,47 @@ def update_report():
     report.intervention_on_site_uuid   = request.json.get("intervention_on_site_uuid", report.intervention_on_site_uuid)
     db.session.commit()
     
-    asset = tb.updateAsset(instance=report)
+    arr_fields_created=[]
+    fields = request.json.get("fields", None)
+    if (fields is not None):
+        for item in fields:
+                field = Field.query.filter(Field.field_on_site_uuid == item["field_on_site_uuid"]).first()
+                if field is None:
+                    field = Field(
+                        report_id           = report.id,
+                        report_on_site_uuid = report.report_on_site_uuid,
+                        field_name          = item["field_name"],
+                        field_on_site_uuid  = item["field_on_site_uuid"],
+                        field_value         = item["field_value"],
+                        field_type          = item["field_type"],
+                        average_latitude    = item["average_latitude"],
+                        average_longitude   = item["average_longitude"]
+                    )
+                    db.session.add(field)
+                else:
+                        field.report_id                 = report.id
+                        field.report_on_site_uuid       = report.report_on_site_uuid
+                        if "field_name" in item:
+                            field.field_name          = item["field_name"]
+                        if "field_on_site_uuid" in item:
+                            field.field_on_site_uuid  = item["field_on_site_uuid"]
+                        if "field_value" in item:
+                            field.field_value         = item["field_value"]
+                        if "field_type" in item:
+                            field.field_type          = item["field_type"]
+                        if "average_latitude" in item:
+                            field.average_latitude    = item["average_latitude"]
+                        if "average_longitude" in item:
+                            field.average_longitude   = item["average_longitude"]
+                db.session.commit()
+                arr_fields_created.append(field)
+    
+    
+     # synchro thingsboard
+    asset = tb.createAsset(instance=report)
+    for field in arr_fields_created:
+            tb.createAsset(instance=field)
+    
     print("asset = ")
     print(asset)
               

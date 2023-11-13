@@ -26,6 +26,13 @@ class ThingsboardConnector():
         self.username = os.getenv('TB_TENANT_USER')
         self.password = os.getenv('TB_TENANT_PASSWORD')
         
+        try:
+                # Auth with credentials
+                self.rest_client.login(username=self.username, password=self.password)
+        except ApiException as e:
+                current_app.logger.exception(e.reason)
+                return
+        
         
     def linkAssets(self, instanceFrom: Any, instanceTo: Any):
         
@@ -36,7 +43,7 @@ class ThingsboardConnector():
         with RestClientCE(base_url=self.url) as rest_client:
             try:
                 # Auth with credentials
-                rest_client.login(username=self.username, password=self.password)
+                self.rest_client.login(username=self.username, password=self.password)
             except ApiException as e:
                 current_app.logger.exception(e.reason)
                 return
@@ -113,9 +120,7 @@ class ThingsboardConnector():
                         cloud_attributes_updated[attribute_key]= dict_attributes[attribute_key]
                         
                     
-                            
-                print("* * * * * apres")
-                
+                  
                 rest_client.save_entity_attributes_v2(asset.id, "SERVER_SCOPE", cloud_attributes_updated  )
                 return asset
             except ApiException as e:
@@ -158,7 +163,6 @@ class ThingsboardConnector():
             # est-ce que l'asset existe ?
             try:
                 asset = rest_client.get_tenant_asset(asset_name)
-                raise Exception("already exists")
             except ApiException as e:
                 if (e.status==404):
                     asset=None
@@ -178,8 +182,7 @@ class ThingsboardConnector():
                 except ApiException as e:
                     current_app.logger.exception(e.reason)
                     raise Exception(e)
-            else:
-                raise Exception("asset creation failed")
+            
 
             dict_attributes=instance.get_attributes_for_thingsboard()
             
