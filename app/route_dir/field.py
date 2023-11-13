@@ -131,7 +131,7 @@ def create_field():
     db.session.commit()
     
     # update Thingsboard
-    tb.createAsset(instance=field)
+    tb.syncAsset(instance=field)
     for photo in arr_thingsboard_photos:
         tb.linkAssets(instanceFrom=field, instanceTo=photo)
     

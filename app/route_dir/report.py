@@ -16,7 +16,6 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from .. import db,  getByIdOrByName, getByIdOrFilename
 
 from ..thingsboard.connector_thingsboard import ThingsboardConnector
-tb=ThingsboardConnector()
 
 app_file_report= Blueprint('report',__name__)
 
@@ -110,13 +109,12 @@ def update_report():
                 arr_fields_created.append(field)
     
     
-     # synchro thingsboard
-    asset = tb.createAsset(instance=report)
+    # synchro thingsboard
+    tb=ThingsboardConnector()
+    asset = tb.syncAsset(instance=report)
     for field in arr_fields_created:
-            tb.createAsset(instance=field)
+            tb.syncAsset(instance=field)
     
-    print("asset = ")
-    print(asset)
               
     return jsonify({ "message":"ok"}), 200
 
@@ -198,9 +196,10 @@ def create_report():
     #          --> dict_photos_for_field : contient la liste des instances Photo deja uploadées pour chacun de ces fields            
  
     # synchro thingsboard
-    tb.createAsset(instance=report)
+    tb=ThingsboardConnector()
+    tb.syncAsset(instance=report)
     for field in arr_fields_created:
-            tb.createAsset(instance=field)
+            tb.syncAsset(instance=field)
             tb.linkAssets(instanceFrom=report, instanceTo=field)
             dict_photos=dict_photos_for_field[field.id]
             for photo in dict_photos:

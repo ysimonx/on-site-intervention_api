@@ -181,7 +181,7 @@ def create_photo():
     db.session.add(photo)
     db.session.commit() 
 
-    tb.createAsset(photo)
+    tb.syncAsset(photo)
 
     return jsonify(photo.to_json()), 201
 
