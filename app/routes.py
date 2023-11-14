@@ -65,7 +65,7 @@ app.register_blueprint(app_file_field_histo,      url_prefix=url_prefix)
 url_prefix_backoffice = "/backoffice/v1"
 app.register_blueprint(app_file_backoffice, url_prefix=url_prefix_backoffice)
 
- 
+"""
 @app.before_request
 def before_request():
     app.logger.info("before_request")
@@ -74,6 +74,8 @@ def before_request():
 def after_request(response):
     app.logger.info("after_request")
     return response
+"""
+
 
 # Setup log folder
 @app.before_first_request
@@ -120,14 +122,7 @@ def populate_user_data():
     dataCompany =  {
                 "kysoe": [
                     { "email": "yannick.simon@gmail.com", "password": "12345678", "firstname":"Yannick", "lastname":"Simon"},
-                ]    ,
-                "gotrust": [
-                    { "email": "jeanlaurent.schaub@gotrust.fr", "password": "12345678", "firstname":"Jean-Laurent", "lastname":"Schaub"},
-                    { "email": "cyril.laroque@gotrust.fr", "password": "12345678", "firstname":"Cyril", "lastname":"Laroque"}
-                ]      ,
-                "sonergia": [
-                      { "email": "franck.annamayer@sonergia.fr", "password": "12345678", "firstname":"Franck", "lastname":"Annamayer"},
-                ]
+                ]    
                 }
     
 

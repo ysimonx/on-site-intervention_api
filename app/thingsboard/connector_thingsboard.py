@@ -109,7 +109,25 @@ class ThingsboardConnector():
                 current_app.logger.exception(e.reason)
                 raise Exception("already exists")
 
-         
+
+    def deleteAsset(self, instance:Any):
+        asset_profile=instance.__class__.__name__
+        asset_name=instance.__class__.__name__ + "_" + instance.id
+        
+         # est-ce que l'asset existe ?
+        try:
+            asset = self.rest_client.get_tenant_asset(asset_name)
+        except ApiException as e:
+            if (e.status==404):
+                asset=None
+            else:
+                current_app.logger.exception(e.reason)
+        
+        self.rest_client.delete_asset(asset_id=asset.id)
+        current_app.logger.info("asset {} deleted".format(asset_name))
+        
+        
+          
     # syncAsset : create or update Asset on Cloud and update attributes values     
     def syncAsset(self, instance: Any):
         

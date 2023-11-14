@@ -40,21 +40,46 @@ def get_report(id):
     return jsonify(report.to_json())
 
     
-    
 @app_file_report.route("/report/<id>", methods=["DELETE"])
 @jwt_required()
 def delete_report(id):
     report = Report.query.get(id)
     if report is None:
         abort(make_response(jsonify(error="report is not found"), 404))
+        
+    array_instance_deleted=[]
+    
+    for item_field in report.fields:
+        for item_photo in item_field.photos:
+            photo = Photo.query.get(item_photo.id)
+            if photo is not None:
+                db.session.delete(photo)
+                array_instance_deleted.append(photo)
+                current_app.logger.info('photo deleted id = ' + photo.id)
+            
+        field = Field.query.get(item_field.id)
+        if field is not None:
+            db.session.delete(field)
+            array_instance_deleted.append(field)
+            current_app.logger.info('field deleted id = ' + field.id)
+    
     db.session.delete(report)
+    array_instance_deleted.append(report)
+    current_app.logger.info('report deleted id = ' + report.id)
+    
     db.session.commit()
-    return jsonify({'result': True, 'id': id})
+    
+     # synchro thingsboard
+    tb=ThingsboardConnector()
+    for instance in array_instance_deleted:
+            tb.deleteAsset(instance=instance)
+     
+    return jsonify({'result': True})
 
 
 
 
-@app_file_report.route('/report', methods=['PUT'])
+@app_file_report.route('/report', methods=['PUT', 'POST'])
 @jwt_required()
 def update_report():
     
@@ -65,60 +90,91 @@ def update_report():
         
     report = Report.query.filter(Report.report_on_site_uuid == report_on_site_uuid).first()
     if report is None:
-        abort(make_response(jsonify(error="report_on_site_uuid does not exist"), 404))
+        report_name                 = request.json.get("report_name", None)
+        average_latitude            = request.json.get("average_latitude", None)
+        average_longitude           = request.json.get("average_longitude", None)
+        intervention_on_site_uuid   = request.json.get("intervention_on_site_uuid", None)
+        report = Report(
+            report_on_site_uuid=report_on_site_uuid,
+            report_name=report_name,
+            intervention_on_site_uuid=intervention_on_site_uuid,
+            average_latitude=average_latitude,
+            average_longitude=average_longitude
+        )
+        db.session.add(report)
+        db.session.commit()
+    else:
+        report.report_name                 = request.json.get("report_name",        report.report_name)
+        report.average_latitude            = request.json.get("average_latitude",   report.average_latitude)
+        report.average_longitude           = request.json.get("average_longitude",  report.average_longitude)
+        report.intervention_on_site_uuid   = request.json.get("intervention_on_site_uuid", report.intervention_on_site_uuid)
+        db.session.commit()
     
-    report.report_name                 = request.json.get("report_name",        report.report_name)
-    report.average_latitude            = request.json.get("average_latitude",   report.average_latitude)
-    report.average_longitude           = request.json.get("average_longitude",  report.average_longitude)
-    report.intervention_on_site_uuid   = request.json.get("intervention_on_site_uuid", report.intervention_on_site_uuid)
-    db.session.commit()
+    arr_children_fields=[]
+    dict_children_photos={}
     
-    arr_fields_created=[]
     fields = request.json.get("fields", None)
     if (fields is not None):
-        for item in fields:
-                field = Field.query.filter(Field.field_on_site_uuid == item["field_on_site_uuid"]).first()
+        for itemfield in fields:
+                field = Field.query.filter(Field.field_on_site_uuid == itemfield["field_on_site_uuid"]).first()
+                
                 if field is None:
                     field = Field(
                         report_id           = report.id,
                         report_on_site_uuid = report.report_on_site_uuid,
-                        field_name          = item["field_name"],
-                        field_on_site_uuid  = item["field_on_site_uuid"],
-                        field_value         = item["field_value"],
-                        field_type          = item["field_type"],
-                        average_latitude    = item["average_latitude"],
-                        average_longitude   = item["average_longitude"]
                     )
-                    db.session.add(field)
-                else:
-                        field.report_id                 = report.id
-                        field.report_on_site_uuid       = report.report_on_site_uuid
-                        if "field_name" in item:
-                            field.field_name          = item["field_name"]
-                        if "field_on_site_uuid" in item:
-                            field.field_on_site_uuid  = item["field_on_site_uuid"]
-                        if "field_value" in item:
-                            field.field_value         = item["field_value"]
-                        if "field_type" in item:
-                            field.field_type          = item["field_type"]
-                        if "average_latitude" in item:
-                            field.average_latitude    = item["average_latitude"]
-                        if "average_longitude" in item:
-                            field.average_longitude   = item["average_longitude"]
+              
+                if "field_name" in itemfield:
+                    field.field_name          = itemfield["field_name"]
+                if "field_on_site_uuid" in itemfield:
+                    field.field_on_site_uuid  = itemfield["field_on_site_uuid"]
+                if "field_value" in itemfield:
+                    field.field_value         = itemfield["field_value"]
+                if "field_type" in itemfield:
+                    field.field_type          = itemfield["field_type"]
+                if "average_latitude" in itemfield:
+                    field.average_latitude    = itemfield["average_latitude"]
+                if "average_longitude" in itemfield:
+                    field.average_longitude   = itemfield["average_longitude"]
+
+                db.session.add(field)
                 db.session.commit()
-                arr_fields_created.append(field)
+                arr_children_fields.append(field)
+                
+                if "photos_on_site_uuid" in itemfield:
+                    photos_on_site_uuid = itemfield["photos_on_site_uuid"]
+                    
+                    arr_photos_linked=[]
+                    for photo_on_site_uuid in photos_on_site_uuid:
+                        
+                        photo = Photo.query.filter(Photo.photo_on_site_uuid == photo_on_site_uuid).first()
+                        if photo is not None:
+                            
+                            # update de la clé étrangère photo->field et annule et écrasement de photo.field_on_site_uuid
+                            photo.field_id=field.id 
+                            photo.field_on_site_uuid=field.field_on_site_uuid
+                            db.session.commit()
+                            # ajoute dans un tableau des photos pour remonter thingsboard
+                            arr_photos_linked.append(photo) 
+                            
+                    dict_children_photos[field.id]=arr_photos_linked
+                     
     
     
     # synchro thingsboard
     tb=ThingsboardConnector()
     asset = tb.syncAsset(instance=report)
-    for field in arr_fields_created:
+    for field in arr_children_fields:
             tb.syncAsset(instance=field)
-    
+            tb.linkAssets(instanceFrom=report, instanceTo=field)
+            dict_photos=dict_children_photos[field.id]
+            for photo in dict_photos:
+                tb.linkAssets(instanceFrom=field, instanceTo=photo)
+                tb.saveAttribute(instance=photo, dict_attributes={"field_id": field.id})
               
     return jsonify({ "message":"ok"}), 200
 
-
+"""
 @app_file_report.route('/report', methods=['POST'])
 @jwt_required()
 def create_report():
@@ -207,3 +263,4 @@ def create_report():
                 tb.saveAttribute(instance=photo, dict_attributes={"field_id": field.id})
     
     return jsonify({ "message":"ok"}), 201
+"""
