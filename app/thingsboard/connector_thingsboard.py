@@ -4,7 +4,7 @@ from tb_rest_client.rest_client_ce import *
 from tb_rest_client.rest import ApiException
 
 from flask import current_app
-
+from sqlalchemy.orm.interfaces import *
 
 
 import os
@@ -134,8 +134,6 @@ class ThingsboardConnector():
         asset_profile=instance.__class__.__name__
         asset_name=instance.__class__.__name__ + "_" + instance.id
         
-        # Creating the REST client object with context manager to get auto token refresh
-            
         
         # est-ce que le profile existe ?
         try:        
@@ -158,8 +156,7 @@ class ThingsboardConnector():
             else:
                 current_app.logger.exception(e.reason)
 
-            
-
+        
         # non, alors je le créé  
         if asset is None:
             try:
@@ -176,6 +173,78 @@ class ThingsboardConnector():
             
         return asset
 
+    def getArboInstance(self, instance):
+        
+            # 2 types de data à synchroniser dans le cloud : 
+            # les assets et les relations entre les assets          
+            instances=[]
+            instanceslinks=[]
+
+            # nous allons synchroniser l'instance passée en asset
+            instances.append(instance)
+            
+            # balayons les relations de niveau 0
+            relationships_items = inspect(instance.__class__).relationships.items()
+            for relationships_item in relationships_items:
+                relationshipName, relationshipProperty=relationships_item
+               
+                if relationshipProperty.direction == ONETOMANY:
+                    items_niv1 = getattr(instance, relationshipName)
+                    for item_niv1 in items_niv1:
+                        instances.append(item_niv1)
+                        instanceslinks.append({"from":instance, "to": item_niv1})
+                        
+                        # balayons les relations de niveau 1
+                        relationships_items_niv1 = inspect(item_niv1.__class__).relationships.items()
+                        for relationships_item_niv1 in relationships_items_niv1:
+                            relationshipName_niv1, relationshipProperty_niv1=relationships_item_niv1
+                            
+                            if relationshipProperty_niv1.direction == ONETOMANY:
+                                items_niv2 = getattr(item_niv1, relationshipName_niv1)
+                                for item_niv2 in items_niv2:
+                                    instances.append(item_niv2)
+                                    instanceslinks.append({"from":item_niv1, "to": item_niv2})
+            
+            return instances, instanceslinks
+        
+    # cette fonction prend une instance d'objet
+    # et la synchronise dans thingsboard 
+    # avec 2 niveaux de relations One To Many
+    def syncAssetsFromInstanceAndChildren(self, instance):     
+
+            # 2 types de data à synchroniser dans le cloud : 
+            # les assets et les relations entre les assets          
+            instance_to_sync=[]
+            instances_to_link=[]
+            instance_to_sync, instances_to_link=self.getArboInstance(instance)
+            
+            # je synchronise les assets
+            for instance in instance_to_sync:   
+                self.syncAsset(instance=instance)
+                
+            # je synchronise les relations entre les assets
+            for instance_to_link in instances_to_link:
+                self.linkAssets(instanceFrom=instance_to_link["from"], instanceTo=instance_to_link["to"])
+            
+
+    
+            
+    # cette fonction prend une instance d'objet
+    # et la synchronise dans thingsboard 
+    # avec 2 niveaux de relations One To Many
+    def delAssetsFromInstanceAndChildren(self, instance):     
+
+            # 2 types de data à synchroniser dans le cloud : 
+            # les assets et les relations entre les assets          
+            instance_to_sync=[]
+            instances_to_link=[]
+            instance_to_sync, instances_to_link=self.getArboInstance(instance)
+            
+            # je synchronise les assets
+            for instance in instance_to_sync:   
+                self.deleteAsset(instance=instance)
+                
+            
 
 if __name__ == '__main__':
     tb=ThingsboardConnector()

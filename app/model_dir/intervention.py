@@ -17,9 +17,7 @@ class Intervention(db.Model, MyMixin):
     
     place                   = relationship("Place",                    viewonly=True, back_populates="interventions")
     type_intervention       = relationship("TypeIntervention",         viewonly=True, back_populates="interventions")
-    reports                 = relationship("Report",   
-                                                cascade="all, delete", 
-                                                backref=backref("reports",lazy="joined"))
+    reports                 = relationship("Report")
     
     
     def to_json(self):

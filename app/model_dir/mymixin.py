@@ -19,8 +19,9 @@ class MyMixin(object):
 
     time_created    = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
     time_updated    = db.Column(db.DateTime(timezone=True), onupdate=db.func.now())
-    owner_user_id   = db.Column(db.String(255), default="")
-
+    owner_user_id   = db.Column(db.String(36), nullable=True, index=True, default="")
+    
+    
     def map_owner(mapper, connect, target):
         verify_jwt_in_request(optional=True)
         current_user = get_jwt_identity()

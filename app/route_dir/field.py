@@ -9,6 +9,8 @@ from config import config
 
 from ..model_dir.photo import Photo
 from ..model_dir.field import Field
+from ..model_dir.type_field import TypeField
+
 from ..model_dir.report import Report
 from flask import jsonify, request, abort, send_from_directory
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -27,6 +29,7 @@ tb=ThingsboardConnector()
 @jwt_required()
 def get_fields():
     fields = Field.query.all()
+    print(fields)
     return jsonify([item.to_json() for item in fields])
 
 
@@ -67,7 +70,7 @@ def delete_field(id):
 #    "field_on_site_uuid": "field_on_site_uuid_value_with_photo_14",
 #    "field_name": "hauteur"
 #    "field_value": "100"
-#    "field_type": "double/string/json/boolean"
+#    "type_field": "double/string/json/boolean"
 #    "report_on_site_uuid": "report_on_site_uuid_value",
 #    "average_latitude": 0.1,
 #    "average_longitude": 0.2,
@@ -90,18 +93,25 @@ def create_field():
         
     field_name          = request.json.get("field_name", None)
     field_value         = request.json.get("field_value", None)
-    field_type          = request.json.get("field_type", None)
+    type_field          = request.json.get("type_field", None)
     report_on_site_uuid = request.json.get("report_on_site_uuid", None)
     report_id           = request.json.get("report_id",None)
     average_latitude    = request.json.get("average_latitude", None)
     average_longitude   = request.json.get("average_longitude", None)
     
+    if type_field is None:
+        abort(make_response(jsonify(error="missing type_field parameter"), 400))
+        
+    type_field = getByIdOrByName(type_field)
+    if type_field is None:
+        abort(make_response(jsonify(error="type_field is not found"), 400))
+        
     field = Field(
         field_name=field_name,
         field_on_site_uuid=request.json.get('field_on_site_uuid'),
         report_id=report_id,
         field_value=field_value,
-        field_type=field_type,
+        type_field_id = type_field.id,
         report_on_site_uuid=report_on_site_uuid,
         average_latitude=average_latitude,
         average_longitude=average_longitude

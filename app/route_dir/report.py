@@ -1,4 +1,7 @@
 from flask import Blueprint, render_template, session,abort, current_app, make_response
+from sqlalchemy import inspect
+from sqlalchemy.orm.interfaces import *
+#   from sqlalchemy.orm import RelationshipDirection
 
 import uuid
 import numpy
@@ -7,6 +10,7 @@ from config import config
 
 from ..model_dir.intervention import Intervention
 from ..model_dir.field import Field
+from ..model_dir.type_field import TypeField
 from ..model_dir.photo import Photo
 
 from ..model_dir.report import Report
@@ -27,6 +31,11 @@ app_file_report= Blueprint('report',__name__)
 @jwt_required()
 def get_reports():
     reports = Report.query.all()
+    
+    tb=ThingsboardConnector()
+    for report in reports:
+        tb.syncAssetsFromInstanceAndChildren(report)
+            
     return jsonify([item.to_json() for item in reports])
 
 
@@ -47,37 +56,53 @@ def delete_report(id):
     if report is None:
         abort(make_response(jsonify(error="report is not found"), 404))
         
-    array_instance_deleted=[]
-    
     for item_field in report.fields:
         for item_photo in item_field.photos:
             photo = Photo.query.get(item_photo.id)
             if photo is not None:
                 db.session.delete(photo)
-                array_instance_deleted.append(photo)
                 current_app.logger.info('photo deleted id = ' + photo.id)
             
         field = Field.query.get(item_field.id)
         if field is not None:
             db.session.delete(field)
-            array_instance_deleted.append(field)
             current_app.logger.info('field deleted id = ' + field.id)
     
     db.session.delete(report)
-    array_instance_deleted.append(report)
     current_app.logger.info('report deleted id = ' + report.id)
     
     db.session.commit()
     
      # synchro thingsboard
     tb=ThingsboardConnector()
-    for instance in array_instance_deleted:
-            tb.deleteAsset(instance=instance)
-     
+    tb.delAssetsFromInstanceAndChildren(report)
+         
     return jsonify({'result': True})
 
 
+"""
+Exemple de json à envoyer
+{
+    "report_on_site_uuid": "report_on_site_uuid_value40",
+    "intervention_on_site_uuid": "intervention_on_site_uuid_value1",
+    "report_name":"visite de l'échafaudage E1",
+    "fields":[
+        {
+                "field_on_site_uuid": "field_on_site_uuid_value_40",
+                "field_name": "hauteur",
+                "field_value": "100.1",
+                "type_field": "double",
+                "average_latitude": 0.1,
+                "average_longitude": 0.2,
+                "photos_on_site_uuid": [
+                    "photo_on_site_uuid_valuec"
+                ]
+        }
+    ]
+}
+    
 
+"""
 
 @app_file_report.route('/report', methods=['PUT', 'POST'])
 @jwt_required()
@@ -130,8 +155,10 @@ def update_report():
                     field.field_on_site_uuid  = itemfield["field_on_site_uuid"]
                 if "field_value" in itemfield:
                     field.field_value         = itemfield["field_value"]
-                if "field_type" in itemfield:
-                    field.field_type          = itemfield["field_type"]
+                if "type_field" in itemfield:
+                    type_field_name           = itemfield["type_field"]
+                    type_field                = TypeField.query.filter(TypeField.name == type_field_name).first()
+                    field.type_field_id       = type_field.id
                 if "average_latitude" in itemfield:
                     field.average_latitude    = itemfield["average_latitude"]
                 if "average_longitude" in itemfield:
@@ -160,107 +187,7 @@ def update_report():
                     dict_children_photos[field.id]=arr_photos_linked
                      
     
-    
-    # synchro thingsboard
     tb=ThingsboardConnector()
-    asset = tb.syncAsset(instance=report)
-    for field in arr_children_fields:
-            tb.syncAsset(instance=field)
-            tb.linkAssets(instanceFrom=report, instanceTo=field)
-            dict_photos=dict_children_photos[field.id]
-            for photo in dict_photos:
-                tb.linkAssets(instanceFrom=field, instanceTo=photo)
-                tb.saveAttribute(instance=photo, dict_attributes={"field_id": field.id})
-              
+    tb.syncAssetsFromInstanceAndChildren(report)    
+    
     return jsonify({ "message":"ok"}), 200
-
-"""
-@app_file_report.route('/report', methods=['POST'])
-@jwt_required()
-def create_report():
-    
-    # creation report
-    report_on_site_uuid = request.json.get("report_on_site_uuid", None)
-    if report_on_site_uuid is None:
-        abort(make_response(jsonify(error="missing report_on_site_uuid parameter"), 400))
-        
-    report = Report.query.filter(Report.report_on_site_uuid == report_on_site_uuid).first()
-    if report is not None:
-        abort(make_response(jsonify(error="report_on_site_uuid already created"), 400))
-    
-    report_name                 = request.json.get("report_name", None)
-    average_latitude            = request.json.get("average_latitude", None)
-    average_longitude           = request.json.get("average_longitude", None)
-    intervention_on_site_uuid   = request.json.get("intervention_on_site_uuid", None)
-    report = Report(
-        report_on_site_uuid=report_on_site_uuid,
-        report_name=report_name,
-        intervention_on_site_uuid=intervention_on_site_uuid,
-        average_latitude=average_latitude,
-        average_longitude=average_longitude
-    )
-    db.session.add(report)
-    db.session.commit()
-    
-    # fields management 
-    arr_fields_created=[]
-    dict_photos_for_field={}
-    
-    fields = request.json.get("fields", None)
-    if (fields is not None):
-        for item in fields:
-                
-                field = Field(
-                    report_id           = report.id,
-                    report_on_site_uuid = report.report_on_site_uuid,
-                    
-                    field_name          = item["field_name"],
-                    field_on_site_uuid  = item["field_on_site_uuid"],
-                    field_value         = item["field_value"],
-                    field_type          = item["field_type"],
-                    average_latitude    = item["average_latitude"],
-                    average_longitude   = item["average_longitude"]
-                )
-                db.session.add(field)
-                db.session.commit()
-                
-                arr_photos_linked=[]
-                if "photos_on_site_uuid" in item:
-                    photos_on_site_uuid = item["photos_on_site_uuid"]
-                    
-                    for photo_on_site_uuid in photos_on_site_uuid:
-                        photo = Photo.query.filter(Photo.photo_on_site_uuid == photo_on_site_uuid).first()
-                        if photo is not None:
-                            
-                            # update de la clé étrangère photo->field et annule et écrasement de photo.field_on_site_uuid
-                            photo.field_id=field.id 
-                            photo.field_on_site_uuid=field.field_on_site_uuid
-                            db.session.commit()
-                
-                            # ajoute dans un tableau des photos pour remonter thingsboard
-                            arr_photos_linked.append(photo) 
-                            
-                    dict_photos_for_field[field.id]=arr_photos_linked
-                                
-                
-                arr_fields_created.append(field)
-    
-    # resultat ici : 
-    # - - - - - - - - 
-    # report : contient l'instance report de classe Report
-    #   --> arr_fields_created : contient la liste des instances Field créés pour ce report
-    #          --> dict_photos_for_field : contient la liste des instances Photo deja uploadées pour chacun de ces fields            
- 
-    # synchro thingsboard
-    tb=ThingsboardConnector()
-    tb.syncAsset(instance=report)
-    for field in arr_fields_created:
-            tb.syncAsset(instance=field)
-            tb.linkAssets(instanceFrom=report, instanceTo=field)
-            dict_photos=dict_photos_for_field[field.id]
-            for photo in dict_photos:
-                tb.linkAssets(instanceFrom=field, instanceTo=photo)
-                tb.saveAttribute(instance=photo, dict_attributes={"field_id": field.id})
-    
-    return jsonify({ "message":"ok"}), 201
-"""

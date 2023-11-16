@@ -1,4 +1,6 @@
 from .. import db
+import datetime
+
 from .mymixin import MyMixin
 
 from sqlalchemy.orm import declarative_base, relationship, backref
@@ -44,6 +46,15 @@ class Photo(db.Model, MyMixin):
             'filename':                     self.filename
         }
 
+    def get_attributes_for_thingsboard(self):
+        dict_attributes=super().get_attributes_for_thingsboard()
+        # remove relationships
+        print(dict_attributes)
+        for key in dict_attributes:
+            print(key, "   =   ", dict_attributes[key], "     ", type( dict_attributes[key]), isinstance(dict_attributes[key],  (bool,str,int, float, datetime.datetime)))
+        del dict_attributes["photos_backref"]
+        return dict_attributes
+        
 
 from sqlalchemy import event
 @event.listens_for(Photo, 'before_insert')

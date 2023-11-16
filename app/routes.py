@@ -3,10 +3,8 @@ import logging
 import datetime
 from app.model_dir.user import User
 from app.model_dir.company import Company
-from app.model_dir.photo import Photo
-from app.model_dir.intervention import Intervention
-from app.model_dir.place import Place
-from app.model_dir.report import Report
+from app.model_dir.type_field import TypeField
+
 
 from . import db, getByIdOrEmail, getByIdOrByName
 from . import create_app
@@ -110,6 +108,7 @@ def init():
     db.create_all()
     
     populate_user_data()
+    populate_type_field()
     return "ok"
 
 @app.route("/api/v1/swagger-ui", methods=["GET"])
@@ -117,6 +116,15 @@ def swagger():
     return render_template('swagger.html')
 
 
+def populate_type_field():
+
+    types=["double", "string", "boolean", "integer", "json"];
+    for type in types:
+            type_field = TypeField( name = type)
+            db.session.add(type_field)
+    db.session.commit()
+    
+    
 def populate_user_data():
 
     dataCompany =  {

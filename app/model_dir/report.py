@@ -17,7 +17,7 @@ class Report(db.Model, MyMixin):
     
     fields                      = relationship("Field",   
                                                 cascade="all, delete", 
-                                                backref=backref("reports",lazy="joined")
+                                                backref=backref("report_backref",lazy="joined")
                                             )
    
 
