@@ -216,8 +216,6 @@ class ThingsboardConnector():
 
             # 2 types de data à synchroniser dans le cloud : 
             # les assets et les relations entre les assets          
-            instance_to_sync=[]
-            instances_to_link=[]
             instance_to_sync, instances_to_link=self.getArboInstance(instance)
             
             # je synchronise les assets
@@ -238,8 +236,6 @@ class ThingsboardConnector():
 
             # 2 types de data à synchroniser dans le cloud : 
             # les assets et les relations entre les assets          
-            instance_to_sync=[]
-            instances_to_link=[]
             instance_to_sync, instances_to_link=self.getArboInstance(instance)
             
             # je synchronise les assets
