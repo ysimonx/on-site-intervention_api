@@ -9,6 +9,9 @@ from app.model_dir.type_field import TypeField
 from . import db, getByIdOrEmail, getByIdOrByName
 from . import create_app
 
+from .route_dir.event import app_file_event
+from .route_dir.notification import app_file_notification
+
 from .route_dir.user import app_file_user
 from .route_dir.company import app_file_company
 from .route_dir.photo import app_file_photo
@@ -52,7 +55,10 @@ mail = Mail(app)
 # Setup Routes
 url_prefix = "/api/v1"
 
-app.register_blueprint(app_file_user,           url_prefix=url_prefix)
+app.register_blueprint(app_file_user,            url_prefix=url_prefix)
+app.register_blueprint(app_file_event,           url_prefix=url_prefix)
+app.register_blueprint(app_file_notification,    url_prefix=url_prefix)
+
 app.register_blueprint(app_file_company,        url_prefix=url_prefix)
 app.register_blueprint(app_file_photo,          url_prefix=url_prefix)
 app.register_blueprint(app_file_file,          url_prefix=url_prefix)

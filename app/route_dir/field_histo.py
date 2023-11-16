@@ -23,7 +23,6 @@ import cv2
 @app_file_field_histo.route('/field_histo', methods=['POST'])
 def create_field_histo():
     if not request.json:
-        print("not json")
         abort(make_response(jsonify(error="missing json body"), 400))
 
 

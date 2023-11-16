@@ -21,6 +21,7 @@ def get_places():
 @jwt_required()
 def create_place():
     return jsonify({ "message":"ok"}), 201
+    
 
 
 @app_file_place.route("/place/<id>", methods=["GET"])

@@ -27,7 +27,6 @@ def get_interventions():
 def create_intervention():
     
     if not request.json:
-        print("not json")
         abort(make_response(jsonify(error="no json provided in request"), 400))
 
 
@@ -155,7 +154,7 @@ def create_intervention():
         intervention.average_longitude = 0.0 
         
     db.session.commit()  
-    return jsonify({ "intervention_id":intervention.id}), 201
+    return jsonify(intervention.to_json()), 201
 
 
 @app_file_intervention.route("/intervention/<id>", methods=["GET"])

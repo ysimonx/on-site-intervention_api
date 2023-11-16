@@ -1,26 +1,16 @@
-from flask import Blueprint, render_template, session,abort, current_app, make_response
+from flask import Blueprint, abort, current_app, make_response
 
-import json
-import jsonpickle
-import uuid
-import numpy
-import os
-from config import config
 
 from ..model_dir.photo import Photo
 from ..model_dir.field import Field
-from ..model_dir.type_field import TypeField
 
-from ..model_dir.report import Report
-from flask import jsonify, request, abort, send_from_directory
-from flask_jwt_extended import jwt_required, get_jwt_identity
-from werkzeug.utils import secure_filename
+from flask import jsonify, request, abort
+from flask_jwt_extended import jwt_required
 from ..thingsboard.connector_thingsboard import ThingsboardConnector
 
-from .. import db,  getByIdOrByName, getByIdOrFilename
+from .. import db,  getByIdOrByName
 app_file_field= Blueprint('field',__name__)
 
-from sqlalchemy import inspect
 
 
 @app_file_field.route("/field", methods=["GET"])
@@ -93,7 +83,7 @@ def create_field():
     field_value         = request.json.get("field_value", None)
     type_field          = request.json.get("type_field", None)
     report_on_site_uuid = request.json.get("report_on_site_uuid", None)
-    report_id           = request.json.get("report_id",None)
+    report_id           = request.json.get("report_id", None)
     average_latitude    = request.json.get("average_latitude", None)
     average_longitude   = request.json.get("average_longitude", None)
     
@@ -147,6 +137,6 @@ def create_field():
     
     
     current_app.logger.info('field created for field_on_site_uuid=' + field_on_site_uuid)
-    return jsonify({ "message":"ok"}), 201
+    return jsonify(field.to_json()), 201
 
 

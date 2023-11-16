@@ -10,7 +10,7 @@ from flask_jwt_extended import jwt_required
 from .. import db
 
 
-app_notification_notification= Blueprint('notification',__name__)
+app_file_notification= Blueprint('notification',__name__)
 
 
 
@@ -18,7 +18,7 @@ app_notification_notification= Blueprint('notification',__name__)
 
 
 
-@app_notification_notification.route("/notification", methods=["GET"])
+@app_file_notification.route("/notification", methods=["GET"])
 def get_notifications():
     notifications = Notification.query.all()
     return jsonify([notification.to_json() for notification in notifications])
@@ -26,7 +26,7 @@ def get_notifications():
 
 # notification upload is here : https://www.youtube.com/watch?v=zMhmZ_ePGiM
 # flutter image upload exemple : https://www.youtube.com/watch?v=dsPdIdrgAD4
-@app_notification_notification.route('/notification', methods=['POST'])
+@app_file_notification.route('/notification', methods=['POST'])
 @jwt_required()
 def create_notification():
 
@@ -50,7 +50,7 @@ def create_notification():
     return jsonify(notification.to_json()), 201
 
 
-@app_notification_notification.route("/notification/<id>", methods=["GET"])
+@app_file_notification.route("/notification/<id>", methods=["GET"])
 @jwt_required()
 def get_notification(id):
     notification = Notification.query.get(id)
@@ -59,7 +59,7 @@ def get_notification(id):
 
     return jsonify(notification.to_json_to_root())
 
-@app_notification_notification.route("/notification/<id>", methods=["DELETE"])
+@app_file_notification.route("/notification/<id>", methods=["DELETE"])
 @jwt_required()
 def delete_notification(id):
     notification = Notification.query.get(id)
@@ -69,7 +69,7 @@ def delete_notification(id):
     db.session.commit()
     return jsonify({'result': True, 'id': id})
 
-@app_notification_notification.route("/notification/ready")
+@app_file_notification.route("/notification/ready")
 @jwt_required()
 def get_ready():
     return jsonify(message="ready");
