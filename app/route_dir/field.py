@@ -22,8 +22,6 @@ app_file_field= Blueprint('field',__name__)
 
 from sqlalchemy import inspect
 
-tb=ThingsboardConnector()
-
 
 @app_file_field.route("/field", methods=["GET"])
 @jwt_required()
@@ -141,6 +139,8 @@ def create_field():
     db.session.commit()
     
     # update Thingsboard
+    
+    tb=ThingsboardConnector()
     tb.syncAsset(instance=field)
     for photo in arr_thingsboard_photos:
         tb.linkAssets(instanceFrom=field, instanceTo=photo)

@@ -1,24 +1,18 @@
-from flask import Blueprint, render_template, session,abort, current_app, make_response
+from flask import Blueprint, abort, make_response
 
-import uuid
 import hashlib
-import numpy
-import os
-from config import config
 
 from ..model_dir.intervention import Intervention
 from ..model_dir.place import Place
 from ..model_dir.report import Report
 from ..model_dir.field import Field
 from ..model_dir.field_histo import FieldHisto
-from flask import jsonify, request, abort, send_from_directory
-from flask_jwt_extended import jwt_required, get_jwt_identity
-from werkzeug.utils import secure_filename
+from flask import jsonify, request, abort
+from flask_jwt_extended import jwt_required
 
-from .. import db,  getByIdOrByName, getByIdOrFilename
+from .. import db
 app_file_intervention= Blueprint('intervention',__name__)
 
-import cv2
 import json
 
 

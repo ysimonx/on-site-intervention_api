@@ -1,21 +1,12 @@
-from flask import Blueprint, render_template, session,abort, current_app, make_response
+from flask import Blueprint, abort, make_response
 
-import uuid
-import hashlib
-import numpy
-import os
-from config import config
 
 from ..model_dir.type_intervention import TypeIntervention
-from flask import jsonify, request, abort, send_from_directory
-from flask_jwt_extended import jwt_required, get_jwt_identity
-from werkzeug.utils import secure_filename
+from flask import jsonify, request, abort
+from flask_jwt_extended import jwt_required
 
-from .. import db,  getByIdOrByName, getByIdOrFilename
+from .. import db
 app_file_type_intervention= Blueprint('type_intervention',__name__)
-
-import cv2
-import json
 
 
 @app_file_type_intervention.route("/type_intervention", methods=["GET"])

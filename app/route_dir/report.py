@@ -1,23 +1,17 @@
-from flask import Blueprint, render_template, session,abort, current_app, make_response
-from sqlalchemy import inspect
+from flask import Blueprint, abort, current_app, make_response
 from sqlalchemy.orm.interfaces import *
 #   from sqlalchemy.orm import RelationshipDirection
 
-import uuid
-import numpy
-import os
-from config import config
 
-from ..model_dir.intervention import Intervention
 from ..model_dir.field import Field
 from ..model_dir.type_field import TypeField
 from ..model_dir.photo import Photo
 
 from ..model_dir.report import Report
-from flask import jsonify, request, abort, send_from_directory
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask import jsonify, request, abort
+from flask_jwt_extended import jwt_required
 
-from .. import db,  getByIdOrByName, getByIdOrFilename
+from .. import db
 
 from ..thingsboard.connector_thingsboard import ThingsboardConnector
 

@@ -1,27 +1,21 @@
-from flask import Blueprint, render_template, session,abort, current_app, make_response
+from flask import Blueprint, abort, make_response
 
-import uuid
-import numpy
 import os
 from config import config
 
 from ..model_dir.file import File
-from flask import jsonify, request, abort, send_from_directory
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask import jsonify, request, abort
+from flask_jwt_extended import jwt_required
 from werkzeug.utils import secure_filename
 
-from .. import db,  getByIdOrByName, getByIdOrFilename
+from .. import db
 
 from ..thingsboard.connector_thingsboard import ThingsboardConnector
-tb=ThingsboardConnector()
 
 
 app_file_file= Blueprint('file',__name__)
 
-import cv2
 
-import piexif
-from fractions import Fraction
 
 
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -90,6 +84,7 @@ def create_file():
     db.session.add(file)
     db.session.commit() 
 
+    tb=ThingsboardConnector()
     tb.syncAsset(file)
 
     return jsonify(file.to_json()), 201
