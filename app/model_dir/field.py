@@ -24,6 +24,9 @@ class Field(db.Model, MyMixin):
     photos                      = relationship("Photo",   
                                                 cascade="all, delete", 
                                                 backref=backref("photos_backref",lazy="joined"))
+    files                       = relationship("File",   
+                                                cascade="all, delete", 
+                                                backref=backref("files_backref",lazy="joined"))
     
 
     
@@ -39,6 +42,7 @@ class Field(db.Model, MyMixin):
             'average_latitude':     self.average_latitude,
             'average_longitude':    self.average_longitude,
             'photos':               [{"photo": item.to_json_light()} for item in self.photos] ,
+            'files':                [{"file": item.to_json_light()} for item in self.files] ,
             'report':               self.report_backref.to_json_light(),
             'type_field':           self.type_field_backref.to_json()
             
@@ -51,11 +55,12 @@ class Field(db.Model, MyMixin):
             '_internal' :           self.get_internal(),
             'field_name':           self.field_name,
             'field_value':          self.field_value,
-            'type_field_id':           self.type_field_id,
+            'type_field_id':        self.type_field_id,
             'report_id':            self.report_id,
             'average_latitude':     self.average_latitude,
             'average_longitude':    self.average_longitude,
             'photos':  [{"photo": item.to_json_light()} for item in self.photos],
+            'files':                [{"file": item.to_json_light()} for item in self.files] ,
             'type_field':           self.type_field_backref.to_json()
         }
 

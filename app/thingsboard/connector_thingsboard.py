@@ -57,25 +57,6 @@ class ThingsboardConnector():
         except ApiException as e:
             current_app.logger.exception(e.reason)
     
-     
-    def saveAttribute(self, instance:Any, dict_attributes: Any):
-        asset_name=instance.__class__.__name__ + "_" + instance.id
-        
-        # Creating the REST client object with context manager to get auto token refresh
-    
-        try:
-            asset = self.rest_client.get_tenant_asset(asset_name)
-        except ApiException as e:
-            if (e.status==404):
-                asset=None
-            else:
-                current_app.logger.exception(e.reason)
-                
-        # 
-        if asset is not None:
-            self.rest_client.save_entity_attributes_v2(asset.id, "SERVER_SCOPE", dict_attributes  )
-        
-
          
     def updateAssetAttributesValues(self, instance: Any):
         
@@ -83,22 +64,24 @@ class ThingsboardConnector():
         
         
         try:
-            asset = self.rest_client.get_tenant_asset(asset_name)
-            dict_attributes=instance.get_attributes_for_thingsboard()
-            cloud_attributes = self.rest_client.get_attributes(asset.id, keys=','.join(dict_attributes.keys()))
+            asset               = self.rest_client.get_tenant_asset(asset_name)
+            dict_attributes     = instance.get_attributes_for_thingsboard()
+            cloud_attributes    = self.rest_client.get_attributes(asset.id, keys=','.join(dict_attributes.keys()))
             
-            cloud_attributes_updated={}
+            cloud_attributes_updated = {}
             for attribute_key in dict_attributes.keys():
                 bln_found=False
                 for cloud_attribute in cloud_attributes:
                     if cloud_attribute["key"] == attribute_key:
                         bln_found=True
+                        # je ne mets à jour que les attributs qui existent deja et qui
+                        # ont une valeur différente
                         if cloud_attribute["value"] != dict_attributes[attribute_key]:
                             # need update of this attribute value
                             cloud_attributes_updated[attribute_key] = dict_attributes[attribute_key]
                             
                 if bln_found == False:
-                    # need insert this new attribute key and value
+                    # cet attribut n'existe pas dans thingsboard : je l'ajoute
                     cloud_attributes_updated[attribute_key]= dict_attributes[attribute_key]
             
             self.rest_client.save_entity_attributes_v2(asset.id, "SERVER_SCOPE", cloud_attributes_updated  )

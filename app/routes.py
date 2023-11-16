@@ -12,6 +12,7 @@ from . import create_app
 from .route_dir.user import app_file_user
 from .route_dir.company import app_file_company
 from .route_dir.photo import app_file_photo
+from .route_dir.file import app_file_file
 from .route_dir.intervention import app_file_intervention
 from .route_dir.type_intervention import app_file_type_intervention
 from .route_dir.place import app_file_place
@@ -54,6 +55,7 @@ url_prefix = "/api/v1"
 app.register_blueprint(app_file_user,           url_prefix=url_prefix)
 app.register_blueprint(app_file_company,        url_prefix=url_prefix)
 app.register_blueprint(app_file_photo,          url_prefix=url_prefix)
+app.register_blueprint(app_file_file,          url_prefix=url_prefix)
 app.register_blueprint(app_file_place,   url_prefix=url_prefix)
 app.register_blueprint(app_file_intervention,          url_prefix=url_prefix)
 app.register_blueprint(app_file_report,     url_prefix=url_prefix)
@@ -104,7 +106,7 @@ def before_first_request():
 
 @app.route("/api/v1/init", methods=["GET"])
 def init():
-    db.drop_all()
+    # db.drop_all()
     db.create_all()
     
     populate_user_data()
