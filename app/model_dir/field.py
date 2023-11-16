@@ -62,12 +62,6 @@ class Field(db.Model, MyMixin):
     def get_attributes_for_thingsboard(self):
         dict_attributes=super().get_attributes_for_thingsboard()
         
-        # remove relationship
-        del dict_attributes["photos"]
-        del dict_attributes["report_backref"]
-        del dict_attributes["type_field_backref"]
-        
-        
         # convert field_value to value usefull for thingsboard
         new_value = self.field_value
         if (self.type_field_backref.name == "string"):

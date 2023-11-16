@@ -6,6 +6,8 @@ from tb_rest_client.rest import ApiException
 from flask import current_app
 from sqlalchemy.orm.interfaces import *
 
+from types import NoneType
+import datetime
 
 import os
 from sqlalchemy import inspect

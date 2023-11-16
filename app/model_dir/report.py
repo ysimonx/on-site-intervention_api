@@ -47,13 +47,7 @@ class Report(db.Model, MyMixin):
             'average_latitude':               self.average_latitude,
             'average_longitude':              self.average_longitude,
         }
-        
-    def get_attributes_for_thingsboard(self):
-        dict_attributes=super().get_attributes_for_thingsboard()
-        # remove relationships
-        del dict_attributes["fields"]
-        return dict_attributes
-        
+       
 
 
 from sqlalchemy import event

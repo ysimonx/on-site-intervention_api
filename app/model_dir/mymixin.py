@@ -1,5 +1,9 @@
 from .. import db
 
+from types import NoneType
+import datetime
+
+
 from sqlalchemy import event
 from sqlalchemy.orm import declarative_base, relationship, declared_attr
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager, verify_jwt_in_request
@@ -41,10 +45,15 @@ class MyMixin(object):
         
     def get_attributes_for_thingsboard(self):
         
+        # je prends tous les attributs d'une instance d'objets
         dict_attributes={}
         mapper = inspect(self)
         for column in mapper.attrs:
-            dict_attributes[column.key]=column.value
+            # pour chaque colonne, je vérifie le type de l'attribut (pour éliminer les relationsship par exemple)
+            if isinstance(column.value,  (NoneType, bool,str,int, float)):
+                dict_attributes[column.key]=column.value
+            if isinstance(column.value, (datetime)):
+                 dict_attributes[column.key]=column.value
         return dict_attributes
         
         
