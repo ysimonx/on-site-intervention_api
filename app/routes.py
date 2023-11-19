@@ -3,6 +3,7 @@ import logging
 import datetime
 from app.model_dir.user import User
 from app.model_dir.company import Company
+from app.model_dir.tenant import Tenant
 from app.model_dir.type_field import TypeField
 
 
@@ -14,6 +15,7 @@ from .route_dir.notification import app_file_notification
 
 from .route_dir.user import app_file_user
 from .route_dir.company import app_file_company
+from .route_dir.tenant import app_file_tenant
 from .route_dir.photo import app_file_photo
 from .route_dir.file import app_file_file
 from .route_dir.intervention import app_file_intervention
@@ -24,7 +26,7 @@ from .route_dir.field import app_file_field
 from .route_dir.field_histo import app_file_field_histo
 
 from .route_dir.backoffice import app_file_backoffice
-
+from .route_dir.role import app_file_role
 
 from flask import jsonify, abort, render_template
 from flask_mail import Mail
@@ -67,6 +69,8 @@ app.register_blueprint(app_file_intervention,          url_prefix=url_prefix)
 app.register_blueprint(app_file_report,     url_prefix=url_prefix)
 app.register_blueprint(app_file_field,      url_prefix=url_prefix)
 app.register_blueprint(app_file_field_histo,      url_prefix=url_prefix)
+app.register_blueprint(app_file_tenant,        url_prefix=url_prefix)
+app.register_blueprint(app_file_role,        url_prefix=url_prefix)
 
 url_prefix_backoffice = "/backoffice/v1"
 app.register_blueprint(app_file_backoffice, url_prefix=url_prefix_backoffice)
@@ -117,6 +121,8 @@ def init():
     
     populate_user_data()
     populate_type_field()
+    populate_tenant()
+
     return "ok"
 
 @app.route("/api/v1/swagger-ui", methods=["GET"])
@@ -124,6 +130,17 @@ def swagger():
     return render_template('swagger.html')
 
 
+def populate_tenant():
+
+    tenants=["iter","arkema","total"];
+
+    for newtenant in tenants:
+            test=getByIdOrByName(Tenant, newtenant)
+            if test is None:
+                tenant = Tenant( name = newtenant)
+                db.session.add(tenant)
+    db.session.commit()
+    
 def populate_type_field():
 
     types=["double", "string", "boolean", "integer", "json"];
@@ -132,6 +149,8 @@ def populate_type_field():
             db.session.add(type_field)
     db.session.commit()
     
+    
+
     
 def populate_user_data():
 
