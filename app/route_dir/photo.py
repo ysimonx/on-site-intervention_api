@@ -145,9 +145,7 @@ def create_photo():
     if not 'field_on_site_uuid' in request.form:
         abort(make_response(jsonify(error="missing field_on_site_uuid parameter"), 400))
        
-    if not 'photo_on_site_uuid' in request.form:
-        abort(make_response(jsonify(error="missing photo_on_site_uuid parameter"), 400))
-    
+
     photo_on_site_uuid = request.form.get('photo_on_site_uuid')
     photo = Photo.query.filter(Photo.photo_on_site_uuid == photo_on_site_uuid).first()
     if photo is not None:

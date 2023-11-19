@@ -35,7 +35,7 @@ def login():
         
     result_check = user.check_password(password)
     if not result_check:
-        abort(make_response(jsonify(error="error login"), 401))
+        abort(make_response(jsonify(error="error password"), 401))
         
     
     access_token = create_access_token(identity=user.id)

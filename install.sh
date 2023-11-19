@@ -9,6 +9,9 @@ source env/bin/activate
 pip install opencv-python flask flask-sqlalchemy PyMySQL cryptography uuid flask-cors datetime flask_bcrypt flask_security email_validator flask_jwt_extended opencv-python numpy exif piexif
 pip install tb_rest_client request
 pip install jsonpickle
+pip install tb_rest_client
+pip install requests
+
 
 pip install -r requirements.txt
 
