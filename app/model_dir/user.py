@@ -4,6 +4,36 @@ from flask_bcrypt import generate_password_hash, check_password_hash
 
 
 
+user_role = db.Table('users_roles',
+                    db.Column('user_id', db.String(36), db.ForeignKey('users.id')),
+                    db.Column('role_id', db.String(36), db.ForeignKey('roles.id'))
+                    )
+   
+
+
+class Role(db.Model, MyMixin):
+    __tablename__ = 'roles'
+   
+   
+    def to_json(self):
+        return {
+            'id':               self.id,
+            '_internal' :       self.get_internal(),
+            'name':             self.name,
+        }
+
+    def to_json_light(self):
+        return {
+            'id':               self.id,
+            'name':             self.name
+        }
+        
+    def to_json_anonymous(self):
+        return {
+            'id':               self.id,
+        }
+    
+
 # ToDo : essayer ca plutot https://dev.to/paurakhsharma/flask-rest-api-part-3-authentication-and-authorization-5935
 class User(db.Model, MyMixin):
     __tablename__ = 'users'
@@ -15,7 +45,10 @@ class User(db.Model, MyMixin):
     company_id  = db.Column(db.String(36), db.ForeignKey("companies.id"))
     company     = db.relationship("Company", viewonly=True)
 
+    roles = db.relationship('Role', secondary=user_role, backref='users')
+
     def to_json(self):
+        
         return {
             'id':           self.id,
             '_internal' :   self.get_internal(),
@@ -24,7 +57,8 @@ class User(db.Model, MyMixin):
             'company_id':   self.company_id,
             'firstname':    self.firstname,
             'lastname':     self.lastname,
-            'company':      self.company.to_json_light()
+            'company':      self.company.to_json_light(),
+            'roles':       [item.name for item in self.roles] ,
             
         }
 
@@ -35,7 +69,9 @@ class User(db.Model, MyMixin):
             'company_id':   self.company_id,
             'firstname':    self.firstname,
             'lastname':     self.lastname,
-            'company':      self.company.to_json_light()
+            'company':      self.company.to_json_light(),
+            'roles':       [item.name for item in self.roles] ,
+        
             
         }
         
@@ -53,8 +89,21 @@ class User(db.Model, MyMixin):
 
 
 
-      
+
+
+
+
+
 from sqlalchemy import event
 @event.listens_for(User, 'before_insert')
 def do_stuff1(mapper, connect, target):
     MyMixin.map_owner(mapper, connect, target)
+
+
+
+
+from sqlalchemy import event
+@event.listens_for(Role, 'before_insert')
+def do_stuff1(mapper, connect, target):
+    MyMixin.map_owner(mapper, connect, target)
+

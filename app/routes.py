@@ -1,7 +1,7 @@
 import os
 import logging
 import datetime
-from app.model_dir.user import User
+from app.model_dir.user import User, Role
 from app.model_dir.company import Company
 from app.model_dir.tenant import Tenant
 from app.model_dir.type_field import TypeField
@@ -156,7 +156,13 @@ def populate_user_data():
 
     dataCompany =  {
                 "kysoe": [
-                    { "email": "yannick.simon@gmail.com", "password": "12345678", "firstname":"Yannick", "lastname":"Simon"},
+                    { 
+                         "email": "yannick.simon@gmail.com", 
+                         "password": "12345678", 
+                         "firstname":"Yannick", 
+                         "lastname":"Simon" ,
+                         "roles": ["admin","toy"]
+                    },
                 ]    
                 }
     
@@ -170,17 +176,27 @@ def populate_user_data():
         print(users)   
         for user in users:
             print(user)
+            print(user)
+            print(user)
             _user = getByIdOrEmail(obj=User, id=user["email"])
             if _user is None:
-                 _user = User(email= user["email"], password= user["password"], company_id = _company.id, firstname=user["firstname"], lastname=user["lastname"])
-                 _user.hash_password()
-                 db.session.add(_user)  
+                _user = User(email= user["email"], password= user["password"], company_id = _company.id, firstname=user["firstname"], lastname=user["lastname"])
+                _user.hash_password()
+                db.session.add(_user)  
             else:
                 _user.company_id = _company.id
                 _user.firstname = user["firstname"]
                 _user.lastname = user["lastname"]
                 _user.password = user["password"]
                 _user.hash_password()
+            
+            for role in user["roles"]:
+                _role = getByIdOrByName(Role, role)
+                if _role is None:
+                    _role = Role(name=role)
+                    db.session.add(_role)
+                _user.roles.append(_role)
+
         #   
     db.session.commit()  
     print("populate users done")
