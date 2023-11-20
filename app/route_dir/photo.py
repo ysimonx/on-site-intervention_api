@@ -124,7 +124,7 @@ def get_photos():
 @jwt_required()
 def create_photo():
 
-    if request.files.get("file") is None:
+    if not "file" in request.files:
         abort(make_response(jsonify(error="missing file parameter"), 400))
         
     if not 'photo_on_site_uuid' in request.form:
@@ -152,10 +152,10 @@ def create_photo():
         print("photo already uploaded")
         abort(make_response(jsonify(error="photo already uploaded"), 400))
     
-    file        = request.files['file']
-    filename    = secure_filename(file.filename)
-    latitude    = request.form.get('latitude')
-    longitude   = request.form.get('longitude')
+    file                        = request.files['file']
+    filename                    = secure_filename(file.filename)
+    latitude                    = request.form.get('latitude')
+    longitude                   = request.form.get('longitude')
     field_on_site_uuid          = request.form.get('field_on_site_uuid')
     report_on_site_uuid         = request.form.get('report_on_site_uuid')
     intervention_on_site_uuid   = request.form.get('intervention_on_site_uuid')
@@ -200,6 +200,9 @@ def delete_photo(id):
     db.session.commit()
     return jsonify({'result': True, 'id': id})
 
+"""
+This endpoint is made for refreshing token (if needed) just before uploading photos
+"""
 @app_file_photo.route("/photo/ready")
 @jwt_required()
 def get_ready():
