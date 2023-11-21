@@ -58,7 +58,7 @@ def create_intervention():
     intervention_average_longitude = 0;
     intervention_average_latitude = 0;
     
-    reports= request.json.get('reports') 
+    reports= request.json.get('forms') 
     # TODO : JL a envoyé un formulaire des 2 reports avec aucune photo ... du coup, l'average est = 0.0 et 0.0 et du coup, la moyenne de 2 reports n'est pas bonne
     
     print(len(reports))

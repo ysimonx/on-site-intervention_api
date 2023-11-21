@@ -17,7 +17,7 @@ class Photo(db.Model, MyMixin):
     
     photo_on_site_uuid          = db.Column(db.String(36), unique=True)
     field_on_site_uuid          = db.Column(db.String(36),  index=True)
-    report_on_site_uuid         = db.Column(db.String(36),  index=True)
+    form_on_site_uuid         = db.Column(db.String(36),  index=True)
     intervention_on_site_uuid   = db.Column(db.String(36),  index=True)
     
     filename            = db.Column(db.String(255))
@@ -31,7 +31,7 @@ class Photo(db.Model, MyMixin):
             '_internal' :                   self.get_internal(),
             'photo_on_site_uuid':           self.photo_on_site_uuid,
             'field_on_site_uuid':           self.field_on_site_uuid,
-            'report_on_site_uuid':          self.report_on_site_uuid,
+            'form_on_site_uuid':          self.form_on_site_uuid,
             'intervention_on_site_uuid':    self.intervention_on_site_uuid,
             'filename':                     self.filename
         }
@@ -42,7 +42,7 @@ class Photo(db.Model, MyMixin):
             '_internal' :                   self.get_internal(),
             'photo_on_site_uuid':           self.photo_on_site_uuid,
             'field_on_site_uuid':           self.field_on_site_uuid,
-            'report_on_site_uuid':          self.report_on_site_uuid,
+            'form_on_site_uuid':          self.form_on_site_uuid,
             'intervention_on_site_uuid':    self.intervention_on_site_uuid,
             'filename':                     self.filename
         }

@@ -12,8 +12,8 @@ class Field(db.Model, MyMixin):
     __tablename__ = 'fields'
     
     field_on_site_uuid          = db.Column(db.String(36), unique=True)
-    report_on_site_uuid         = db.Column(db.String(36),  index=True)
-    report_id                   = db.Column(db.String(36),  db.ForeignKey("forms.id"), nullable=True)
+    form_on_site_uuid         = db.Column(db.String(36),  index=True)
+    form_id                   = db.Column(db.String(36),  db.ForeignKey("forms.id"), nullable=True)
     type_field_id               = db.Column(db.String(36),  db.ForeignKey("types_fields.id"), nullable=True)
     field_name                  = db.Column(db.String(255), index=True)
     field_value                 = db.Column(db.String(255), index=True)
@@ -38,12 +38,12 @@ class Field(db.Model, MyMixin):
             'field_name':           self.field_name,
             'field_value':          self.field_value,
             'type_field_id':           self.type_field_id,
-            'report_id':            self.report_id,
+            'form_id':            self.form_id,
             'average_latitude':     self.average_latitude,
             'average_longitude':    self.average_longitude,
             'photos':               [{"photo": item.to_json_light()} for item in self.photos] ,
             'files':                [{"file": item.to_json_light()} for item in self.files] ,
-            'report':               self.form_backref.to_json_light(),
+            'form':               self.form_backref.to_json_light(),
             'type_field':           self.type_field_backref.to_json()
             
         }
@@ -56,7 +56,7 @@ class Field(db.Model, MyMixin):
             'field_name':           self.field_name,
             'field_value':          self.field_value,
             'type_field_id':        self.type_field_id,
-            'report_id':            self.report_id,
+            'form_id':            self.form_id,
             'average_latitude':     self.average_latitude,
             'average_longitude':    self.average_longitude,
             'photos':  [{"photo": item.to_json_light()} for item in self.photos],
