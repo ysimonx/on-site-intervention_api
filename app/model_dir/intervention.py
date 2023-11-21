@@ -17,7 +17,7 @@ class Intervention(db.Model, MyMixin):
     
     place                   = relationship("Place",                    viewonly=True, back_populates="interventions")
     type_intervention       = relationship("TypeIntervention",         viewonly=True, back_populates="interventions")
-    forms                 = relationship("Report")
+    forms                   = relationship("Form")
     
     
     def to_json(self):

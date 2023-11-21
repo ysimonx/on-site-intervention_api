@@ -188,7 +188,7 @@ def populate_user_data():
         if _company is None:
             _company = Company( name = company)
             db.session.add(_company)
-            app.logger.debug("company added %s", company.name)
+            app.logger.debug("company added %s", _company.name)
          
         for user in users:
             _user = getByIdOrEmail(obj=User, id=user["email"])
