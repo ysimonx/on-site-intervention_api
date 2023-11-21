@@ -1,0 +1,858 @@
+{
+	"info": {
+		"_postman_id": "0bf498f9-7996-4eb0-acdb-fd16020a20d4",
+		"name": "on_site_interventions",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28716081"
+	},
+	"item": [
+		{
+			"name": "interventions",
+			"item": [
+				{
+					"name": "interventions list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/intervention",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"intervention"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "reports",
+			"item": [
+				{
+					"name": "report list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/report",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"report"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "report get by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/report/a47d3d86-ea56-46a0-a37c-cd864112f497",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"report",
+								"a47d3d86-ea56-46a0-a37c-cd864112f497"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "report delete by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/report/a85aad70-76c1-4640-a4de-d1df4d2cd055",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"report",
+								"a85aad70-76c1-4640-a4de-d1df4d2cd055"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create report",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"report_on_site_uuid\": \"report_on_site_uuid_value50\",\n    \"intervention_on_site_uuid\": \"intervention_on_site_uuid_value1\",\n    \"report_name\":\"visite de l'échafaudage E1\",\n    \"fields\":[\n        {\n                \"field_on_site_uuid\": \"field_on_site_uuid_value_51\",\n                \"field_name\": \"hauteur\",\n                \"field_value\": \"100.1\",\n                \"type_field\": \"double\",\n                \"average_latitude\": 0.1,\n                \"average_longitude\": 0.2,\n                \"photos_on_site_uuid\": [\n                    \"photo_on_site_uuid_valuec\"\n                ]\n        },\n                {\n                \"field_on_site_uuid\": \"field_on_site_uuid_value_52\",\n                \"field_name\": \"hauteur\",\n                \"field_value\": \"100.1\",\n                \"type_field\": \"double\",\n                \"average_latitude\": 0.1,\n                \"average_longitude\": 0.2,\n                \"photos_on_site_uuid\": [\n                    \"photo_on_site_uuid_valued\"\n                ]\n        }\n\n    ]\n}\n    \n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/report",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"report"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update report",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"report_on_site_uuid\": \"report_on_site_uuid_value3b\",\n    \"average_longitude\": 85.8,\n    \"average_latitude\": 85.13,\n    \"fields\": [{\n        \"field_on_site_uuid\": \"field_on_site_uuid_value_39b\",\n        \"field_value\": \"100.15\",\n        \"type_field\": \"double\",\n        \"photos_on_site_uuid\": [\n                    \"photo_on_site_uuid_valueb\"\n                ]\n    }]\n}\n    \n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/report",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"report"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/report",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"report"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "fields",
+			"item": [
+				{
+					"name": "fields list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/field",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"field"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fields get by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/field/c0030e86-9605-4b58-a4c8-70cb905f90e3",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"field",
+								"c0030e86-9605-4b58-a4c8-70cb905f90e3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create field minimalist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \n    \"field_on_site_uuid\": \"field_on_site_uuid_valueq\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/field",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"field"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create field full",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"field_on_site_uuid\": \"field_on_site_uuid_value_complet\",\n    \"field_name\": \"hauteur\",\n    \"field_value\": \"100\",\n    \"field_type\": \"double\",\n    \"report_on_site_uuid\": \"report_on_site_uuid_value\",\n    \"average_latitude\": 0.1,\n    \"average_longitude\": 0.2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/field",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"field"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create field full with photos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"field_on_site_uuid\": \"field_on_site_uuid_value_with_photo_45\",\n    \"field_name\": \"hauteur\",\n    \"field_value\": \"100.1\",\n    \"field_type\": \"double\",\n    \"report_on_site_uuid\": \"report_on_site_uuid_value\",\n    \"average_latitude\": 0.1,\n    \"average_longitude\": 0.2,\n    \"photos_on_site_uuid\": [\n        \"photo_on_site_uuid_valueb\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/field",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"field"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "places",
+			"item": [
+				{
+					"name": "places list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/place",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"place"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "photos",
+			"item": [
+				{
+					"name": "upload photo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res=pm.response.json();",
+									"pm.environment.set('last_photo_id', res.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/ysimonx/Desktop/pp.jpg"
+								},
+								{
+									"key": "latitude",
+									"value": "5.123",
+									"type": "default"
+								},
+								{
+									"key": "longitude",
+									"value": "-49.23242",
+									"type": "default"
+								},
+								{
+									"key": "photo_on_site_uuid",
+									"value": "photo_on_site_uuid_valuec",
+									"type": "default"
+								},
+								{
+									"key": "field_on_site_uuid",
+									"value": "field_on_site_uuid_value",
+									"type": "text"
+								},
+								{
+									"key": "report_on_site_uuid",
+									"value": "report_on_site_uuid_value",
+									"type": "text"
+								},
+								{
+									"key": "intervention_on_site_uuid",
+									"value": "intervention_on_site_uuid_value",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/photo",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"photo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload photo Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res=pm.response.json();",
+									"pm.environment.set('last_photo_id', res.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/ysimonx/Desktop/maui.jpg"
+								},
+								{
+									"key": "latitude",
+									"value": "5.123",
+									"type": "default"
+								},
+								{
+									"key": "longitude",
+									"value": "-49.23242",
+									"type": "default"
+								},
+								{
+									"key": "photo_on_site_uuid",
+									"value": "photo_on_site_uuid_valued",
+									"type": "default"
+								},
+								{
+									"key": "field_on_site_uuid",
+									"value": "field_on_site_uuid_value",
+									"type": "text"
+								},
+								{
+									"key": "report_on_site_uuid",
+									"value": "report_on_site_uuid_value",
+									"type": "text"
+								},
+								{
+									"key": "intervention_on_site_uuid",
+									"value": "intervention_on_site_uuid_value",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/photo",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"photo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "photos list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/photo",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"photo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete last uploaded photo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/photo/{{last_photo_id}}",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"photo",
+								"{{last_photo_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "create user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"yannick.simon2@gmail.com\",\n    \"password\":\"12345678\",\n    \"company\": \"kysoe\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/user",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/user",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "init_database",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url_base}}/api/v1/init",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"init"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "refresh token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res=pm.response.json();",
+							"pm.environment.set('access_token', res.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{refresh_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url_base}}/api/v1/token/refresh",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"token",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login yannick",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res=pm.response.json();",
+							"pm.environment.set('access_token', res.access_token);",
+							"pm.environment.set('refresh_token', res.refresh_token);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-ty",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"yannick.simon@gmail.com\",\n    \"password\":\"12345678\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/api/v1/login",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
