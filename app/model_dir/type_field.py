@@ -8,7 +8,7 @@ class TypeField(db.Model, MyMixin):
     
     __tablename__ = 'types_fields'
     
-    type_field_uuid       = db.Column(db.String(255), unique=True)
+    type_field_uuid       = db.Column(db.String(36), unique=True)
     
     fields   = relationship("Field")
      

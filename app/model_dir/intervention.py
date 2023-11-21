@@ -8,7 +8,7 @@ class Intervention(db.Model, MyMixin):
     
     __tablename__ = 'interventions'
     
-    intervention_on_site_uuid = db.Column(db.String(255), index=True)
+    intervention_on_site_uuid = db.Column(db.String(36), index=True)
     intervention_data_md5   = db.Column(db.String(32))
     average_latitude        = db.Column(db.Float);
     average_longitude       = db.Column(db.Float);

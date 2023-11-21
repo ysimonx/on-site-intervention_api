@@ -11,7 +11,7 @@ import json
 class Field(db.Model, MyMixin):
     __tablename__ = 'fields'
     
-    field_on_site_uuid          = db.Column(db.String(255), unique=True)
+    field_on_site_uuid          = db.Column(db.String(36), unique=True)
     report_on_site_uuid         = db.Column(db.String(36),  index=True)
     report_id                   = db.Column(db.String(36),  db.ForeignKey("reports.id"), nullable=True)
     type_field_id               = db.Column(db.String(36),  db.ForeignKey("types_fields.id"), nullable=True)

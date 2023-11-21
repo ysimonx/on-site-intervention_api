@@ -8,7 +8,7 @@ import uuid
 class Report(db.Model, MyMixin):
     __tablename__ = 'reports'
     
-    report_on_site_uuid         = db.Column(db.String(255), unique=True)
+    report_on_site_uuid         = db.Column(db.String(36), unique=True)
     report_name                 = db.Column(db.String(255), index=True)
     average_latitude            = db.Column(db.Float)
     average_longitude           = db.Column(db.Float)

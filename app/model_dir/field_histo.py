@@ -11,7 +11,7 @@ from sqlalchemy import Enum
 class FieldHisto(db.Model, MyMixin):
     __tablename__ = 'fields_histo'
     
-    field_on_site_uuid          = db.Column(db.String(255), index=True)
+    field_on_site_uuid          = db.Column(db.String(36), index=True)
     report_on_site_uuid         = db.Column(db.String(36), index=True)
     report_id                   = db.Column(db.String(36), db.ForeignKey("reports.id"), nullable=True)
     field_name                  = db.Column(db.String(255), index=True)

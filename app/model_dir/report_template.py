@@ -8,13 +8,14 @@ import uuid
 class ReportTemplate(db.Model, MyMixin):
     __tablename__ = 'report_templates'
     
-
-
+    report_template_on_site_uuid              = db.Column(db.String(36), unique=True)
+    
     def to_json(self):
         return {
             'id':                             self.id,
             'name':                           self.name,
             '_internal' :                     self.get_internal(),
+            'report_template_on_site_uuid':   self.report_template_on_site_uuid
             
         }
         
@@ -23,7 +24,7 @@ class ReportTemplate(db.Model, MyMixin):
             'id':                             self.id,
             'name':                           self.name,
             '_internal' :                     self.get_internal(),
-            
+            'report_template_on_site_uuid':   self.report_template_on_site_uuid
         }
        
 

@@ -8,7 +8,7 @@ class TypeIntervention(db.Model, MyMixin):
     
     __tablename__ = 'types_interventions'
     
-    type_intervention_uuid       = db.Column(db.String(255), unique=True)
+    type_intervention_uuid       = db.Column(db.String(36), unique=True)
     
     interventions   = relationship("Intervention")
      
