@@ -4,7 +4,7 @@ import hashlib
 
 from ..model_dir.intervention import Intervention
 from ..model_dir.place import Place
-from ..model_dir.report import Report
+from ..model_dir.form import Form
 from ..model_dir.field import Field
 from ..model_dir.field_histo import FieldHisto
 from flask import jsonify, request, abort
@@ -68,7 +68,7 @@ def create_intervention():
         print(formulaire_json.get("formulaire_uuid"))
         formulaire_uuid = formulaire_json.get("formulaire_uuid");
         formulaire_name = formulaire_json.get("formulaire_name");
-        formulaire = Report.query.filter(Report.formulaire_uuid == formulaire_uuid).first()
+        formulaire = Form.query.filter(Form.formulaire_uuid == formulaire_uuid).first()
         average_location = formulaire_json.get("average_location");
         average_latitude = average_location.get("latitude")
         average_longitude = average_location.get("longitude")
@@ -83,7 +83,7 @@ def create_intervention():
             
         if formulaire is None:
             print("creation formulaire")
-            formulaire = Report(formulaire_uuid = formulaire_uuid,
+            formulaire = Form(formulaire_uuid = formulaire_uuid,
                                     intervention_id = intervention.id,
                                     name = formulaire_name,
                                     formulaire_data = json.dumps(formulaire_json),

@@ -25,7 +25,7 @@ def get_fields():
 @jwt_required()
 def get_field(id):
     field = Field.query.get(id)
-    print(field.reports)
+    print(field.forms)
     if field is None:
         abort(make_response(jsonify(error="field is not found"), 404))
     return jsonify(field.to_json())
@@ -45,7 +45,7 @@ def delete_field(id):
 #    "field_on_site_uuid": "field_on_site_uuid_value_with_photo_14",
 #    "field_data": "{\"hauteur\": 100}",
 #    "field_data_md5": "field_data_md5_value",
-#    "report_on_site_uuid": "report_on_site_uuid_value",
+#    "form_on_site_uuid": "form_on_site_uuid_value",
 #    "average_latitude": 0.1,
 #    "average_longitude": 0.2,
 #    "photos_on_site_uuid": [
@@ -59,7 +59,7 @@ def delete_field(id):
 #    "field_name": "hauteur"
 #    "field_value": "100"
 #    "type_field": "double/string/json/boolean"
-#    "report_on_site_uuid": "report_on_site_uuid_value",
+#    "form_on_site_uuid": "form_on_site_uuid_value",
 #    "average_latitude": 0.1,
 #    "average_longitude": 0.2,
 #    "photos_on_site_uuid": [
@@ -82,8 +82,8 @@ def create_field():
     field_name          = request.json.get("field_name", None)
     field_value         = request.json.get("field_value", None)
     type_field          = request.json.get("type_field", None)
-    report_on_site_uuid = request.json.get("report_on_site_uuid", None)
-    report_id           = request.json.get("report_id", None)
+    form_on_site_uuid = request.json.get("form_on_site_uuid", None)
+    form_id           = request.json.get("form_id", None)
     average_latitude    = request.json.get("average_latitude", None)
     average_longitude   = request.json.get("average_longitude", None)
     
@@ -97,10 +97,10 @@ def create_field():
     field = Field(
         field_name=field_name,
         field_on_site_uuid=request.json.get('field_on_site_uuid'),
-        report_id=report_id,
+        form_id=form_id,
         field_value=field_value,
         type_field_id = type_field.id,
-        report_on_site_uuid=report_on_site_uuid,
+        form_on_site_uuid=form_on_site_uuid,
         average_latitude=average_latitude,
         average_longitude=average_longitude
     )

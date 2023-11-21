@@ -9,7 +9,7 @@ import json
 from config import config
 
 from ..model_dir.field_histo import FieldHisto
-from ..model_dir.report import Report
+from ..model_dir.form import Form
 from flask import jsonify, request, abort, send_from_directory
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from werkzeug.utils import secure_filename

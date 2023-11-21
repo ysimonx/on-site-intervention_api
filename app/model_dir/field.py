@@ -13,7 +13,7 @@ class Field(db.Model, MyMixin):
     
     field_on_site_uuid          = db.Column(db.String(36), unique=True)
     report_on_site_uuid         = db.Column(db.String(36),  index=True)
-    report_id                   = db.Column(db.String(36),  db.ForeignKey("reports.id"), nullable=True)
+    report_id                   = db.Column(db.String(36),  db.ForeignKey("forms.id"), nullable=True)
     type_field_id               = db.Column(db.String(36),  db.ForeignKey("types_fields.id"), nullable=True)
     field_name                  = db.Column(db.String(255), index=True)
     field_value                 = db.Column(db.String(255), index=True)
@@ -43,7 +43,7 @@ class Field(db.Model, MyMixin):
             'average_longitude':    self.average_longitude,
             'photos':               [{"photo": item.to_json_light()} for item in self.photos] ,
             'files':                [{"file": item.to_json_light()} for item in self.files] ,
-            'report':               self.report_backref.to_json_light(),
+            'report':               self.form_backref.to_json_light(),
             'type_field':           self.type_field_backref.to_json()
             
         }

@@ -7,7 +7,7 @@ from ..model_dir.field import Field
 from ..model_dir.type_field import TypeField
 from ..model_dir.photo import Photo
 
-from ..model_dir.report import Report
+from ..model_dir.form import Form
 from flask import jsonify, request, abort
 from flask_jwt_extended import jwt_required
 
@@ -15,42 +15,42 @@ from .. import db
 
 from ..thingsboard.connector_thingsboard import ThingsboardConnector
 
-app_file_report= Blueprint('report',__name__)
+app_file_form= Blueprint('form',__name__)
 
 
 
 
 
-@app_file_report.route("/report", methods=["GET"])
+@app_file_form.route("/form", methods=["GET"])
 @jwt_required()
-def get_reports():
-    reports = Report.query.all()
+def get_forms():
+    forms = Form.query.all()
     
     tb=ThingsboardConnector()
-    for report in reports:
-        tb.syncAssetsFromInstanceAndChildren(report)
+    for form in forms:
+        tb.syncAssetsFromInstanceAndChildren(form)
             
-    return jsonify([item.to_json() for item in reports])
+    return jsonify([item.to_json() for item in forms])
 
 
-@app_file_report.route("/report/<id>", methods=["GET"])
+@app_file_form.route("/form/<id>", methods=["GET"])
 @jwt_required()
-def get_report(id):
-    report = Report.query.get(id)
-    if report is None:
-        abort(make_response(jsonify(error="report is not found"), 404))
+def get_form(id):
+    form = Form.query.get(id)
+    if form is None:
+        abort(make_response(jsonify(error="form is not found"), 404))
        
-    return jsonify(report.to_json())
+    return jsonify(form.to_json())
 
     
-@app_file_report.route("/report/<id>", methods=["DELETE"])
+@app_file_form.route("/form/<id>", methods=["DELETE"])
 @jwt_required()
-def delete_report(id):
-    report = Report.query.get(id)
-    if report is None:
-        abort(make_response(jsonify(error="report is not found"), 404))
+def delete_form(id):
+    form = Form.query.get(id)
+    if form is None:
+        abort(make_response(jsonify(error="form is not found"), 404))
         
-    for item_field in report.fields:
+    for item_field in form.fields:
         for item_photo in item_field.photos:
             photo = Photo.query.get(item_photo.id)
             if photo is not None:
@@ -62,14 +62,14 @@ def delete_report(id):
             db.session.delete(field)
             current_app.logger.info('field deleted id = ' + field.id)
     
-    db.session.delete(report)
-    current_app.logger.info('report deleted id = ' + report.id)
+    db.session.delete(form)
+    current_app.logger.info('form deleted id = ' + form.id)
     
     db.session.commit()
     
      # synchro thingsboard
     tb=ThingsboardConnector()
-    tb.delAssetsFromInstanceAndChildren(report)
+    tb.delAssetsFromInstanceAndChildren(form)
          
     return jsonify({'result': True})
 
@@ -77,9 +77,9 @@ def delete_report(id):
 """
 Exemple de json à envoyer
 {
-    "report_on_site_uuid": "report_on_site_uuid_value40",
+    "form_on_site_uuid": "form_on_site_uuid_value40",
     "intervention_on_site_uuid": "intervention_on_site_uuid_value1",
-    "report_name":"visite de l'échafaudage E1",
+    "form_name":"visite de l'échafaudage E1",
     "fields":[
         {
                 "field_on_site_uuid": "field_on_site_uuid_value_40",
@@ -98,35 +98,35 @@ Exemple de json à envoyer
 
 """
 
-@app_file_report.route('/report', methods=['PUT', 'POST'])
+@app_file_form.route('/form', methods=['PUT', 'POST'])
 @jwt_required()
-def update_report():
+def update_form():
     
-    # update report
-    report_on_site_uuid = request.json.get("report_on_site_uuid", None)
-    if report_on_site_uuid is None:
-        abort(make_response(jsonify(error="missing report_on_site_uuid parameter"), 400))
+    # update form
+    form_on_site_uuid = request.json.get("form_on_site_uuid", None)
+    if form_on_site_uuid is None:
+        abort(make_response(jsonify(error="missing form_on_site_uuid parameter"), 400))
         
-    report = Report.query.filter(Report.report_on_site_uuid == report_on_site_uuid).first()
-    if report is None:
-        report_name                 = request.json.get("report_name", None)
+    form = Form.query.filter(Form.form_on_site_uuid == form_on_site_uuid).first()
+    if form is None:
+        form_name                 = request.json.get("form_name", None)
         average_latitude            = request.json.get("average_latitude", None)
         average_longitude           = request.json.get("average_longitude", None)
         intervention_on_site_uuid   = request.json.get("intervention_on_site_uuid", None)
-        report = Report(
-            report_on_site_uuid=report_on_site_uuid,
-            report_name=report_name,
+        form = Form(
+            form_on_site_uuid=form_on_site_uuid,
+            form_name=form_name,
             intervention_on_site_uuid=intervention_on_site_uuid,
             average_latitude=average_latitude,
             average_longitude=average_longitude
         )
-        db.session.add(report)
+        db.session.add(form)
         db.session.commit()
     else:
-        report.report_name                 = request.json.get("report_name",        report.report_name)
-        report.average_latitude            = request.json.get("average_latitude",   report.average_latitude)
-        report.average_longitude           = request.json.get("average_longitude",  report.average_longitude)
-        report.intervention_on_site_uuid   = request.json.get("intervention_on_site_uuid", report.intervention_on_site_uuid)
+        form.form_name                 = request.json.get("form_name",        form.form_name)
+        form.average_latitude            = request.json.get("average_latitude",   form.average_latitude)
+        form.average_longitude           = request.json.get("average_longitude",  form.average_longitude)
+        form.intervention_on_site_uuid   = request.json.get("intervention_on_site_uuid", form.intervention_on_site_uuid)
         db.session.commit()
     
     arr_children_fields=[]
@@ -139,8 +139,8 @@ def update_report():
                 
                 if field is None:
                     field = Field(
-                        report_id           = report.id,
-                        report_on_site_uuid = report.report_on_site_uuid,
+                        form_id           = form.id,
+                        form_on_site_uuid = form.form_on_site_uuid,
                     )
               
                 if "field_name" in itemfield:
@@ -182,6 +182,6 @@ def update_report():
                      
     
     tb=ThingsboardConnector()
-    tb.syncAssetsFromInstanceAndChildren(report)    
+    tb.syncAssetsFromInstanceAndChildren(form)    
     
     return jsonify({ "message":"ok"}), 200

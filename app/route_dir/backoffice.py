@@ -10,7 +10,7 @@ from config import config
 from ..model_dir.intervention import Intervention
 from ..model_dir.photo import Photo
 from ..model_dir.place import Place
-from ..model_dir.report import Report
+from ..model_dir.form import Form
 from ..model_dir.field import Field
 from ..model_dir.field_histo import FieldHisto
 from ..model_dir.user import User

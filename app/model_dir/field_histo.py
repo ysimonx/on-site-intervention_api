@@ -12,8 +12,8 @@ class FieldHisto(db.Model, MyMixin):
     __tablename__ = 'fields_histo'
     
     field_on_site_uuid          = db.Column(db.String(36), index=True)
-    report_on_site_uuid         = db.Column(db.String(36), index=True)
-    report_id                   = db.Column(db.String(36), db.ForeignKey("reports.id"), nullable=True)
+    form_on_site_uuid           = db.Column(db.String(36), index=True)
+    form_id                     = db.Column(db.String(36), db.ForeignKey("forms.id"), nullable=True)
     field_name                  = db.Column(db.String(255), index=True)
     field_value                 = db.Column(db.String(255), index=True)
     field_type                  = db.Column(db.String(255), index=True)
@@ -30,8 +30,8 @@ class FieldHisto(db.Model, MyMixin):
             'field_name'                : self.field_name,
             'field_value'               : self.field_value,
             'field_type'                : self.field_type,
-            'report_id'                 : self.report_id,
-            'report_on_site_uuid'       : self.report_on_site_uuid,
+            'form_id'                 : self.form_id,
+            'form_on_site_uuid'       : self.form_on_site_uuid,
             'average_latitude'          : self.average_latitude,
             'average_longitude'         : self.average_longitude,
             
@@ -46,8 +46,8 @@ class FieldHisto(db.Model, MyMixin):
             'field_name'                : self.field_name,
             'field_value'               : self.field_value,
             'field_type'                : self.field_type,
-            'report_id'                 : self.report_id,
-            'report_on_site_uuid'       : self.report_on_site_uuid,
+            'form_id'                 : self.form_id,
+            'form_on_site_uuid'       : self.form_on_site_uuid,
             'average_latitude'          : self.average_latitude,
             'average_longitude'         : self.average_longitude,
             

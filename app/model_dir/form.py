@@ -5,11 +5,11 @@ from sqlalchemy.orm import declarative_base, relationship, backref
 import uuid
 
 
-class Report(db.Model, MyMixin):
-    __tablename__ = 'reports'
+class Form(db.Model, MyMixin):
+    __tablename__ = 'forms'
     
-    report_on_site_uuid         = db.Column(db.String(36), unique=True)
-    report_name                 = db.Column(db.String(255), index=True)
+    form_on_site_uuid           = db.Column(db.String(36), unique=True)
+    form_name                   = db.Column(db.String(255), index=True)
     average_latitude            = db.Column(db.Float)
     average_longitude           = db.Column(db.Float)
     intervention_on_site_uuid   = db.Column(db.String(36))
@@ -17,7 +17,7 @@ class Report(db.Model, MyMixin):
     
     fields                      = relationship("Field",   
                                                 cascade="all, delete", 
-                                                backref=backref("report_backref",lazy="joined")
+                                                backref=backref("form_backref",lazy="joined")
                                             )
    
 
@@ -26,8 +26,8 @@ class Report(db.Model, MyMixin):
             'id':                             self.id,
             'name':                           self.name,
             '_internal' :                     self.get_internal(),
-            'report_on_site_uuid':            self.report_on_site_uuid,
-            'report_name':                    self.report_name,
+            'report_on_site_uuid':            self.form_on_site_uuid,
+            'report_name':                    self.form_name,
             'intervention_on_site_uuid':      self.intervention_on_site_uuid,
             'intervention_id':                self.intervention_id,
             'average_latitude':               self.average_latitude,
@@ -40,8 +40,8 @@ class Report(db.Model, MyMixin):
             'id':                             self.id,
             'name':                           self.name,
             '_internal' :                     self.get_internal(),
-            'report_on_site_uuid':            self.report_on_site_uuid,
-            'report_name':                    self.report_name,
+            'report_on_site_uuid':            self.form_on_site_uuid,
+            'report_name':                    self.form_name,
             'intervention_on_site_uuid':      self.intervention_on_site_uuid,
             'intervention_id':                self.intervention_id,
             'average_latitude':               self.average_latitude,
@@ -51,7 +51,7 @@ class Report(db.Model, MyMixin):
 
 
 from sqlalchemy import event
-@event.listens_for(Report, 'before_insert')
+@event.listens_for(Form, 'before_insert')
 def do_stuff1(mapper, connect, target):
     MyMixin.map_owner(mapper, connect, target)
     

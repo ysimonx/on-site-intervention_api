@@ -17,7 +17,7 @@ class Intervention(db.Model, MyMixin):
     
     place                   = relationship("Place",                    viewonly=True, back_populates="interventions")
     type_intervention       = relationship("TypeIntervention",         viewonly=True, back_populates="interventions")
-    reports                 = relationship("Report")
+    forms                 = relationship("Report")
     
     
     def to_json(self):
@@ -30,7 +30,7 @@ class Intervention(db.Model, MyMixin):
             'place':                        self.place.to_json_light(),
             'average_latitude':             self.average_latitude,
             'average_longitude':            self.average_longitude,
-            'reports':  [{"reports": item.to_json_light()} for item in self.reports],    
+            'forms':  [{"forms": item.to_json_light()} for item in self.forms],    
         }
         
     def to_json_light(self):

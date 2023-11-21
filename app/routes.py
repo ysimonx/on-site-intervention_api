@@ -23,8 +23,8 @@ from .route_dir.file            import app_file_file
 from .route_dir.intervention    import app_file_intervention
 from .route_dir.type_intervention import app_file_type_intervention
 from .route_dir.place           import app_file_place
-from .route_dir.report          import app_file_report
-from .route_dir.report_template import app_file_report_template
+from .route_dir.form          import app_file_form
+from .route_dir.form_template import app_file_form_template
 from .route_dir.field           import app_file_field
 from .route_dir.field_histo     import app_file_field_histo
 from .route_dir.backoffice      import app_file_backoffice
@@ -72,7 +72,7 @@ app.register_blueprint(app_file_place,
                        url_prefix=url_prefix)
 app.register_blueprint(app_file_intervention,
                        url_prefix=url_prefix)
-app.register_blueprint(app_file_report,
+app.register_blueprint(app_file_form,
                        url_prefix=url_prefix)
 app.register_blueprint(app_file_field,
                        url_prefix=url_prefix)
@@ -82,7 +82,7 @@ app.register_blueprint(app_file_tenant,
                        url_prefix=url_prefix)
 app.register_blueprint(app_file_role,
                        url_prefix=url_prefix)
-app.register_blueprint(app_file_report_template,
+app.register_blueprint(app_file_form_template,
                        url_prefix=url_prefix)
 url_prefix_backoffice = "/backoffice/v1"
 app.register_blueprint(app_file_backoffice,
