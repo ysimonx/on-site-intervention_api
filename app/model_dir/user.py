@@ -14,7 +14,7 @@ user_role = db.Table('users_roles',
 class Role(db.Model, MyMixin):
     __tablename__ = 'roles'
    
-   
+    
     def to_json(self):
         return {
             'id':               self.id,
@@ -25,7 +25,8 @@ class Role(db.Model, MyMixin):
     def to_json_light(self):
         return {
             'id':               self.id,
-            'name':             self.name
+            'name':             self.name,
+            
         }
         
     def to_json_anonymous(self):

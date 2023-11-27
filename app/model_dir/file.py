@@ -1,5 +1,4 @@
 from .. import db
-from types import NoneType
 import datetime
 
 from .mymixin import MyMixin
@@ -7,6 +6,8 @@ from .mymixin import MyMixin
 from sqlalchemy.orm import declarative_base, relationship, backref
 import uuid
 
+NoneType = type(None)
+NoneType = None.__class__
 
 # file upload is here : https://www.youtube.com/watch?v=zMhmZ_ePGiM
 

@@ -12,8 +12,9 @@ class Field(db.Model, MyMixin):
     __tablename__ = 'fields'
     
     field_on_site_uuid          = db.Column(db.String(36), unique=True)
-    form_on_site_uuid         = db.Column(db.String(36),  index=True)
-    form_id                   = db.Column(db.String(36),  db.ForeignKey("forms.id"), nullable=True)
+    
+    form_on_site_uuid           = db.Column(db.String(36),  index=True)
+    form_id                     = db.Column(db.String(36),  db.ForeignKey("forms.id"), nullable=True)
     type_field_id               = db.Column(db.String(36),  db.ForeignKey("types_fields.id"), nullable=True)
     field_name                  = db.Column(db.String(255), index=True)
     field_value                 = db.Column(db.String(255), index=True)

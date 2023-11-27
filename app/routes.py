@@ -133,9 +133,9 @@ def before_first_request():
 def init():
     # db.drop_all()
     db.create_all()
+    populate_tenant()
     populate_user_data()
     populate_type_field()
-    populate_tenant()
     app.logger.info("db init done")
     return "ok"
     
@@ -146,7 +146,7 @@ def swagger():
 
 def populate_tenant():
 
-    tenants=["iter","arkema","total"];
+    tenants=["sandbox","iter","arkema","total"];
 
     for newtenant in tenants:
             test=getByIdOrByName(Tenant, newtenant)
@@ -182,7 +182,7 @@ def populate_user_data():
                 ]    
                 }
     
-
+       
     for company, users in dataCompany.items():
         _company = getByIdOrByName(obj=Company, id=company)
         if _company is None:

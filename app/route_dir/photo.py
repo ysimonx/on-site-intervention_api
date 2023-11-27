@@ -4,11 +4,12 @@ import os
 from config import config
 
 from ..model_dir.photo import Photo
+from ..model_dir.tenant import Tenant
 from flask import jsonify, request, abort
 from flask_jwt_extended import jwt_required
 from werkzeug.utils import secure_filename
 
-from .. import db
+from .. import db, getByIdOrByName
 
 from ..thingsboard.connector_thingsboard import ThingsboardConnector
 
@@ -124,6 +125,7 @@ def get_photos():
 @jwt_required()
 def create_photo():
 
+
     if not "file" in request.files:
         abort(make_response(jsonify(error="missing file parameter"), 400))
         
@@ -145,7 +147,6 @@ def create_photo():
     if not 'field_on_site_uuid' in request.form:
         abort(make_response(jsonify(error="missing field_on_site_uuid parameter"), 400))
        
-
     photo_on_site_uuid = request.form.get('photo_on_site_uuid')
     photo = Photo.query.filter(Photo.photo_on_site_uuid == photo_on_site_uuid).first()
     if photo is not None:
@@ -157,10 +158,12 @@ def create_photo():
     latitude                    = request.form.get('latitude')
     longitude                   = request.form.get('longitude')
     field_on_site_uuid          = request.form.get('field_on_site_uuid')
-    form_on_site_uuid         = request.form.get('form_on_site_uuid')
+    form_on_site_uuid           = request.form.get('form_on_site_uuid')
     intervention_on_site_uuid   = request.form.get('intervention_on_site_uuid')
     newfilename                 = photo_on_site_uuid+get_extension(filename)
     
+    tenant = Tenant.getRequestTenant()
+
     file.save(os.path.join(UPLOAD_FOLDER, newfilename))
     add_geolocation(os.path.join(UPLOAD_FOLDER, newfilename), float(latitude), float(longitude))
     
@@ -170,8 +173,10 @@ def create_photo():
                     filename= newfilename, 
                     field_on_site_uuid=field_on_site_uuid, 
                     form_on_site_uuid=form_on_site_uuid, 
-                    intervention_on_site_uuid=intervention_on_site_uuid
+                    intervention_on_site_uuid=intervention_on_site_uuid,
+                    tenant_id = tenant.id
                 )
+    
     db.session.add(photo)
     db.session.commit() 
 

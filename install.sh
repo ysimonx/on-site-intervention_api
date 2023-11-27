@@ -13,7 +13,7 @@ pip install tb_rest_client
 pip install requests
 
 
-pip install -r requirements.txt
+pip install -r requirements.txt --upgrade
 
 # mysql -u root -e "create database if not exists intervention_on_site_dev"; 
  

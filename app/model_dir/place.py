@@ -8,7 +8,7 @@ import uuid
 class Place(db.Model, MyMixin):
     __tablename__ = 'places'
     
-    place_on_site_uuid= db.Column(db.String(36), unique=True)
+    place_on_site_uuid  = db.Column(db.String(36), unique=True)
     
     average_latitude= db.Column(db.Float);
     average_longitude= db.Column(db.Float);

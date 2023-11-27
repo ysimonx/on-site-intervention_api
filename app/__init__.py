@@ -3,6 +3,9 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from config import config
 
+
+
+
 db = SQLAlchemy()
 
 import uuid
@@ -23,8 +26,12 @@ def getByIdOrByName(obj, id):
     try:
         uuid.UUID(str(id))
         result = obj.query.get(id)
+        print("a")
     except ValueError:
         result = obj.query.filter(obj.name==id).first()
+        print("Value Error : ", id)
+        print(result)
+        
     return result
 
 def getByIdOrEmail(obj, id):
@@ -44,4 +51,5 @@ def getByIdOrFilename(obj, id):
     except ValueError:
         result = obj.query.filter(obj.filename==id).first()
     return result
+    
     

@@ -8,16 +8,14 @@ class Intervention(db.Model, MyMixin):
     
     __tablename__ = 'interventions'
     
-    intervention_on_site_uuid = db.Column(db.String(36), index=True)
-    intervention_data_md5   = db.Column(db.String(32))
-    average_latitude        = db.Column(db.Float);
-    average_longitude       = db.Column(db.Float);
-    place_id                = db.Column(db.String(36), db.ForeignKey("places.id"));
-    type_intervention_id    = db.Column(db.String(36), db.ForeignKey("types_interventions.id"));
+    intervention_on_site_uuid   = db.Column(db.String(36), index=True)
     
-    place                   = relationship("Place",                    viewonly=True, back_populates="interventions")
-    type_intervention       = relationship("TypeIntervention",         viewonly=True, back_populates="interventions")
-    forms                   = relationship("Form")
+    place_id                    = db.Column(db.String(36), db.ForeignKey("places.id"));
+    type_intervention_id        = db.Column(db.String(36), db.ForeignKey("types_interventions.id"));
+    
+    place                       = relationship("Place",                    viewonly=True, back_populates="interventions")
+    type_intervention           = relationship("TypeIntervention",         viewonly=True, back_populates="interventions")
+    forms                       = relationship("Form")
     
     
     def to_json(self):
@@ -26,10 +24,7 @@ class Intervention(db.Model, MyMixin):
             'name':                         self.name,
             '_internal' :                   self.get_internal(),
             'intervention_on_site_uuid':    self.intervention_on_site_uuid,
-            'intervention_data_md5':        self.intervention_data_md5,
             'place':                        self.place.to_json_light(),
-            'average_latitude':             self.average_latitude,
-            'average_longitude':            self.average_longitude,
             'forms':  [{"forms": item.to_json_light()} for item in self.forms],    
         }
         
@@ -38,11 +33,7 @@ class Intervention(db.Model, MyMixin):
             'id':                       self.id,
             'name':                     self.name,
             'place_id':                 self.place_id,
-            'intervention_data_md5':    self.intervention_data_md5,
             'place':                    self.place.to_json_light(),
-            'average_latitude':         self.average_latitude,
-            'average_longitude':        self.average_longitude,
-            
         }
 
    

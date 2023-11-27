@@ -1,5 +1,5 @@
 from .. import db
-from types import NoneType
+
 import datetime
 
 from .mymixin import MyMixin
@@ -7,6 +7,8 @@ from .mymixin import MyMixin
 from sqlalchemy.orm import declarative_base, relationship, backref
 import uuid
 
+NoneType = type(None)
+NoneType = None.__class__
 
 # file upload is here : https://www.youtube.com/watch?v=zMhmZ_ePGiM
 
@@ -14,7 +16,6 @@ class Photo(db.Model, MyMixin):
     __tablename__ = 'photos'
     
     field_id                    = db.Column(db.String(36),  db.ForeignKey("fields.id"), nullable=True)
-    
     photo_on_site_uuid          = db.Column(db.String(36), unique=True)
     field_on_site_uuid          = db.Column(db.String(36),  index=True)
     form_on_site_uuid         = db.Column(db.String(36),  index=True)

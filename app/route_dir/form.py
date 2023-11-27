@@ -6,12 +6,14 @@ from sqlalchemy.orm.interfaces import *
 from ..model_dir.field import Field
 from ..model_dir.type_field import TypeField
 from ..model_dir.photo import Photo
+from ..model_dir.tenant import Tenant
 
 from ..model_dir.form import Form
 from flask import jsonify, request, abort
 from flask_jwt_extended import jwt_required
 
-from .. import db
+
+from .. import db, getByIdOrByName
 
 from ..thingsboard.connector_thingsboard import ThingsboardConnector
 
@@ -106,7 +108,15 @@ def update_form():
     form_on_site_uuid = request.json.get("form_on_site_uuid", None)
     if form_on_site_uuid is None:
         abort(make_response(jsonify(error="missing form_on_site_uuid parameter"), 400))
-        
+    
+    tenant = Tenant.getRequestTenant()
+    
+    #
+    # TODO
+    # should verify that this user is an authorized one for this tenant
+    # should verify that this user has a role able to upload photo
+    
+    
     form = Form.query.filter(Form.form_on_site_uuid == form_on_site_uuid).first()
     if form is None:
         form_name                 = request.json.get("form_name", None)
@@ -118,7 +128,8 @@ def update_form():
             form_name=form_name,
             intervention_on_site_uuid=intervention_on_site_uuid,
             average_latitude=average_latitude,
-            average_longitude=average_longitude
+            average_longitude=average_longitude,
+            tenant_id = tenant.id
         )
         db.session.add(form)
         db.session.commit()
@@ -141,6 +152,7 @@ def update_form():
                     field = Field(
                         form_id           = form.id,
                         form_on_site_uuid = form.form_on_site_uuid,
+                        tenant_id = tenant.id
                     )
               
                 if "field_name" in itemfield:

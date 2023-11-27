@@ -27,14 +27,52 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "create intervention",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n    \"intervention_on_site_uuid\": \"intervention_on_site_uuid_value1\",\n    \"intervention_name\":\"échafaudage E1\",\n    \"place\": {\n        \"place_on_site_uuid\": \"nice_uuid_1\",\n        \"place_name\": \"nice\"\n    },\n    \"forms\":[\n        {   \n            \"form_name\":\"initial_request\",\n            \"form_on_site_uuid\": \"report_on_site_uuid_value3b\"\n        }\n    ]\n}\n    \n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/intervention",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"intervention"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "reports",
+			"name": "forms",
 			"item": [
 				{
-					"name": "report list",
+					"name": "form list",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -49,21 +87,21 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url_base}}/api/v1/report",
+							"raw": "{{url_base}}/api/v1/form",
 							"host": [
 								"{{url_base}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"report"
+								"form"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "report get by id",
+					"name": "form get by id",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -78,14 +116,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url_base}}/api/v1/report/a47d3d86-ea56-46a0-a37c-cd864112f497",
+							"raw": "{{url_base}}/api/v1/form/a47d3d86-ea56-46a0-a37c-cd864112f497",
 							"host": [
 								"{{url_base}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"report",
+								"form",
 								"a47d3d86-ea56-46a0-a37c-cd864112f497"
 							]
 						}
@@ -93,7 +131,7 @@
 					"response": []
 				},
 				{
-					"name": "report delete by id",
+					"name": "form delete by id",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -108,14 +146,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url_base}}/api/v1/report/a85aad70-76c1-4640-a4de-d1df4d2cd055",
+							"raw": "{{url_base}}/api/v1/form/a85aad70-76c1-4640-a4de-d1df4d2cd055",
 							"host": [
 								"{{url_base}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"report",
+								"form",
 								"a85aad70-76c1-4640-a4de-d1df4d2cd055"
 							]
 						}
@@ -123,7 +161,7 @@
 					"response": []
 				},
 				{
-					"name": "create report",
+					"name": "create form",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -145,7 +183,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"report_on_site_uuid\": \"report_on_site_uuid_value50\",\n    \"intervention_on_site_uuid\": \"intervention_on_site_uuid_value1\",\n    \"report_name\":\"visite de l'échafaudage E1\",\n    \"fields\":[\n        {\n                \"field_on_site_uuid\": \"field_on_site_uuid_value_51\",\n                \"field_name\": \"hauteur\",\n                \"field_value\": \"100.1\",\n                \"type_field\": \"double\",\n                \"average_latitude\": 0.1,\n                \"average_longitude\": 0.2,\n                \"photos_on_site_uuid\": [\n                    \"photo_on_site_uuid_valuec\"\n                ]\n        },\n                {\n                \"field_on_site_uuid\": \"field_on_site_uuid_value_52\",\n                \"field_name\": \"hauteur\",\n                \"field_value\": \"100.1\",\n                \"type_field\": \"double\",\n                \"average_latitude\": 0.1,\n                \"average_longitude\": 0.2,\n                \"photos_on_site_uuid\": [\n                    \"photo_on_site_uuid_valued\"\n                ]\n        }\n\n    ]\n}\n    \n",
+							"raw": "{\n    \"form_on_site_uuid\": \"report_on_site_uuid_value50\",\n    \"intervention_on_site_uuid\": \"intervention_on_site_uuid_value1\",\n    \"form_name\":\"visite de l'échafaudage E1\",\n    \"fields\":[\n        {\n                \"field_on_site_uuid\": \"field_on_site_uuid_value_51\",\n                \"field_name\": \"hauteur\",\n                \"field_value\": \"100.1\",\n                \"type_field\": \"double\",\n                \"average_latitude\": 0.1,\n                \"average_longitude\": 0.2,\n                \"photos_on_site_uuid\": [\n                    \"photo_on_site_uuid_valuec\"\n                ]\n        },\n                {\n                \"field_on_site_uuid\": \"field_on_site_uuid_value_52\",\n                \"field_name\": \"hauteur\",\n                \"field_value\": \"100.1\",\n                \"type_field\": \"double\",\n                \"average_latitude\": 0.1,\n                \"average_longitude\": 0.2,\n                \"photos_on_site_uuid\": [\n                    \"photo_on_site_uuid_valued\"\n                ]\n        }\n\n    ]\n}\n    \n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -153,21 +191,21 @@
 							}
 						},
 						"url": {
-							"raw": "{{url_base}}/api/v1/report",
+							"raw": "{{url_base}}/api/v1/form",
 							"host": [
 								"{{url_base}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"report"
+								"form"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "update report",
+					"name": "update form",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -189,7 +227,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"report_on_site_uuid\": \"report_on_site_uuid_value3b\",\n    \"average_longitude\": 85.8,\n    \"average_latitude\": 85.13,\n    \"fields\": [{\n        \"field_on_site_uuid\": \"field_on_site_uuid_value_39b\",\n        \"field_value\": \"100.15\",\n        \"type_field\": \"double\",\n        \"photos_on_site_uuid\": [\n                    \"photo_on_site_uuid_valueb\"\n                ]\n    }]\n}\n    \n",
+							"raw": "{\n    \"form_on_site_uuid\": \"report_on_site_uuid_value3b\",\n    \"average_longitude\": 85.8,\n    \"average_latitude\": 85.13,\n    \"fields\": [{\n        \"field_on_site_uuid\": \"field_on_site_uuid_value_39b\",\n        \"field_value\": \"100.15\",\n        \"type_field\": \"double\",\n        \"photos_on_site_uuid\": [\n                    \"photo_on_site_uuid_valueb\"\n                ]\n    }]\n}\n    \n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -197,14 +235,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{url_base}}/api/v1/report",
+							"raw": "{{url_base}}/api/v1/form",
 							"host": [
 								"{{url_base}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"report"
+								"form"
 							]
 						}
 					},
@@ -226,14 +264,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url_base}}/api/v1/report",
+							"raw": "{{url_base}}/api/v1/form",
 							"host": [
 								"{{url_base}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"report"
+								"form"
 							]
 						}
 					},
@@ -520,8 +558,8 @@
 									"type": "text"
 								},
 								{
-									"key": "report_on_site_uuid",
-									"value": "report_on_site_uuid_value",
+									"key": "form_on_site_uuid",
+									"value": "form_on_site_uuid_value",
 									"type": "text"
 								},
 								{
@@ -601,8 +639,8 @@
 									"type": "text"
 								},
 								{
-									"key": "report_on_site_uuid",
-									"value": "report_on_site_uuid_value",
+									"key": "form_on_site_uuid",
+									"value": "form_on_site_uuid_value",
 									"type": "text"
 								},
 								{
@@ -738,6 +776,49 @@
 								"api",
 								"v1",
 								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "report_template",
+			"item": [
+				{
+					"name": "create form_template",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\"                        : \"initial_request\",\n    \n    \"rubriques\":[\n         {\n            \"label\":\"demandeur\",\n            \"authorized_roles_write\": [\"admin\"],\n            \"authorized_roles_read\": [\"all\"],\n            \"fields\":[\n                {\n                    \"field_name\":\"demandeur\",\n                    \"field_widget\":\"inputContact\",\n                    \"field_suggest\": {\"roles\": [\"all\"]}\n                }\n            ]\n        },\n        {\n            \"label\":\"besoin\",\n            \"authorized_roles_write\": [\"admin\"],\n            \"authorized_roles_read\": [\"all\"],\n            \"fields\":[\n                {\n                    \"field_name\":\"longueur\",\n                    \"field_widget\":\"inputText\",\n                    \"field_suggest\": {\"values\": [1,2,3,4,5,6,7,8,9,10]}\n                },\n                {\n                    \"field_name\":\"largeur\",\n                    \"field_widget\":\"inputText\",\n                    \"field_suggest\": {\"values\": [1,2,3,4,5,6,7,8,9,10]}\n                },\n                {\n                    \"field_name\":\"hauteur\",\n                    \"field_widget\":\"inputText\",\n                    \"field_suggest\": {\"values\": [1,2,3,4,5,6,7,8,9,10]}\n                },\n                {\n                    \"field_name\":\"date de livraison\",\n                    \"field_widget\":\"inputDate\"\n                },\n                {\n                    \"field_name\":\"photo emplacement\",\n                    \"field_widget\":\"inputPhoto\"\n                }\n\n            ]\n        }\n    ]\n\n    \n}\n    \n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/form_template",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"form_template"
 							]
 						}
 					},
