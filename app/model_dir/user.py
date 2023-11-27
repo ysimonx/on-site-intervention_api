@@ -50,6 +50,15 @@ class User(db.Model, MyMixin):
 
     def to_json(self):
         
+        tenants=[];
+        dict_tenant_roles={}
+        
+        for item in self.roles:
+            if not item.tenant_id in tenants:
+                dict_tenant_roles[item.tenant_id] = {"roles":[]}
+                tenants.append(item.tenant_id)
+            dict_tenant_roles[item.tenant_id]["roles"].append(item.name)
+        
         return {
             'id':           self.id,
             '_internal' :   self.get_internal(),
@@ -59,22 +68,13 @@ class User(db.Model, MyMixin):
             'firstname':    self.firstname,
             'lastname':     self.lastname,
             'company':      self.company.to_json_light(),
-            'roles':       [item.name for item in self.roles] ,
+            'tenant_ids':   dict_tenant_roles
             
         }
 
     def to_json_light(self):
-        return {
-            'id':           self.id,
-            'email':        self.email,
-            'company_id':   self.company_id,
-            'firstname':    self.firstname,
-            'lastname':     self.lastname,
-            'company':      self.company.to_json_light(),
-            'roles':       [item.name for item in self.roles] ,
         
-            
-        }
+        return self.to_json()
         
     def to_json_anonymous(self):
         return {

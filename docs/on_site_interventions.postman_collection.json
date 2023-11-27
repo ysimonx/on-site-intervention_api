@@ -45,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "\n{\n    \"intervention_on_site_uuid\": \"intervention_on_site_uuid_value1\",\n    \"intervention_name\":\"échafaudage E1\",\n    \"place\": {\n        \"place_on_site_uuid\": \"nice_uuid_1\",\n        \"place_name\": \"nice\"\n    },\n    \"forms\":[\n        {   \n            \"form_name\":\"initial_request\",\n            \"form_on_site_uuid\": \"report_on_site_uuid_value3b\"\n        }\n    ]\n}\n    \n\n",
+							"raw": "\n{\n    \"intervention_on_site_uuid\": \"intervention_on_site_uuid_value1\",\n    \"intervention_name\":\"échafaudage E1\",\n    \"place_on_site_uuid\": \"nice_uuid_1\",\n    \"place_name\": \"nice\",\n    \"forms\":[\n        {   \n            \"form_name\":\"initial_request\",\n            \"form_on_site_uuid\": \"report_on_site_uuid_value3b\"\n        },\n         {   \n            \"form_name\":\"visit\",\n            \"form_on_site_uuid\": \"report_on_site_uuid_value3c\"\n        },\n         {   \n            \"form_name\":\"reception\",\n            \"form_on_site_uuid\": \"report_on_site_uuid_value3d\"\n        }\n    ],\n    \"user_roles\": \n    {\n        \"user\": {\n            \"user_id\":\"\"\n        },\n        \"requester\": {\n            \"user_id\":\"\"\n        },\n        \"supervisor\": {\n            \"user_id\":\"\"\n        }\n    }\n}\n    \n\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -183,7 +183,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"form_on_site_uuid\": \"report_on_site_uuid_value50\",\n    \"intervention_on_site_uuid\": \"intervention_on_site_uuid_value1\",\n    \"form_name\":\"visite de l'échafaudage E1\",\n    \"fields\":[\n        {\n                \"field_on_site_uuid\": \"field_on_site_uuid_value_51\",\n                \"field_name\": \"hauteur\",\n                \"field_value\": \"100.1\",\n                \"type_field\": \"double\",\n                \"average_latitude\": 0.1,\n                \"average_longitude\": 0.2,\n                \"photos_on_site_uuid\": [\n                    \"photo_on_site_uuid_valuec\"\n                ]\n        },\n                {\n                \"field_on_site_uuid\": \"field_on_site_uuid_value_52\",\n                \"field_name\": \"hauteur\",\n                \"field_value\": \"100.1\",\n                \"type_field\": \"double\",\n                \"average_latitude\": 0.1,\n                \"average_longitude\": 0.2,\n                \"photos_on_site_uuid\": [\n                    \"photo_on_site_uuid_valued\"\n                ]\n        }\n\n    ]\n}\n    \n",
+							"raw": "{\n    \"form_on_site_uuid\": \"report_on_site_uuid_value51\",\n    \"intervention_on_site_uuid\": \"intervention_on_site_uuid_value1\",\n    \"form_name\":\"visite de l'échafaudage E1\",\n    \"tenant_id\": \"sandbox\",\n    \"fields\":[\n        {\n                \"field_on_site_uuid\": \"field_on_site_uuid_value_51\",\n                \"field_name\": \"hauteur\",\n                \"field_value\": \"100.1\",\n                \"type_field\": \"double\",\n                \"average_latitude\": 0.1,\n                \"average_longitude\": 0.2,\n                \"photos_on_site_uuid\": [\n                    \"photo_on_site_uuid_valuec\"\n                ]\n        },\n                {\n                \"field_on_site_uuid\": \"field_on_site_uuid_value_52\",\n                \"field_name\": \"hauteur\",\n                \"field_value\": \"100.1\",\n                \"type_field\": \"double\",\n                \"average_latitude\": 0.1,\n                \"average_longitude\": 0.2,\n                \"photos_on_site_uuid\": [\n                    \"photo_on_site_uuid_valued\"\n                ]\n        }\n\n    ]\n}\n    \n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -227,7 +227,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"form_on_site_uuid\": \"report_on_site_uuid_value3b\",\n    \"average_longitude\": 85.8,\n    \"average_latitude\": 85.13,\n    \"fields\": [{\n        \"field_on_site_uuid\": \"field_on_site_uuid_value_39b\",\n        \"field_value\": \"100.15\",\n        \"type_field\": \"double\",\n        \"photos_on_site_uuid\": [\n                    \"photo_on_site_uuid_valueb\"\n                ]\n    }]\n}\n    \n",
+							"raw": "{\n    \"form_on_site_uuid\": \"report_on_site_uuid_value3b\",\n    \"average_longitude\": 85.8,\n    \"average_latitude\": 85.13,\n    \"tenant_id\": \"sandbox\",\n    \"fields\": [{\n        \"field_on_site_uuid\": \"field_on_site_uuid_value_39b\",\n        \"field_value\": \"100.15\",\n        \"type_field\": \"double\",\n        \"photos_on_site_uuid\": [\n                    \"photo_on_site_uuid_valueb\"\n                ]\n    }]\n}\n    \n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -549,7 +549,7 @@
 								},
 								{
 									"key": "photo_on_site_uuid",
-									"value": "photo_on_site_uuid_valuec",
+									"value": "photo_on_site_uuid_valueh",
 									"type": "default"
 								},
 								{
@@ -565,6 +565,11 @@
 								{
 									"key": "intervention_on_site_uuid",
 									"value": "intervention_on_site_uuid_value",
+									"type": "text"
+								},
+								{
+									"key": "tenant_id",
+									"value": "sandbox",
 									"type": "text"
 								}
 							]
@@ -776,6 +781,70 @@
 								"api",
 								"v1",
 								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/user/me",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "roles",
+			"item": [
+				{
+					"name": "roles list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/role",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"role"
 							]
 						}
 					},
