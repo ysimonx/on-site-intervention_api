@@ -177,7 +177,17 @@ def populate_user_data():
                          "password": "12345678", 
                          "firstname":"Yannick", 
                          "lastname":"Simon" ,
-                         "roles": ["admin","toy"]
+                         "tenants_roles": [
+                            {
+                             "tenant":"sandbox",
+                             "roles": ["admin","toy"]
+                            },
+                            {
+                             "tenant":"iter",
+                             "roles": ["admin","gnass"]
+                            }
+                         ]
+                         
                     },
                 ]    
                 }
@@ -204,13 +214,20 @@ def populate_user_data():
                 _user.password = user["password"]
                 _user.hash_password()
                 app.logger.debug("user updated %s", _user.email)
-            for role in user["roles"]:
-                _role = getByIdOrByName(Role, role)
-                if _role is None:
-                    _role = Role(name=role)
-                    db.session.add(_role)
-                    app.logger.debug("role added %s", _role.name)
-                _user.roles.append(_role)
+            for tenant_role in user["tenants_roles"]:
+                tenant_name = tenant_role["tenant"]
+                _tenant = getByIdOrByName(Tenant, tenant_name)
+                for role_name in tenant_role["roles"]:
+                    _role = getByIdOrByName(Role, role_name)
+                    _role = Role.query.filter(Role.tenant_id==_tenant.id).filter(Role.name==role_name).first()
+                    if _role is None:
+                        _role = Role(
+                            name=role_name, 
+                            tenant_id=_tenant.id
+                        )
+                        db.session.add(_role)
+                        app.logger.debug("role added %s", _role.name)
+                    _user.roles.append(_role)
 
         #   
     db.session.commit() 

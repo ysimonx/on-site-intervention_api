@@ -50,6 +50,15 @@ def get_user_list():
     return jsonify([item.to_json() for item in items])
 
 
+@app_file_user.route("/user/me", methods=["GET"])
+@jwt_required()
+def get_user_me():
+    current_user = get_jwt_identity()
+    print(current_user)
+    user = User.query.get(current_user)
+    return jsonify(user.to_json()), 200
+
+
 
 
 # curl -H "Content-Type: application/json" -X POST -d '{"name": "ysimonx"}' http://localhost:5000/user
