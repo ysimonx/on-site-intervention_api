@@ -21,7 +21,7 @@ def create_app(config_name):
     db.init_app(app)
     return app
 
-def getByIdOrByName(obj, id, tenant_id, organization_id=None):
+def getByIdOrByName(obj, id, tenant_id=None, organization_id=None):
     result = None
     try:
         uuid.UUID(str(id))

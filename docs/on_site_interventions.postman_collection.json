@@ -549,7 +549,7 @@
 								},
 								{
 									"key": "photo_on_site_uuid",
-									"value": "photo_on_site_uuid_valueh",
+									"value": "photo_on_site_uuid_valuea",
 									"type": "default"
 								},
 								{
@@ -569,7 +569,12 @@
 								},
 								{
 									"key": "tenant_id",
-									"value": "sandbox",
+									"value": "fidwork",
+									"type": "text"
+								},
+								{
+									"key": "organization_id",
+									"value": "iter",
 									"type": "text"
 								}
 							]
@@ -670,8 +675,18 @@
 					"response": []
 				},
 				{
-					"name": "photos list",
+					"name": "photos list (de mon Tenant)",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -758,7 +773,7 @@
 					"response": []
 				},
 				{
-					"name": "users list",
+					"name": "users list (tout tenants)",
 					"request": {
 						"auth": {
 							"type": "bearer",

@@ -5,6 +5,7 @@ from config import config
 
 from ..model_dir.photo import Photo
 from ..model_dir.tenant import Tenant
+from ..model_dir.user import User
 from flask import jsonify, request, abort
 from flask_jwt_extended import jwt_required
 from werkzeug.utils import secure_filename
@@ -114,8 +115,11 @@ def add_geolocation(image_path, latitude, longitude):
 
 
 @app_file_photo.route("/photo", methods=["GET"])
+@jwt_required()
 def get_photos():
-    photos = Photo.query.all()
+    _user = User.me()
+    print(_user.get_internal()["tenant_id"])
+    photos = Photo.query.filter(Photo.tenant_id == _user.get_internal()["tenant_id"]).all()
     return jsonify([photo.to_json() for photo in photos])
 
 
@@ -153,6 +157,11 @@ def create_photo():
         print("photo already uploaded")
         abort(make_response(jsonify(error="photo already uploaded"), 400))
     
+    tenant_id = request.form.get('tenant_id')
+    tenant=getByIdOrByName(obj=Tenant, id=tenant_id)
+    if tenant is None:
+            abort(make_response(jsonify(error="tenant not found"), 400))
+            
     file                        = request.files['file']
     filename                    = secure_filename(file.filename)
     latitude                    = request.form.get('latitude')
@@ -162,7 +171,6 @@ def create_photo():
     intervention_on_site_uuid   = request.form.get('intervention_on_site_uuid')
     newfilename                 = photo_on_site_uuid+get_extension(filename)
     
-    tenant = Tenant.getRequestTenant()
 
     file.save(os.path.join(UPLOAD_FOLDER, newfilename))
     add_geolocation(os.path.join(UPLOAD_FOLDER, newfilename), float(latitude), float(longitude))
