@@ -209,8 +209,6 @@ def populate_user_data():
             app.logger.debug("tenant added %s", _tenant.name)
          
         for user in users:
-            print("- - - - - - - - - - - - - ")
-            print(user["email"])
             
             _company = getByIdOrByName(obj=Company, id=user["company"], tenant_id=_tenant.id)
             if _company is None:

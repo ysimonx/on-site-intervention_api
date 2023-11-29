@@ -21,15 +21,7 @@ class Organization(db.Model, MyMixin):
     time_updated    = db.Column(db.DateTime(timezone=True), onupdate=db.func.now())
     
                 
-    def get_internal(self):
-
-        
-        return {
-                
-                'time_created_utc': formatted_date_iso(self.time_created),
-                'time_updated_utc': formatted_date_iso(self.time_updated)
-               
-            }
+  
         
     def to_json(self):
         return {
@@ -70,7 +62,6 @@ class Organization(db.Model, MyMixin):
                 abort(make_response(jsonify(error="missing organization_id parameter"), 400))   
             organization_id                   = request.form.get('organization_id')  
               
-        print("organization_id =", organization_id)     
             
         organization=getByIdOrByName(Organization, organization_id)
         if organization is None:

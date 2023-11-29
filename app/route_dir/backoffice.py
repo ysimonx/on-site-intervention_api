@@ -104,7 +104,6 @@ def get_interventions_details_backoffice():
     for intervention in interventions:
         dict_intervention_controle_field = {}
     
-        print("----")
         fields=intervention.fields
         fields_histo=intervention.fields_histo
         for controle_name in liste_controles:

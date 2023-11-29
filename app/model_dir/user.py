@@ -61,7 +61,6 @@ class User(db.Model, MyMixin):
         dict_organization_roles={}
         
         for item in self.roles:
-            print(item)
             
             if not item.organization_id in organizations:
                 dict_organization_roles[item.organization_id] = {"roles":[]}
