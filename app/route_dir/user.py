@@ -98,29 +98,44 @@ def create_user():
     if not request.json:
         abort(make_response(jsonify(error="missing json body"), 400))
         
-    company = getByIdOrByName(obj=Company, id=request.json.get('company'))
-    if company is None:
-        abort(make_response(jsonify(error="company is not found"), 400))
-
+    if not 'email' in request.json:
+        abort(make_response(jsonify(error="missing email parameter"), 400))
+    
+    if not 'password' in request.json:
+        abort(make_response(jsonify(error="missing password parameter"), 400))
+    
     tenant = getByIdOrByName(obj=Tenant, id=request.json.get('tenant_id'))
     if tenant is None:
         abort(make_response(jsonify(error="tenant is not found"), 400))
-
-   
+  
     user = getByIdOrEmail(obj=User, id=request.json.get('email'), tenant_id=tenant.id)
-    if user is None:
-        user = User(
-            email=request.json.get('email'),
-            password = request.json.get('password'),
-            company_id = company.id,
-            tenant_id = tenant.id)
-
-        user.hash_password()
-        db.session.add(user)
+    if user is not None:
+            abort(make_response(jsonify(error="user already exists"), 400))
+     
+    company = getByIdOrByName(obj=Company, id=request.json.get('company'), tenant_id=tenant.id)
+    if company is None:
+        company = Company(
+            name=request.json.get('company'),
+            tenant_id=tenant.id
+        )
+        db.session.add(company)
         db.session.commit()
-        return jsonify(user.to_json()), 201
-    else:
-        abort(make_response(jsonify(error="user already exists"), 400))
+       
+   
+   
+    user = User(
+        email=          request.json.get('email'),
+        password =      request.json.get('password'),
+        company_id =    company.id,
+        tenant_id =     tenant.id
+        )
+
+    user.hash_password()
+    db.session.add(user)
+    db.session.commit()
+    return jsonify(user.to_json()), 201
+
+       
 
 
 @app_file_user.route('/token/refresh', methods=['POST'])

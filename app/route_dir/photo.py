@@ -118,7 +118,6 @@ def add_geolocation(image_path, latitude, longitude):
 @jwt_required()
 def get_photos():
     _user = User.me()
-    print(_user.get_internal()["tenant_id"])
     photos = Photo.query.filter(Photo.tenant_id == _user.get_internal()["tenant_id"]).all()
     return jsonify([photo.to_json() for photo in photos])
 
