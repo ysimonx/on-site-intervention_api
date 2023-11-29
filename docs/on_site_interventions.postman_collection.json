@@ -751,7 +751,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\":\"yannick.simon2@gmail.com\",\n    \"password\":\"12345678\",\n    \"company\": \"kysoe\"\n}",
+							"raw": "{\n    \"email\":\"yannick.simon3@gmail.com\",\n    \"password\":\"12345678\",\n    \"company\": \"kysoe\",\n    \"tenant_id\": \"fidwork\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

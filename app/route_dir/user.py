@@ -102,15 +102,25 @@ def create_user():
     if company is None:
         abort(make_response(jsonify(error="company is not found"), 400))
 
-    user = User(
-        email=request.json.get('email'),
-        password = request.json.get('password'),
-        company_id = company.id    )
+    tenant = getByIdOrByName(obj=Tenant, id=request.json.get('tenant_id'))
+    if tenant is None:
+        abort(make_response(jsonify(error="tenant is not found"), 400))
 
-    user.hash_password()
-    db.session.add(user)
-    db.session.commit()
-    return jsonify(user.to_json()), 201
+   
+    user = getByIdOrEmail(obj=User, id=request.json.get('email'), tenant_id=tenant.id)
+    if user is None:
+        user = User(
+            email=request.json.get('email'),
+            password = request.json.get('password'),
+            company_id = company.id,
+            tenant_id = tenant.id)
+
+        user.hash_password()
+        db.session.add(user)
+        db.session.commit()
+        return jsonify(user.to_json()), 201
+    else:
+        abort(make_response(jsonify(error="user already exists"), 400))
 
 
 @app_file_user.route('/token/refresh', methods=['POST'])
