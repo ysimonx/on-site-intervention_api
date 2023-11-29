@@ -11,13 +11,16 @@ from .                          import db, getByIdOrEmail, getByIdOrByName
 from app.model_dir.user         import User, Role
 from app.model_dir.company      import Company
 from app.model_dir.tenant       import Tenant
+from app.model_dir.organization import Organization
 from app.model_dir.type_field   import TypeField
 
+from .route_dir.tenant          import app_file_tenant
+from .route_dir.organization    import app_file_organization
 from .route_dir.event           import app_file_event
 from .route_dir.notification    import app_file_notification
 from .route_dir.user            import app_file_user
 from .route_dir.company         import app_file_company
-from .route_dir.tenant          import app_file_tenant
+
 from .route_dir.photo           import app_file_photo
 from .route_dir.file            import app_file_file
 from .route_dir.intervention    import app_file_intervention
@@ -146,10 +149,10 @@ def swagger():
 
 def populate_tenant():
 
-    tenants=["sandbox","iter","arkema","total"];
+    tenants=["fidwork"];
 
     for newtenant in tenants:
-            test=getByIdOrByName(Tenant, newtenant)
+            test=getByIdOrByName(Tenant, newtenant, None)
             if test is None:
                 tenant = Tenant( name = newtenant)
                 db.session.add(tenant)
@@ -171,63 +174,107 @@ def populate_type_field():
 def populate_user_data():
 
     dataCompany =  {
-                "kysoe": [
+        
+                "fidwork": [
                     { 
                          "email": "yannick.simon@gmail.com", 
                          "password": "12345678", 
                          "firstname":"Yannick", 
-                         "lastname":"Simon" ,
-                         "tenants_roles": [
+                         "lastname":"Simon",
+                         "company": "kysoe",
+                         "organizations_roles": [
                             {
-                             "tenant":"sandbox",
+                             "organization":"sandbox",
                              "roles": ["admin","toy"]
                             },
                             {
-                             "tenant":"iter",
+                             "organization":"iter",
                              "roles": ["admin","gnass"]
                             }
                          ]
                          
                     },
-                ]    
+                ] 
+                
                 }
     
        
-    for company, users in dataCompany.items():
-        _company = getByIdOrByName(obj=Company, id=company)
-        if _company is None:
-            _company = Company( name = company)
-            db.session.add(_company)
-            app.logger.debug("company added %s", _company.name)
+    for tenant, users in dataCompany.items():
+        
+        _tenant = getByIdOrByName(obj=Tenant, id=tenant, tenant_id=None)
+        if _tenant is None:
+            _tenant = Tenant( name = tenant)
+            db.session.add(_tenant)
+            db.session.commit() 
+            app.logger.debug("tenant added %s", _tenant.name)
          
         for user in users:
-            _user = getByIdOrEmail(obj=User, id=user["email"])
+            print("- - - - - - - - - - - - - ")
+            print(user["email"])
+            
+            _company = getByIdOrByName(obj=Company, id=user["company"], tenant_id=_tenant.id)
+            if _company is None:
+                _company = Company(name = user["company"], tenant_id = _tenant.id)
+                db.session.add(_company)
+                db.session.commit() 
+                
+                
+            _user = getByIdOrEmail(obj=User, id=user["email"], tenant_id=_tenant.id)
             if _user is None:
-                _user = User(email= user["email"], password= user["password"], company_id = _company.id, firstname=user["firstname"], lastname=user["lastname"])
+                _user = User(
+                            email= user["email"],
+                            password= user["password"],
+                            tenant_id = _tenant.id,
+                            company_id = _company.id,
+                            firstname=user["firstname"],
+                            lastname=user["lastname"]
+                        )
                 _user.hash_password()
                 db.session.add(_user)  
                 app.logger.debug("user added %s", _user.email)
             else:
-                _user.company_id = _company.id
-                _user.firstname = user["firstname"]
-                _user.lastname = user["lastname"]
-                _user.password = user["password"]
+                _user.tenant_id     = _tenant.id
+                _user.firstname     = user["firstname"]
+                _user.lastname      = user["lastname"]
+                _user.password      = user["password"]
                 _user.hash_password()
                 app.logger.debug("user updated %s", _user.email)
-            for tenant_role in user["tenants_roles"]:
-                tenant_name = tenant_role["tenant"]
-                _tenant = getByIdOrByName(Tenant, tenant_name)
-                for role_name in tenant_role["roles"]:
-                    _role = getByIdOrByName(Role, role_name)
-                    _role = Role.query.filter(Role.tenant_id==_tenant.id).filter(Role.name==role_name).first()
+            
+            _user.roles.clear()
+                
+            for organization_role in user["organizations_roles"]:
+                organization_name = organization_role["organization"]
+                _organization = getByIdOrByName(obj= Organization, id=organization_name,  tenant_id=_tenant.id)
+                if _organization is None:
+                    _organization = Organization(
+                                        name = organization_name,
+                                        tenant_id = _tenant.id
+                                    )
+                    db.session.add(_organization)
+                    db.session.commit() 
+                
+                # annule et remplace les roles
+                
+                for role_name in organization_role["roles"]:
+                    _role = getByIdOrByName(
+                        obj=Role, 
+                        id=role_name, 
+                        tenant_id=_tenant.id, 
+                        organization_id=_organization.id
+                    )
+                    # _role = Role.query.filter(Role.tenant_id==_tenant.id).filter(Role.name==role_name).first()
                     if _role is None:
                         _role = Role(
                             name=role_name, 
-                            tenant_id=_tenant.id
+                            tenant_id=_tenant.id,
+                            organization_id=_organization.id
                         )
                         db.session.add(_role)
                         app.logger.debug("role added %s", _role.name)
                     _user.roles.append(_role)
+                
+            
+                    
 
         #   
     db.session.commit() 

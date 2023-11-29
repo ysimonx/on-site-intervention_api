@@ -1,6 +1,9 @@
 from flask import Blueprint, render_template, session,abort, make_response
 from ..model_dir.user import User
 from ..model_dir.company import Company
+from ..model_dir.tenant import Tenant
+from ..model_dir.organization import Organization
+
 from flask import jsonify, request, abort
 from .. import db, getByIdOrEmail, getByIdOrByName
 from flask_jwt_extended import (
@@ -28,7 +31,15 @@ app_file_user = Blueprint('user',__name__)
 def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-    user =    getByIdOrEmail(obj=User,  id=email)
+    tenant_id = request.json.get("tenant_id", None)
+    
+    if tenant_id is None:
+        abort(make_response(jsonify(error="error login tenant_id missing in request"), 401))
+        
+        
+    _tenant = getByIdOrByName(obj=Tenant, id=tenant_id, tenant_id=None)
+    
+    user =    getByIdOrEmail(obj=User,  id=email, tenant_id = _tenant.id)
     
     if user is None:
         abort(make_response(jsonify(error="error login"), 401))
@@ -53,10 +64,30 @@ def get_user_list():
 @app_file_user.route("/user/me", methods=["GET"])
 @jwt_required()
 def get_user_me():
-    current_user = get_jwt_identity()
-    print(current_user)
-    user = User.query.get(current_user)
-    return jsonify(user.to_json()), 200
+    return (User.me().to_json()), 200
+
+
+@app_file_user.route("/user/me/config", methods=["GET"])
+@jwt_required()
+def get_user_config():
+    
+    # qui je suis
+    me = User.me().to_json()
+    
+    # detail des organizations qui me concernent
+    user_organizations=[]
+    organizations = Organization.query.all()
+    for organization in organizations:
+        if organization.id in me["organizations_ids"].keys():
+            user_organizations.append(organization)
+        
+    
+    result={
+            "user": me,
+            "organizations": [organization.to_json() for organization in user_organizations]
+           }
+    
+    return (result), 200
 
 
 

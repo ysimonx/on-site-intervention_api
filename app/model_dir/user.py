@@ -1,12 +1,13 @@
 from .. import db
 from .mymixin import MyMixin
 from flask_bcrypt import generate_password_hash, check_password_hash
+from flask_jwt_extended import  get_jwt_identity
 
 
 
 user_role = db.Table('users_roles',
-                    db.Column('user_id', db.String(36), db.ForeignKey('users.id')),
-                    db.Column('role_id', db.String(36), db.ForeignKey('roles.id'))
+                    db.Column('user_id', db.String(36), db.ForeignKey('users.id'), primary_key=True),
+                    db.Column('role_id', db.String(36), db.ForeignKey('roles.id'), primary_key=True)
                     )
    
 
@@ -14,6 +15,7 @@ user_role = db.Table('users_roles',
 class Role(db.Model, MyMixin):
     __tablename__ = 'roles'
    
+    organization_id  = db.Column(db.String(36), db.ForeignKey("organizations.id"))
     
     def to_json(self):
         return {
@@ -39,7 +41,7 @@ class Role(db.Model, MyMixin):
 class User(db.Model, MyMixin):
     __tablename__ = 'users'
    
-    email       = db.Column(db.String(100), unique=True)
+    email       = db.Column(db.String(100), index=True)
     password    = db.Column(db.String(100))
     firstname   = db.Column(db.String(100))
     lastname    = db.Column(db.String(100))
@@ -48,16 +50,23 @@ class User(db.Model, MyMixin):
 
     roles = db.relationship('Role', secondary=user_role, backref='users')
 
+    def me():
+        current_user = get_jwt_identity()
+        user = User.query.get(current_user)
+        return user
+    
     def to_json(self):
         
-        tenants=[];
-        dict_tenant_roles={}
+        organizations=[];
+        dict_organization_roles={}
         
         for item in self.roles:
-            if not item.tenant_id in tenants:
-                dict_tenant_roles[item.tenant_id] = {"roles":[]}
-                tenants.append(item.tenant_id)
-            dict_tenant_roles[item.tenant_id]["roles"].append(item.name)
+            print(item)
+            
+            if not item.organization_id in organizations:
+                dict_organization_roles[item.organization_id] = {"roles":[]}
+                organizations.append(item.organization_id)
+            dict_organization_roles[item.organization_id]["roles"].append(item.name)
         
         return {
             'id':           self.id,
@@ -68,7 +77,7 @@ class User(db.Model, MyMixin):
             'firstname':    self.firstname,
             'lastname':     self.lastname,
             'company':      self.company.to_json_light(),
-            'tenant_ids':   dict_tenant_roles
+            'organizations_ids':   dict_organization_roles
             
         }
 

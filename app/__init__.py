@@ -21,26 +21,33 @@ def create_app(config_name):
     db.init_app(app)
     return app
 
-def getByIdOrByName(obj, id):
+def getByIdOrByName(obj, id, tenant_id, organization_id=None):
     result = None
     try:
         uuid.UUID(str(id))
         result = obj.query.get(id)
-        print("a")
     except ValueError:
-        result = obj.query.filter(obj.name==id).first()
-        print("Value Error : ", id)
-        print(result)
+        result = obj.query.filter(obj.name==id)
         
-    return result
+        if tenant_id is not None:
+            result = result.filter(obj.tenant_id==tenant_id)
+        
+        if organization_id is not None:
+            result = result.filter(obj.organization_id==organization_id)
+        
+        
+    return result.first()
 
-def getByIdOrEmail(obj, id):
+def getByIdOrEmail(obj, id, tenant_id):
     result = None
     try:
         uuid.UUID(str(id))
         result = obj.query.get(id)
     except ValueError:
-        result = obj.query.filter(obj.email==id).first()
+        if tenant_id is None:
+            result = obj.query.filter(obj.email==id).first()
+        else:
+            result = obj.query.filter(obj.email==id).filter(obj.tenant_id==tenant_id).first()
     return result
 
 def getByIdOrFilename(obj, id):
