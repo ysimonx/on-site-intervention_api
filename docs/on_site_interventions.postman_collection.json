@@ -815,6 +815,37 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "me config",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/user/me/config",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"me",
+								"config"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -888,6 +919,40 @@
 								"api",
 								"v1",
 								"form_template"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "tenants",
+			"item": [
+				{
+					"name": "tenants list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/tenant",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"tenant"
 							]
 						}
 					},
@@ -983,7 +1048,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\":\"yannick.simon@gmail.com\",\n    \"password\":\"12345678\"\n}",
+					"raw": "{\n    \"email\":\"yannick.simon@gmail.com\",\n    \"password\":\"12345678\",\n    \"tenant_id\": \"fidwork\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
