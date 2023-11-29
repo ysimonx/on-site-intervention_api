@@ -156,11 +156,10 @@ def create_photo():
         print("photo already uploaded")
         abort(make_response(jsonify(error="photo already uploaded"), 400))
     
-    tenant_id = request.form.get('tenant_id')
-    tenant=getByIdOrByName(obj=Tenant, id=tenant_id)
-    if tenant is None:
-            abort(make_response(jsonify(error="tenant not found"), 400))
-            
+    
+    _user = User.me()
+
+
     file                        = request.files['file']
     filename                    = secure_filename(file.filename)
     latitude                    = request.form.get('latitude')
@@ -181,7 +180,7 @@ def create_photo():
                     field_on_site_uuid=field_on_site_uuid, 
                     form_on_site_uuid=form_on_site_uuid, 
                     intervention_on_site_uuid=intervention_on_site_uuid,
-                    tenant_id = tenant.id
+                    tenant_id = _user.get_internal()["tenant_id"]
                 )
     
     db.session.add(photo)

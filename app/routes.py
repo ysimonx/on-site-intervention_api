@@ -87,6 +87,8 @@ app.register_blueprint(app_file_role,
                        url_prefix=url_prefix)
 app.register_blueprint(app_file_form_template,
                        url_prefix=url_prefix)
+app.register_blueprint(app_file_organization,
+                       url_prefix=url_prefix)
 url_prefix_backoffice = "/backoffice/v1"
 app.register_blueprint(app_file_backoffice,
                        url_prefix=url_prefix_backoffice)

@@ -17,6 +17,7 @@ def get_company_list():
 
 
 @app_file_company.route('/company', methods=['POST'])
+@jwt_required()
 def create_company():
     if not request.json:
         abort(make_response(jsonify(error="no json provided in request"), 400))
@@ -25,16 +26,17 @@ def create_company():
     if company_name is None:
         abort(make_response(jsonify(error="missing company_name parameter"), 400))
     
-    tenant_id = request.json.get("tenant_id", None)
-    if tenant_id is None:
-        abort(make_response(jsonify(error="error login tenant_id missing in request"), 401))
-    
-    _tenant = getByIdOrByName(obj=Tenant, id=tenant_id, tenant_id=None)
-    
+    _user = User.me()
         
+    company = getByIdOrByName(obj=Company, id=company_name, tenant_id=_user.get_internal()["tenant_id"])
+    if company is not None:
+            abort(make_response(jsonify(error="company already exists"), 400))
+     
+    
+    
     company = Company(
         name=company_name,
-        tenant_id=_tenant.id
+        tenant_id=_user.get_internal()["tenant_id"]
     )
 
     db.session.add(company)
