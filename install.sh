@@ -11,6 +11,8 @@ pip install tb_rest_client request
 pip install jsonpickle
 pip install tb_rest_client
 pip install requests
+pip install Flask-Migrate
+
 
 
 pip install -r requirements.txt --upgrade
