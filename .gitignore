@@ -11,3 +11,4 @@ run.sh
 app/static/media
 run_orig.sh
 app/static/photos
+migrate.sh
