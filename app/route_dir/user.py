@@ -8,8 +8,8 @@ from flask import jsonify, request, abort
 from .. import db, getByIdOrEmail, getByIdOrByName
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
-     create_refresh_token,
-    get_jwt_identity
+    create_refresh_token,
+    get_jwt_identity, set_access_cookies, get_csrf_token
 )
 
 app_file_user = Blueprint('user',__name__)
@@ -51,8 +51,20 @@ def login():
     
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
-    return jsonify(access_token=access_token, refresh_token=refresh_token, result_check=result_check)
 
+    csrf_refresh_token =  get_csrf_token(access_token)
+    response =  jsonify(
+        access_token=access_token,
+        refresh_token=refresh_token, 
+        csrf_refresh_token=csrf_refresh_token,
+        result_check=result_check,
+        roles= [item.name for item in user.roles] 
+    )
+    
+    # cf https://flask-jwt-extended.readthedocs.io/en/stable/token_locations.html
+    set_access_cookies(response, access_token)
+
+    return response
 
 @app_file_user.route("/user", methods=["GET"])
 @jwt_required()

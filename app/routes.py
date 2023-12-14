@@ -40,7 +40,14 @@ app.config['DEBUG'] = True
 
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"]           = "super-secret"  # Change this!
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] =  datetime.timedelta(seconds=3600) # 1 heure
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] =  datetime.timedelta(seconds=3600)          # 1 heure
+app.config["JWT_TOKEN_LOCATION"]        = ["headers", "cookies"]                    # le token "access_token" est envoyé en header ou en cookie
+app.config["JWT_COOKIE_SECURE"]         = False                                     # should be True in production (need https)
+app.config["JWT_CSRF_IN_COOKIES"]       = False                                     # do not send "csrf_access_token" by set-cookies
+app.config["JWT_CSRF_METHODS"]          = [ "GET","POST", "PUT", "PATCH", "DELETE"] # need this CSRF method when client is web app, 
+app.config["JWT_COOKIE_SAMESITE"]       = "Lax"
+
+
 jwt = JWTManager(app)
 
 # Setup upload folder
@@ -136,18 +143,20 @@ def before_first_request():
 
 @app.route("/api/v1/init", methods=["GET"])
 def init():
-    # db.drop_all()
+    print(app.config["JWT_TOKEN_LOCATION"] )
+    app.config["JWT_TOKEN_LOCATION"] = ["headers"] 
+    db.drop_all()
     db.create_all()
     populate_tenant()
     populate_user_data()
     populate_type_field()
     app.logger.info("db init done")
+    app.config["JWT_TOKEN_LOCATION"] = ["headers","cookies"] 
     return "ok"
     
 @app.route("/api/v1/swagger-ui", methods=["GET"])
 def swagger():
     return render_template('swagger.html')
-
 
 def populate_tenant():
 
@@ -160,7 +169,8 @@ def populate_tenant():
                 db.session.add(tenant)
                 app.logger.debug("tenant added %s", tenant.name)
     db.session.commit()
-    
+  
+  
 def populate_type_field():
 
     types=["double", "string", "boolean", "integer", "json"];
@@ -174,7 +184,6 @@ def populate_type_field():
 
     
 def populate_user_data():
-
     dataCompany =  {
         
                 "fidwork": [
@@ -281,3 +290,4 @@ def populate_user_data():
     app.logger.debug("populate users done")
    
     
+   
