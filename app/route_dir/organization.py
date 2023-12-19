@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, session,abort, make_response
 from ..model_dir.organization import Organization
-from ..model_dir.user import User
+from ..model_dir.mymixin         import User, Role
 from ..model_dir.tenant import Tenant
 
 from flask import jsonify, request, abort

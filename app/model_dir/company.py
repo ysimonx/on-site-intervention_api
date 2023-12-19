@@ -31,8 +31,12 @@ class Company(db.Model, MyMixin):
         }
 
 
+    def my_class():
+        return Company
+    
 from sqlalchemy import event
 @event.listens_for(Company, 'before_insert')
 def do_stuff1(mapper, connect, target):
     MyMixin.map_owner(mapper, connect, target)
+
 

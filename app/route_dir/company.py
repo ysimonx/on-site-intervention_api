@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, session,abort, make_response
 from ..model_dir.company import Company
-from ..model_dir.user import User
+from ..model_dir.mymixin import User
 from flask import jsonify, request, abort
 from .. import db, getByIdOrEmail, getByIdOrByName
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
@@ -11,11 +11,10 @@ app_file_company = Blueprint('company',__name__)
 @app_file_company.route("/company", methods=["GET"])
 @jwt_required()
 def get_company_list():
-    _user = User.me()
-    items = Company.query.filter(Company.tenant_id == _user.get_internal()["tenant_id"]).all()
+    items=Company.my_query().all()
     return jsonify([item.to_json() for item in items])
 
-
+    
 @app_file_company.route('/company', methods=['POST'])
 @jwt_required()
 def create_company():

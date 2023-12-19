@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session,abort, make_response
-from ..model_dir.user import Role
+from ..model_dir.mymixin import Role
 from flask import jsonify, request, abort
 from .. import db, getByIdOrEmail, getByIdOrByName
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager

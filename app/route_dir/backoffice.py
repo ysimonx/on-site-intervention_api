@@ -13,7 +13,7 @@ from ..model_dir.place import Place
 from ..model_dir.form import Form
 from ..model_dir.field import Field
 from ..model_dir.field_histo import FieldHisto
-from ..model_dir.user import User
+from ..model_dir.mymixin import User
 from ..model_dir.company import Company
 
 from flask import jsonify, request, abort, send_from_directory

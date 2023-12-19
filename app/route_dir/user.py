@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session,abort, make_response
-from ..model_dir.user import User
+from ..model_dir.mymixin import User
 from ..model_dir.company import Company
 from ..model_dir.tenant import Tenant
 from ..model_dir.organization import Organization

@@ -8,7 +8,7 @@ from flask_jwt_extended         import JWTManager
 from .                          import create_app
 from .                          import db, getByIdOrEmail, getByIdOrByName
 
-from app.model_dir.user         import User, Role
+from app.model_dir.mymixin        import User, Role
 from app.model_dir.company      import Company
 from app.model_dir.tenant       import Tenant
 from app.model_dir.organization import Organization

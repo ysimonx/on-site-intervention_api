@@ -5,7 +5,7 @@ from config import config
 
 from ..model_dir.photo import Photo
 from ..model_dir.tenant import Tenant
-from ..model_dir.user import User
+from ..model_dir.mymixin import User
 from flask import jsonify, request, abort
 from flask_jwt_extended import jwt_required
 from werkzeug.utils import secure_filename
