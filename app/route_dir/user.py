@@ -90,7 +90,7 @@ def get_user_config():
     user_organizations=[]
     organizations = Organization.query.all()
     for organization in organizations:
-        if organization.id in me["organizations_ids"].keys():
+        if organization.id in me["organizations"].keys():
             user_organizations.append(organization)
         
     

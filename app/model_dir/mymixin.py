@@ -171,7 +171,7 @@ class User(db.Model, MyMixin):
             'firstname':    self.firstname,
             'lastname':     self.lastname,
             'company':      self.company.to_json_light(),
-            'organizations_ids':   dict_organization_roles
+            'organizations':   dict_organization_roles
             
         }
 
