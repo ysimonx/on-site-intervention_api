@@ -22,7 +22,11 @@ def get_interventions():
     if not 'organization_id' in request.args:
         interventions = Intervention.query.all()
     else:
-        interventions = Intervention.query.filter(Intervention.organization_id==request.args.get("organization_id")).all()
+        _organisation=getByIdOrByName(Organization, request.args.get("organization_id"))
+        if _organisation is None:
+            abort(make_response(jsonify(error="organization is not found"), 404))
+        
+        interventions = Intervention.query.filter(Intervention.organization_id==_organisation.id).all()
         
     return jsonify([item.to_json() for item in interventions])
 
