@@ -19,7 +19,11 @@ import json
 
 @app_file_intervention.route("/intervention", methods=["GET"])
 def get_interventions():
-    interventions = Intervention.query.all()
+    if not 'organization_id' in request.args:
+        interventions = Intervention.query.all()
+    else:
+        interventions = Intervention.query.filter(Intervention.organization_id==request.args.get("organization_id")).all()
+        
     return jsonify([item.to_json() for item in interventions])
 
 
