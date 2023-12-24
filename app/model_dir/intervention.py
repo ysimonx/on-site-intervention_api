@@ -27,6 +27,7 @@ class Intervention(db.Model, MyMixin):
             'name':                         self.name,
             '_internal' :                   self.get_internal(),
             'intervention_on_site_uuid':    self.intervention_on_site_uuid,
+            'organization_id':               self.organization_id,
             'place':                        self.place.to_json_light(),
             'forms':  [{"forms": item.to_json_light()} for item in self.forms],    
         }
@@ -35,6 +36,8 @@ class Intervention(db.Model, MyMixin):
         return {
             'id':                       self.id,
             'name':                     self.name,
+            'intervention_on_site_uuid':    self.intervention_on_site_uuid,
+            'organization_id':               self.organization_id,
             'place_id':                 self.place_id,
             'place':                    self.place.to_json_light(),
         }
