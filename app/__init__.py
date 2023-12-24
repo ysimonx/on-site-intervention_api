@@ -28,7 +28,9 @@ def getByIdOrByName(obj, id, tenant_id=None, organization_id=None):
     try:
         uuid.UUID(str(id))
         result = obj.query.get(id)
+        return result
     except ValueError:
+        print("valueerror")
         result = obj.query.filter(obj.name==id)
         
         if tenant_id is not None:
@@ -37,8 +39,9 @@ def getByIdOrByName(obj, id, tenant_id=None, organization_id=None):
         if organization_id is not None:
             result = result.filter(obj.organization_id==organization_id)
         
-        
-    return result.first()
+        return result.first()
+    
+    return None
 
 def getByIdOrEmail(obj, id, tenant_id):
     result = None

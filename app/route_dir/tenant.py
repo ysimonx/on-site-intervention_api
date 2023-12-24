@@ -12,6 +12,15 @@ def get_tenant_list():
     items = Tenant.query.all()
     return jsonify([item.to_json() for item in items])
 
+@app_file_tenant.route("/tenant/<id>", methods=["GET"])
+def get_tenant(id):
+    item=getByIdOrByName(Tenant, id)
+    if item is None:
+        abort(make_response(jsonify(error="tenant not found"), 404))
+   
+    return jsonify(item.to_json())
+
+
 
 @app_file_tenant.route('/tenant', methods=['POST'])
 def create_user():

@@ -10,6 +10,9 @@ class Intervention(db.Model, MyMixin):
     
     intervention_on_site_uuid   = db.Column(db.String(36), index=True)
     
+    organization_id  = db.Column(db.String(36), db.ForeignKey("organizations.id"))
+    
+
     place_id                    = db.Column(db.String(36), db.ForeignKey("places.id"));
     type_intervention_id        = db.Column(db.String(36), db.ForeignKey("types_interventions.id"));
     

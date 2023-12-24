@@ -15,6 +15,7 @@ app_file_organization = Blueprint('organization',__name__)
 @jwt_required() 
 def get_organization_list():
     _user = User.me()
+    print(_user)
     items = Organization.query.filter(Organization.tenant_id == _user.get_internal()["tenant_id"]).all()
     return jsonify([item.to_json() for item in items])
 
