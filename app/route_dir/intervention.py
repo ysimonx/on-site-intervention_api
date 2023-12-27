@@ -44,10 +44,14 @@ def create_intervention():
     place_on_site_uuid          = request.json.get('place_on_site_uuid')
     place_name                  = request.json.get('place_name')
     organization_id             = request.json.get('organization_id')
+    version                     = request.json.get('version')
     
+   
     if organization_id is None:
         abort(make_response(jsonify(error="organization_id must be provided"), 400))
-        
+      
+
+       
     place = Place.query.filter(Place.place_on_site_uuid == place_on_site_uuid).first()
     if place is None:
         place = Place(place_on_site_uuid = place_on_site_uuid, name = place_name )
@@ -65,12 +69,17 @@ def create_intervention():
                         name = intervention_name, 
                         organization_id = _organisation.id, 
                         place_id = place.id,
-                        version=1)
+                        version=version)
         db.session.add(intervention)
     else:
         intervention.name = intervention_name
-        intervention.version = intervention.version + 1
+        intervention.version = version
         intervention.place_id = place.id
+        if version is None:
+            intervention.version = intervention.version + 1
+        else:
+            intervention.version = version
+        
         
 
     db.session.commit()  
