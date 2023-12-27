@@ -69,16 +69,13 @@ def create_intervention():
                         name = intervention_name, 
                         organization_id = _organisation.id, 
                         place_id = place.id,
-                        version=version)
+                        version=1)
         db.session.add(intervention)
     else:
         intervention.name = intervention_name
         intervention.version = version
         intervention.place_id = place.id
-        if version is None:
-            intervention.version = intervention.version + 1
-        else:
-            intervention.version = version
+        intervention.version = intervention.version + 1
         
         
 
