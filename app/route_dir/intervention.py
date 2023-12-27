@@ -64,8 +64,13 @@ def create_intervention():
                         intervention_on_site_uuid = intervention_on_site_uuid,
                         name = intervention_name, 
                         organization_id = _organisation.id, 
-                        place_id = place.id)
+                        place_id = place.id,
+                        version=1)
         db.session.add(intervention)
+    else:
+        intervention.name = intervention_name
+        intervention.version = intervention.version + 1
+        intervention.place_id = place.id
         
 
     db.session.commit()  
