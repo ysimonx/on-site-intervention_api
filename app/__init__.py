@@ -30,7 +30,7 @@ def getByIdOrByName(obj, id, tenant_id=None, organization_id=None):
         result = obj.query.get(id)
         return result
     except ValueError:
-        print("valueerror")
+        # print("valueerror")
         result = obj.query.filter(obj.name==id)
         
         if tenant_id is not None:

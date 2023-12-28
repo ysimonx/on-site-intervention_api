@@ -29,6 +29,9 @@ class TypeIntervention(db.Model, MyMixin):
             'name':                              self.name,
             'type_intervention_uuid':            self.type_intervention_uuid,
         }
+        
+    def name(self):
+        return self.name;
 
    
     
