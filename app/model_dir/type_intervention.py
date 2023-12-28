@@ -30,7 +30,8 @@ class TypeIntervention(db.Model, MyMixin):
             'type_intervention_uuid':            self.type_intervention_uuid,
         }
         
-    def name(self):
+    def to_name(self):
+        print(self.name)
         return self.name;
 
    

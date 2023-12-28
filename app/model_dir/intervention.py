@@ -22,16 +22,17 @@ class Intervention(db.Model, MyMixin):
     
     
     def to_json(self):
+        print(self.type_intervention.to_name())
         return {
             'id':                           self.id,
-            'intervention_name':                         self.name,
+            'intervention_name':            self.name,
             '_internal' :                   self.get_internal(),
             'version':                      self.version,
             'intervention_on_site_uuid':    self.intervention_on_site_uuid,
             'organization_id':               self.organization_id,
             'place':                        self.place.to_json_light(),
             'forms':  [{"forms": item.to_json_light()} for item in self.forms],   
-            'type_intervention':            self.type_intervention.name()
+            'type_intervention':            self.type_intervention.to_name()
         }
         
     def to_json_light(self):
@@ -43,7 +44,7 @@ class Intervention(db.Model, MyMixin):
             'organization_id':               self.organization_id,
             'place_id':                 self.place_id,
             'place':                    self.place.to_json_light(),
-            'type_intervention':         self.type_intervention.name()
+            'type_intervention':            self.type_intervention.to_name()
         }
 
    
