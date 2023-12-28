@@ -27,7 +27,6 @@ class TypeIntervention(db.Model, MyMixin):
         return {
             'id':                                self.id,
             'name':                              self.name,
-            '_internal' :                        self.get_internal(),
             'type_intervention_uuid':            self.type_intervention_uuid,
         }
 
