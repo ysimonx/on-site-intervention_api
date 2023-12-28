@@ -82,8 +82,8 @@ def create_intervention():
         
         db.session.add(intervention)
     else:
+        print(intervention.to_json())
         intervention.name = intervention_name
-        intervention.version = version
         intervention.place_id = place.id
         intervention.version = intervention.version + 1
         intervention.type_intervention_id = _type_intervention.id

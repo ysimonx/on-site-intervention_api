@@ -43,7 +43,7 @@ class Intervention(db.Model, MyMixin):
             'organization_id':               self.organization_id,
             'place_id':                 self.place_id,
             'place':                    self.place.to_json_light(),
-             'type_intervention':         self.type_intervention.to_json_light()
+            'type_intervention':         self.type_intervention.to_json_light()
         }
 
    
