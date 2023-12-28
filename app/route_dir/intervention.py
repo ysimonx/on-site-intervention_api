@@ -3,6 +3,8 @@ from flask import Blueprint, abort, make_response
 import hashlib
 
 from ..model_dir.intervention import Intervention
+from ..model_dir.type_intervention import TypeIntervention
+
 from ..model_dir.place import Place
 from ..model_dir.organization import Organization
 from ..model_dir.form import Form
@@ -45,13 +47,19 @@ def create_intervention():
     place_name                  = request.json.get('place_name')
     organization_id             = request.json.get('organization_id')
     version                     = request.json.get('version')
+    type_intervention           = request.json.get('type_intervention')
     
    
     if organization_id is None:
         abort(make_response(jsonify(error="organization_id must be provided"), 400))
       
 
-       
+    _type_intervention=getByIdOrByName(TypeIntervention, type_intervention)
+    if _type_intervention is None:
+        _type_intervention = TypeIntervention(name=type_intervention)
+        db.session.add(_type_intervention)
+        db.session.commit() 
+        
     place = Place.query.filter(Place.place_on_site_uuid == place_on_site_uuid).first()
     if place is None:
         place = Place(place_on_site_uuid = place_on_site_uuid, name = place_name )
@@ -69,13 +77,16 @@ def create_intervention():
                         name = intervention_name, 
                         organization_id = _organisation.id, 
                         place_id = place.id,
-                        version=1)
+                        version=1,
+                        type_intervention_id = _type_intervention.id)
+        
         db.session.add(intervention)
     else:
         intervention.name = intervention_name
         intervention.version = version
         intervention.place_id = place.id
         intervention.version = intervention.version + 1
+        intervention.type_intervention_id = _type_intervention.id
         
         
 
