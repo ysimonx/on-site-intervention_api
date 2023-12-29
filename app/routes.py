@@ -1,6 +1,7 @@
 import os
 import logging
 import datetime
+import json
 from flask                      import jsonify, abort, render_template
 from flask_mail                 import Mail
 from flask_jwt_extended         import JWTManager
@@ -183,11 +184,34 @@ def populate_type_field():
     db.session.commit()
     
 def populate_type_intervention():
+    
+    
+    types_interventions= {
+        "scaffolding request": {  
+            "forms": {
+                "1" :{"name":"initial request"},
+                "2" :{"name":"visit"},
+                "3" :{"name":"commissioning"},
+                "4" :{"name":"rapport de vérifications"}
+            }
+        },
+        "calorifuge": {  
+            "forms": {
+                "1" :{"name":"initial request 2"},
+                "2" :{"name":"visit 2"},
+                "3" :{"name":"commissioning 2"},
+                "4" :{"name":"rapport de vérifications 2"}
+            }
+        }
+    }
+    
+
+
     list=[ 
-          {"type_intervention":"scaffolding request", "organization":"iter","config":"{}"},
-          {"type_intervention":"scaffolding request", "organization":"sandbox","config":"{}"},
-          {"type_intervention":"calorifuge", "organization":"iter","config":"{}"},
-          {"type_intervention":"calorifuge", "organization":"sandbox","config":"{}"} 
+          {"type_intervention":"scaffolding request", "organization":"iter","config":json.dumps(types_interventions["scaffolding request"])},
+          {"type_intervention":"scaffolding request", "organization":"sandbox","config":json.dumps(types_interventions["scaffolding request"])},
+          {"type_intervention":"calorifuge", "organization":"iter","config":json.dumps(types_interventions["calorifuge"])},
+          {"type_intervention":"calorifuge", "organization":"sandbox","config":json.dumps(types_interventions["calorifuge"]) } 
           ];
     for item in list:
             _type_intervention=getByIdOrByName(TypeIntervention, item["type_intervention"], None)
@@ -206,6 +230,8 @@ def populate_type_intervention():
                     config_text=item["config"]
                 )
                 db.session.add(_type_intervention_organization)
+            else:
+                 _type_intervention_organization.config_text=item["config"]
                 
             
                 
