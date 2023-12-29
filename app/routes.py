@@ -189,18 +189,18 @@ def populate_type_intervention():
     types_interventions= {
         "scaffolding request": {  
             "forms": {
-                "1" :{"name":"initial request"},
-                "2" :{"name":"visit"},
-                "3" :{"name":"commissioning"},
-                "4" :{"name":"rapport de vérifications"}
+                "1" :{"form_name":"initial request"},
+                "2" :{"form_name":"visit"},
+                "3" :{"form_name":"commissioning"},
+                "4" :{"form_name":"rapport de vérifications"}
             }
         },
         "calorifuge": {  
             "forms": {
-                "1" :{"name":"initial request 2"},
-                "2" :{"name":"visit 2"},
-                "3" :{"name":"commissioning 2"},
-                "4" :{"name":"rapport de vérifications 2"}
+                "1" :{"form_name":"initial request 2"},
+                "2" :{"form_name":"visit 2"},
+                "3" :{"form_name":"commissioning 2"},
+                "4" :{"form_name":"rapport de vérifications 2"}
             }
         }
     }
