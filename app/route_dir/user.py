@@ -3,6 +3,7 @@ from ..model_dir.mymixin import User
 from ..model_dir.company import Company
 from ..model_dir.tenant import Tenant
 from ..model_dir.organization import Organization
+from ..model_dir.type_intervention import TypeIntervention, TypeInterventionOrganization
 
 from flask import jsonify, request, abort
 from .. import db, getByIdOrEmail, getByIdOrByName
@@ -87,16 +88,21 @@ def get_user_config():
     me = User.me().to_json()
     
     # detail des organizations qui me concernent
-    user_organizations=[]
-    organizations = Organization.query.all()
-    for organization in organizations:
-        if organization.id in me["organizations"].keys():
-            user_organizations.append(organization)
-        
+    # user_organizations=[]
+    # organizations = Organization.query.all()
+    # for organization in organizations:
+    #     if organization.id in me["organizations"].keys():
+    #         user_organizations.append(organization)
+       
+    types_interventions_organizations=[] 
+    _types_interventions_organizations = TypeInterventionOrganization.query.all()
+    for _type_intervention_organization in _types_interventions_organizations:
+        print(_type_intervention_organization.to_json_config())
+        types_interventions_organizations.append(_type_intervention_organization)
     
     result={
             "user": me,
-            "organizations": [organization.to_json() for organization in user_organizations]
+            "config_organization_type_intervention": [type_intervention_organization.to_json_config() for type_intervention_organization in types_interventions_organizations]
            }
     
     return (result), 200

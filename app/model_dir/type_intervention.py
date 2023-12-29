@@ -11,6 +11,24 @@ class TypeInterventionOrganization(db.Model):
     organization_id = db.Column(db.String(36), db.ForeignKey('organizations.id'), primary_key=True)
     config_text=db.Column(db.Text)
     
+    type_intervention   = relationship("TypeIntervention")
+    organization        = relationship("Organization")
+   
+   
+    def to_json(self):
+        return {
+            'type_intervention':            self.type_intervention.name,
+            'organization':                 self.organization.name,
+            'config_text':                     self.config_text,
+        }
+    
+    def to_json_config(self):
+        return {
+            self.organization.name: {
+                self.type_intervention.name: self.config_text
+            }
+        }
+        
     
 class TypeIntervention(db.Model, MyMixin):
     

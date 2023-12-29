@@ -108,7 +108,7 @@ class Role(db.Model, MyMixin):
     __tablename__ = 'roles'
    
     organization_id  = db.Column(db.String(36), db.ForeignKey("organizations.id"))
-    
+    organization        = relationship("Organization")
     def to_json(self):
         return {
             'id':               self.id,
@@ -156,21 +156,21 @@ class User(db.Model, MyMixin):
         dict_organization_roles={}
         
         for item in self.roles:
+            print(item.organization.name)
             
             if not item.organization_id in organizations:
-                dict_organization_roles[item.organization_id] = {"roles":[]}
+                dict_organization_roles[item.organization.name] = {"roles":[]}
                 organizations.append(item.organization_id)
-            dict_organization_roles[item.organization_id]["roles"].append(item.name)
+            dict_organization_roles[item.organization.name]["roles"].append(item.name)
         
         return {
             'id':           self.id,
             '_internal' :   self.get_internal(),
             'email':        self.email,
             'password':     self.password,
-            'company_id':   self.company_id,
             'firstname':    self.firstname,
             'lastname':     self.lastname,
-            'company':      self.company.to_json_light(),
+            'company':      self.company.name,
             'organizations':   dict_organization_roles
             
         }
