@@ -4,13 +4,7 @@ from .mymixin import MyMixin
 from sqlalchemy.orm import declarative_base, relationship, backref
 import uuid
 
-typeintervention_organization_config = db.Table('types_interventions_organizations_config',
-                    db.Column('type_intervention_id', db.String(36), db.ForeignKey('types_interventions.id'), primary_key=True),
-                    db.Column('organization_id', db.String(36), db.ForeignKey('organizations.id'), primary_key=True),
-                    db.Column('config', db.Text)
-                    )
-   
-   
+
 class TypeIntervention(db.Model, MyMixin):
     
     __tablename__ = 'types_interventions'
