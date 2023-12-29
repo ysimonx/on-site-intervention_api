@@ -4,6 +4,7 @@ import hashlib
 
 from ..model_dir.intervention import Intervention
 from ..model_dir.type_intervention import TypeIntervention
+from ..model_dir.form import Form
 
 from ..model_dir.place import Place
 from ..model_dir.organization import Organization
@@ -46,9 +47,8 @@ def create_intervention():
     place_on_site_uuid          = request.json.get('place_on_site_uuid')
     place_name                  = request.json.get('place_name')
     organization_id             = request.json.get('organization_id')
-    version                     = request.json.get('version')
     type_intervention           = request.json.get('type_intervention')
-    
+    forms                       = request.json.get('forms')
    
     if organization_id is None:
         abort(make_response(jsonify(error="organization_id must be provided"), 400))
@@ -70,6 +70,8 @@ def create_intervention():
     if _organisation is None:
         abort(make_response(jsonify(error="organization is not found"), 400))
         
+   
+        
     intervention= Intervention.query.filter(Intervention.intervention_on_site_uuid == intervention_on_site_uuid).first()
     if intervention is None:
         intervention = Intervention(
@@ -82,7 +84,7 @@ def create_intervention():
         
         db.session.add(intervention)
     else:
-        print(intervention.to_json())
+        # print(intervention.to_json())
         intervention.name = intervention_name
         intervention.place_id = place.id
         intervention.version = intervention.version + 1
@@ -91,6 +93,30 @@ def create_intervention():
         
 
     db.session.commit()  
+    
+    if forms is not None:
+        for key in  forms.keys():
+            form_values =forms[key]
+            form_name = form_values["form_name"]
+            form_on_site_uuid = form_values["form_on_site_uuid"]
+            _form= Form.query.filter(Form.form_on_site_uuid == form_on_site_uuid).first()
+            if _form is None:
+                _form=Form( 
+                       intervention_id = intervention.id,
+                       name=intervention_on_site_uuid+"_form_"+form_name,
+                       form_name= form_name, 
+                       form_on_site_uuid=form_on_site_uuid,
+                       form_order= int(key))
+                db.session.add(_form)
+                db.session.commit()
+                
+            print(_form.to_json())
+            print()
+     
+    # re read intervention, for forms 
+    intervention= Intervention.query.filter(Intervention.intervention_on_site_uuid == intervention_on_site_uuid).first()
+           
+            
     return jsonify(intervention.to_json()), 201
 
 

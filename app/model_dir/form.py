@@ -10,6 +10,7 @@ class Form(db.Model, MyMixin):
     
     form_on_site_uuid           = db.Column(db.String(36), unique=True)
     form_name                   = db.Column(db.String(255), index=True)
+    form_order                  = db.Column(db.Integer, default=1)
     average_latitude            = db.Column(db.Float)
     average_longitude           = db.Column(db.Float)
     intervention_on_site_uuid   = db.Column(db.String(36))
@@ -26,8 +27,9 @@ class Form(db.Model, MyMixin):
             'id':                             self.id,
             'name':                           self.name,
             '_internal' :                     self.get_internal(),
-            'form_on_site_uuid':            self.form_on_site_uuid,
-            'form_name':                    self.form_name,
+            'form_on_site_uuid':              self.form_on_site_uuid,
+            'form_name':                      self.form_name,
+            'form_order':                     self.form_order,
             'intervention_on_site_uuid':      self.intervention_on_site_uuid,
             'intervention_id':                self.intervention_id,
             'average_latitude':               self.average_latitude,
@@ -37,15 +39,9 @@ class Form(db.Model, MyMixin):
         
     def to_json_light(self):
         return {
-            'id':                             self.id,
-            'name':                           self.name,
-            '_internal' :                     self.get_internal(),
             'form_on_site_uuid':            self.form_on_site_uuid,
             'form_name':                    self.form_name,
-            'intervention_on_site_uuid':      self.intervention_on_site_uuid,
-            'intervention_id':                self.intervention_id,
-            'average_latitude':               self.average_latitude,
-            'average_longitude':              self.average_longitude,
+            'form_order':                   self.form_order
         }
        
 

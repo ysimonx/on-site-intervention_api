@@ -1,0 +1,13 @@
+{
+    "types_interventions": {
+        "scaffolding request": {  
+            "forms": {
+                "1" :{"name":"initial request"},
+                "2" :{"name":"visit"},
+                "3" :{"name":"commissioning"},
+                "4" :{"name":"rapport de vérifications"}
+            }
+        }
+    }
+}
+
