@@ -13,6 +13,7 @@ from app.model_dir.company      import Company
 from app.model_dir.tenant       import Tenant
 from app.model_dir.organization import Organization
 from app.model_dir.type_field   import TypeField
+from app.model_dir.type_intervention   import TypeIntervention, TypeInterventionOrganization
 
 from .route_dir.tenant          import app_file_tenant
 from .route_dir.organization    import app_file_organization
@@ -145,10 +146,11 @@ def before_first_request():
 def init():
     print(app.config["JWT_TOKEN_LOCATION"] )
     app.config["JWT_TOKEN_LOCATION"] = ["headers"] 
-    db.drop_all()
-    db.create_all()
+    # db.drop_all()
+    # db.create_all()
     populate_tenant()
     populate_user_data()
+    populate_type_intervention()
     populate_type_field()
     app.logger.info("db init done")
     app.config["JWT_TOKEN_LOCATION"] = ["headers","cookies"] 
@@ -163,8 +165,8 @@ def populate_tenant():
     tenants=["fidwork"];
 
     for newtenant in tenants:
-            test=getByIdOrByName(Tenant, newtenant, None)
-            if test is None:
+            tenant=getByIdOrByName(Tenant, newtenant, None)
+            if tenant is None:
                 tenant = Tenant( name = newtenant)
                 db.session.add(tenant)
                 app.logger.debug("tenant added %s", tenant.name)
@@ -180,11 +182,39 @@ def populate_type_field():
             app.logger.debug("type_field added %s", type_field.name)
     db.session.commit()
     
+def populate_type_intervention():
+    list=[ 
+          {"type_intervention":"scaffolding request", "organization":"iter","config":"{}"},
+          {"type_intervention":"scaffolding request", "organization":"sandbox","config":"{}"},
+          {"type_intervention":"calorifuge", "organization":"iter","config":"{}"},
+          {"type_intervention":"calorifuge", "organization":"sandbox","config":"{}"} 
+          ];
+    for item in list:
+            _type_intervention=getByIdOrByName(TypeIntervention, item["type_intervention"], None)
+            if _type_intervention is None:
+                _type_intervention = TypeIntervention( name =item["type_intervention"])
+                db.session.add(_type_intervention)
+                app.logger.debug("_type_intervention added %s", _type_intervention.name)
+            db.session.commit()    
+            _organization=getByIdOrByName(Organization, item["organization"], None)
+
+            _type_intervention_organization = TypeInterventionOrganization.query.get((_type_intervention.id,_organization.id))
+            if _type_intervention_organization is None:
+                (_type_intervention_organization) = TypeInterventionOrganization(
+                    type_intervention_id=_type_intervention.id,
+                    organization_id=_organization.id,
+                    config_text=item["config"]
+                )
+                db.session.add(_type_intervention_organization)
+                
+            
+                
+    db.session.commit()
     
 
     
 def populate_user_data():
-    dataCompany =  {
+    dataTenant =  {
         
                 "fidwork": [
                     { 
@@ -210,7 +240,7 @@ def populate_user_data():
                 }
     
        
-    for tenant, users in dataCompany.items():
+    for tenant, users in dataTenant.items():
         
         _tenant = getByIdOrByName(obj=Tenant, id=tenant, tenant_id=None)
         if _tenant is None:

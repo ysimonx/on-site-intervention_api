@@ -7,8 +7,8 @@ import uuid
 class TypeInterventionOrganization(db.Model):
     __tablename__ = 'types_interventions_organizations'
     
-    type_intervention_id= db.Column(db.String(36), db.ForeignKey('types_interventions.id'), primary_key=True)
-    organization_id=db.Column(db.String(36), db.ForeignKey('organizations.id'), primary_key=True)
+    type_intervention_id = db.Column(db.String(36), db.ForeignKey('types_interventions.id'), primary_key=True)
+    organization_id = db.Column(db.String(36), db.ForeignKey('organizations.id'), primary_key=True)
     config_text=db.Column(db.Text)
     
     
