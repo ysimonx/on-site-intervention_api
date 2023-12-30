@@ -4,6 +4,7 @@ import hashlib
 
 from ..model_dir.intervention import Intervention
 from ..model_dir.type_intervention import TypeIntervention
+from ..model_dir.section import Section
 from ..model_dir.form import Form
 
 from ..model_dir.place import Place
@@ -91,12 +92,11 @@ def create_intervention():
         intervention.type_intervention_id = _type_intervention.id
         
         
-
     db.session.commit()  
     
     if forms is not None:
-        for key in  forms.keys():
-            form_values =forms[key]
+        for key_form in  forms.keys():
+            form_values =forms[key_form]
             form_name = form_values["form_name"]
             form_on_site_uuid = form_values["form_on_site_uuid"]
             _form= Form.query.filter(Form.form_on_site_uuid == form_on_site_uuid).first()
@@ -106,12 +106,60 @@ def create_intervention():
                        name=intervention_on_site_uuid+"_form_"+form_name,
                        form_name= form_name, 
                        form_on_site_uuid=form_on_site_uuid,
-                       form_order= int(key))
+                       form_order= int(key_form))
                 db.session.add(_form)
-                db.session.commit()
-                
-            print(_form.to_json())
-            print()
+                # db.session.commit()
+            
+
+            sections=form_values["sections"]
+            if sections is not None:
+                for key_sections in sections.keys():
+                    print("Section #", key_sections)
+                    section_values=sections[key_sections]
+                    section_on_site_uuid = section_values['section_on_site_uuid']
+                    section_name=section_values['section_name']
+                    section_type=section_values['section_type']
+                    
+                    _section= Section.query.filter(Section.section_on_site_uuid == section_on_site_uuid).first()
+                    if _section is None:
+                        _section=Section(
+                            form_id=_form.id,
+                            intervention_id = intervention.id,
+                            section_on_site_uuid=section_on_site_uuid,
+                            section_name=section_name,
+                            section_type=section_type,
+                            section_order_in_form=int(key_sections)
+                        )
+                        db.session.add(_section)
+                        # db.session.commit()
+                   
+                    
+                    fields=section_values["fields"]
+                    if fields is not None:
+                        for key_field in fields.keys():
+                            print("Field #", key_field)
+                            field_values=fields[key_field]
+                            field_on_site_uuid = field_values['field_on_site_uuid']
+                            field_name         = field_values['field_name']
+                            field_type         = field_values['field_type']
+                            field_order_in_section=int(key_field)
+                            
+                            _field= Field.query.filter(Field.field_on_site_uuid == field_on_site_uuid).first()
+                            if _field is None:
+                                _field=Field(
+                                    section_id=_section.id,
+                                    intervention_id = intervention.id,
+                                    field_on_site_uuid=field_on_site_uuid,
+                                    field_name=field_name,
+                                    # field_type=field_type,
+                                    field_order_in_section=int(key_field)
+                                )
+                                db.session.add(_field)
+                               #  db.session.commit()
+                            
+    db.session.commit()                
+                        
+
      
     # re read intervention, for forms 
     intervention= Intervention.query.filter(Intervention.intervention_on_site_uuid == intervention_on_site_uuid).first()

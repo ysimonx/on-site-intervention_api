@@ -14,6 +14,7 @@ class Section(db.Model, MyMixin):
     section_name           = db.Column(db.String(100), index=True)
     form_on_site_uuid      = db.Column(db.String(36),  index=True)
     form_id                = db.Column(db.String(36),  db.ForeignKey("forms.id"), nullable=True)
+    intervention_id        = db.Column(db.String(36),  db.ForeignKey("interventions.id"), nullable=True)
     
     section_order_in_form  = db.Column(db.Integer, default=1)
     
@@ -25,7 +26,7 @@ class Section(db.Model, MyMixin):
         # print(self.forms)
         dict_fields={}
         for field in self.fields:
-            dict_fields[field.field_order]= field.to_json_light()
+            dict_fields[field.field_order_in_section]= field.to_json_light()
         print(dict_fields)
         return {
             'id':                           self.id,

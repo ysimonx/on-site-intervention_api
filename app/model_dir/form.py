@@ -15,11 +15,7 @@ class Form(db.Model, MyMixin):
     average_longitude           = db.Column(db.Float)
     intervention_on_site_uuid   = db.Column(db.String(36))
     intervention_id             = db.Column(db.String(36), db.ForeignKey("interventions.id"))
-    
-    fields                      = relationship("Field",   
-                                                cascade="all, delete", 
-                                                backref=backref("form_backref",lazy="joined")                                        )
-   
+
     sections                    =      relationship("Section")
     
 
@@ -35,7 +31,6 @@ class Form(db.Model, MyMixin):
             'intervention_id':                self.intervention_id,
             'average_latitude':               self.average_latitude,
             'average_longitude':              self.average_longitude,
-            'fields':  [{"field": item.to_json_light()} for item in self.fields] ,
             'sections':  [{"section": item.to_json_light()} for item in self.sections] ,
         }
         

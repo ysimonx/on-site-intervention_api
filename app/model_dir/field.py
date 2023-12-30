@@ -12,25 +12,18 @@ class Field(db.Model, MyMixin):
     __tablename__ = 'fields'
     
     field_on_site_uuid          = db.Column(db.String(36), unique=True)
-    
-    form_on_site_uuid           = db.Column(db.String(36),  index=True)
-    field_order_in_section      = db.Column(db.Integer, default=1)
     type_field_id               = db.Column(db.String(36),  db.ForeignKey("types_fields.id"), nullable=True)
     field_name                  = db.Column(db.String(255), index=True)
     field_value                 = db.Column(db.String(255), index=True)
-    average_latitude            = db.Column(db.Float)
-    average_longitude           = db.Column(db.Float)
-    
-    form_id                     = db.Column(db.String(36),  db.ForeignKey("forms.id"), nullable=True)
     section_id                  = db.Column(db.String(36),  db.ForeignKey("sections.id"), nullable=True)
-    
+    field_order_in_section      = db.Column(db.Integer, default=1)
+    intervention_id             = db.Column(db.String(36),  db.ForeignKey("interventions.id"), nullable=True)
     photos                      = relationship("Photo",   
                                                 cascade="all, delete", 
                                                 backref=backref("photos_backref",lazy="joined"))
     files                       = relationship("File",   
                                                 cascade="all, delete", 
                                                 backref=backref("files_backref",lazy="joined"))
-    
 
 
     def to_json(self):
@@ -42,13 +35,12 @@ class Field(db.Model, MyMixin):
             'field_order_in_section':          self.field_order_in_section,
             'field_value':          self.field_value,
             'type_field_id':           self.type_field_id,
-            'form_id':            self.form_id,
-            'average_latitude':     self.average_latitude,
-            'average_longitude':    self.average_longitude,
+            'section_id':            self.section_id,
+            'intervention_id':            self.intervention_id,
+            
             'photos':               [{"photo": item.to_json_light()} for item in self.photos] ,
             'files':                [{"file": item.to_json_light()} for item in self.files] ,
-            'form':               self.form_backref.to_json_light(),
-            'type_field':           self.type_field_backref.to_json()
+            # 'type_field':           self.type_field_backref.to_json()
             
         }
         
@@ -60,12 +52,11 @@ class Field(db.Model, MyMixin):
             'field_name':           self.field_name,
             'field_value':          self.field_value,
             'type_field_id':        self.type_field_id,
-            'form_id':            self.form_id,
-            'average_latitude':     self.average_latitude,
-            'average_longitude':    self.average_longitude,
+            'section_id':            self.section_id,
+            'intervention_id':            self.intervention_id,
             'photos':  [{"photo": item.to_json_light()} for item in self.photos],
             'files':                [{"file": item.to_json_light()} for item in self.files] ,
-            'type_field':           self.type_field_backref.to_json()
+            # 'type_field':           self.type_field_backref.to_json()
         }
 
     def get_attributes_for_thingsboard(self):
