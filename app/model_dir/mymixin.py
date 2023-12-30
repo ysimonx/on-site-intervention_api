@@ -137,6 +137,7 @@ class User(db.Model, MyMixin):
     password    = db.Column(db.String(100))
     firstname   = db.Column(db.String(100))
     lastname    = db.Column(db.String(100))
+    phone       = db.Column(db.String(100))
     company_id  = db.Column(db.String(36), db.ForeignKey("companies.id"))
     company     = db.relationship("Company", viewonly=True)
 
@@ -168,6 +169,7 @@ class User(db.Model, MyMixin):
             '_internal' :   self.get_internal(),
             'email':        self.email,
             'password':     self.password,
+            'phone':        self.phone,
             'firstname':    self.firstname,
             'lastname':     self.lastname,
             'company':      self.company.name,

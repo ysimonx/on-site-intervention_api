@@ -127,10 +127,7 @@ def create_user():
     if tenant is None:
         abort(make_response(jsonify(error="tenant is not found"), 400))
   
-    user = getByIdOrEmail(obj=User, id=request.json.get('email'), tenant_id=tenant.id)
-    if user is not None:
-            abort(make_response(jsonify(error="user already exists"), 400))
-     
+
     company = getByIdOrByName(obj=Company, id=request.json.get('company'), tenant_id=tenant.id)
     if company is None:
         company = Company(
@@ -140,17 +137,23 @@ def create_user():
         db.session.add(company)
         db.session.commit()
        
-   
-   
-    user = User(
-        email=          request.json.get('email'),
-        password =      request.json.get('password'),
-        company_id =    company.id,
-        tenant_id =     tenant.id
-        )
+    user = getByIdOrEmail(obj=User, id=request.json.get('email'), tenant_id=tenant.id)
+    if user is not None:
+        user.phone = request.json.get('phone')
+        user.password = request.json.get('password')
+        user.hash_password()   
+    else:
+        user = User(
+            email=          request.json.get('email'),
+            password =      request.json.get('password'),
+            company_id =    company.id,
+            tenant_id =     tenant.id,
+            phone =         request.json.get('phone')
+            )
 
-    user.hash_password()
-    db.session.add(user)
+        user.hash_password()
+        db.session.add(user)
+    
     db.session.commit()
     return jsonify(user.to_json()), 201
 

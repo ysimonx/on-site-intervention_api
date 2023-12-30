@@ -188,14 +188,152 @@ def populate_type_intervention():
     
     types_interventions= {
         "scaffolding request": {  
+            "type_intervention": "scaffolding request",
             "forms": {
-                "1" :{"form_name":"initial request"},
-                "2" :{"form_name":"visit"},
-                "3" :{"form_name":"commissioning"},
-                "4" :{"form_name":"rapport de vérifications"}
+                "1" :{"form_name":"initial request",
+                      "sections": {
+                          "1": { "section_name" : "initial request rub a",
+                                 "section_type" : "section type 1",
+                                 "fields": {
+                                     "1": { "field_name": "field aa",
+                                           "field_type": "field_type 1"},
+                                     "2": { "field_name": "field ab",
+                                           "field_type": "field_type 1"},
+                                     "3": { "field_name": "field ac",
+                                           "field_type": "field_type 1"},
+                                 }
+                                },
+                                 
+                          "2": { "section_name" : "initial request rub b",
+                                "section_type" : "section type 2",
+                                 "fields": {
+                                     "1": { "field_name": "field ba",
+                                           "field_type": "field_type 1"},
+                                     "2": { "field_name": "field bb",
+                                           "field_type": "field_type 1"},
+                                     "3": { "field_name": "field bc",
+                                           "field_type": "field_type 1"},
+                                 } },
+                          "3": { "section_name" : "initial request rub c",
+                                "section_type" : "section type 3",
+                                 "fields": {
+                                     "1": { "field_name": "field ca",
+                                           "field_type": "field_type 1"},
+                                     "2": { "field_name": "field cb",
+                                           "field_type": "field_type 1"},
+                                     "3": { "field_name": "field cc",
+                                           "field_type": "field_type 1"},
+                                 } },
+                     }
+                    },
+                "2" :{"form_name":"visit",
+                      "sections": {
+                          "1": { "section_name" : "visit rub a",
+                                "section_type" : "section type 1",
+                                 "fields": {
+                                     "1": { "field_name": "field aa",
+                                           "field_type": "field_type 1"},
+                                     "2": { "field_name": "field ab",
+                                           "field_type": "field_type 1"},
+                                     "3": { "field_name": "field ac",
+                                           "field_type": "field_type 1"},
+                                 }
+                                },
+                                 
+                          "2": { "section_name" : "visit rub b",
+                                "section_type" : "section type 1",
+                                 "fields": {
+                                     "1": { "field_name": "field ba",
+                                           "field_type": "field_type 1"},
+                                     "2": { "field_name": "field bb",
+                                           "field_type": "field_type 1"},
+                                     "3": { "field_name": "field bc",
+                                           "field_type": "field_type 1"},
+                                 } },
+                          "3": { "section_name" : "visit rub c",
+                                "section_type" : "section type 1",
+                                 "fields": {
+                                     "1": { "field_name": "field ca",
+                                           "field_type": "field_type 1"},
+                                     "2": { "field_name": "field cb",
+                                           "field_type": "field_type 1"},
+                                     "3": { "field_name": "field cc",
+                                           "field_type": "field_type 1"},
+                                 } },
+                     }
+                    },
+                "3" :{"form_name":"commissioning",
+                      "sections": {
+                          "1": { "section_name" : "commissioning rub a",
+                                "section_type" : "section type 1",
+                                 "fields": {
+                                     "1": { "field_name": "field aa",
+                                           "field_type": "field_type 1"},
+                                     "2": { "field_name": "field ab",
+                                           "field_type": "field_type 1"},
+                                     "3": { "field_name": "field ac",
+                                           "field_type": "field_type 1"},
+                                 }
+                                },
+                                 
+                          "2": { "section_name" : "commissioning rub b",
+                                "section_type" : "section type 1",
+                                 "fields": {
+                                     "1": { "field_name": "field ba",
+                                           "field_type": "field_type 1"},
+                                     "2": { "field_name": "field bb",
+                                           "field_type": "field_type 1"},
+                                     "3": { "field_name": "field bc",
+                                           "field_type": "field_type 1"},
+                                 } },
+                          "3": { "section_name" : "commissioning rub c",
+                                "section_type" : "section type 1",
+                                 "fields": {
+                                     "1": { "field_name": "field ca",
+                                           "field_type": "field_type 1"},
+                                     "2": { "field_name": "field cb",
+                                           "field_type": "field_type 1"},
+                                     "3": { "field_name": "field cc",
+                                           "field_type": "field_type 1"},
+                                 } },
+                     }
+                      },
+                "4" :{"form_name":"rapport de vérifications",
+                      "sections": {
+                          "1": { "section_name" : "rapport de vérifications rub a",
+                                 "fields": {
+                                     "1": { "field_name": "field aa",
+                                           "field_type": "field_type 1"},
+                                     "2": { "field_name": "field ab",
+                                           "field_type": "field_type 1"},
+                                     "3": { "field_name": "field ac",
+                                           "field_type": "field_type 1"},
+                                 }
+                                },
+                                 
+                          "2": { "section_name" : "rapport de vérifications rub b",
+                                 "fields": {
+                                     "1": { "field_name": "field ba",
+                                           "field_type": "field_type 1"},
+                                     "2": { "field_name": "field bb",
+                                           "field_type": "field_type 1"},
+                                     "3": { "field_name": "field bc",
+                                           "field_type": "field_type 1"},
+                                 } },
+                          "3": { "section_name" : "rapport de vérifications rub c",
+                                 "fields": {
+                                     "1": { "field_name": "field ca",
+                                           "field_type": "field_type 1"},
+                                     "2": { "field_name": "field cb",
+                                           "field_type": "field_type 1"},
+                                     "3": { "field_name": "field cc",
+                                           "field_type": "field_type 1"},
+                                 } },
+                     }}
             }
         },
         "calorifuge": {  
+             "type_intervention": "calorifuge",
             "forms": {
                 "1" :{"form_name":"initial request 2"},
                 "2" :{"form_name":"visit 2"},
@@ -208,10 +346,10 @@ def populate_type_intervention():
 
 
     list=[ 
-          {"type_intervention":"scaffolding request", "organization":"iter","config":json.dumps(types_interventions["scaffolding request"])},
-          {"type_intervention":"scaffolding request", "organization":"sandbox","config":json.dumps(types_interventions["scaffolding request"])},
-          {"type_intervention":"calorifuge", "organization":"iter","config":json.dumps(types_interventions["calorifuge"])},
-          {"type_intervention":"calorifuge", "organization":"sandbox","config":json.dumps(types_interventions["calorifuge"]) } 
+          {"type_intervention":"scaffolding request", "organization":"iter","config":json.dumps(types_interventions["scaffolding request"], indent=4)},
+          {"type_intervention":"scaffolding request", "organization":"sandbox","config":json.dumps(types_interventions["scaffolding request"], indent=4)},
+          {"type_intervention":"calorifuge", "organization":"iter","config":json.dumps(types_interventions["calorifuge"], indent=4)},
+          {"type_intervention":"calorifuge", "organization":"sandbox","config":json.dumps(types_interventions["calorifuge"], indent=4) } 
           ];
     for item in list:
             _type_intervention=getByIdOrByName(TypeIntervention, item["type_intervention"], None)
@@ -246,6 +384,7 @@ def populate_user_data():
                     { 
                          "email": "yannick.simon@gmail.com", 
                          "password": "12345678", 
+                         "phone": "+33651556170",
                          "firstname":"Yannick", 
                          "lastname":"Simon",
                          "company": "kysoe",
@@ -289,6 +428,7 @@ def populate_user_data():
                 _user = User(
                             email= user["email"],
                             password= user["password"],
+                            phone= user["phone"],
                             tenant_id = _tenant.id,
                             company_id = _company.id,
                             firstname=user["firstname"],
@@ -302,6 +442,7 @@ def populate_user_data():
                 _user.firstname     = user["firstname"]
                 _user.lastname      = user["lastname"]
                 _user.password      = user["password"]
+                _user.phone         = user["phone"]
                 _user.hash_password()
                 app.logger.debug("user updated %s", _user.email)
             
