@@ -14,13 +14,15 @@ class Field(db.Model, MyMixin):
     field_on_site_uuid          = db.Column(db.String(36), unique=True)
     
     form_on_site_uuid           = db.Column(db.String(36),  index=True)
-    form_id                     = db.Column(db.String(36),  db.ForeignKey("forms.id"), nullable=True)
+    field_order_in_section      = db.Column(db.Integer, default=1)
     type_field_id               = db.Column(db.String(36),  db.ForeignKey("types_fields.id"), nullable=True)
     field_name                  = db.Column(db.String(255), index=True)
     field_value                 = db.Column(db.String(255), index=True)
     average_latitude            = db.Column(db.Float)
     average_longitude           = db.Column(db.Float)
     
+    form_id                     = db.Column(db.String(36),  db.ForeignKey("forms.id"), nullable=True)
+    section_id                  = db.Column(db.String(36),  db.ForeignKey("sections.id"), nullable=True)
     
     photos                      = relationship("Photo",   
                                                 cascade="all, delete", 
@@ -30,13 +32,14 @@ class Field(db.Model, MyMixin):
                                                 backref=backref("files_backref",lazy="joined"))
     
 
-    
+
     def to_json(self):
         return {
             'id':                   self.id,
             'name':                 self.name,
             '_internal' :           self.get_internal(),
             'field_name':           self.field_name,
+            'field_order_in_section':          self.field_order_in_section,
             'field_value':          self.field_value,
             'type_field_id':           self.type_field_id,
             'form_id':            self.form_id,

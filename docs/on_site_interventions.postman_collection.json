@@ -29,6 +29,31 @@
 					"response": []
 				},
 				{
+					"name": "interventions list iter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/intervention?organization_id=826eaeb6-7180-443d-bce4-f1840079a54d",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"intervention"
+							],
+							"query": [
+								{
+									"key": "organization_id",
+									"value": "826eaeb6-7180-443d-bce4-f1840079a54d"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "create intervention",
 					"request": {
 						"auth": {
@@ -45,7 +70,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "\n{\n    \"intervention_on_site_uuid\": \"intervention_on_site_uuid_value1\",\n    \"intervention_name\":\"échafaudage E1\",\n    \"place_on_site_uuid\": \"nice_uuid_1\",\n    \"place_name\": \"nice\",\n    \"forms\":[\n        {   \n            \"form_name\":\"initial_request\",\n            \"form_on_site_uuid\": \"report_on_site_uuid_value3b\"\n        },\n         {   \n            \"form_name\":\"visit\",\n            \"form_on_site_uuid\": \"report_on_site_uuid_value3c\"\n        },\n         {   \n            \"form_name\":\"reception\",\n            \"form_on_site_uuid\": \"report_on_site_uuid_value3d\"\n        }\n    ],\n    \"user_roles\": \n    {\n        \"user\": {\n            \"user_id\":\"\"\n        },\n        \"requester\": {\n            \"user_id\":\"\"\n        },\n        \"supervisor\": {\n            \"user_id\":\"\"\n        }\n    }\n}\n    \n\n",
+							"raw": "\n{\n    \"intervention_on_site_uuid\": \"intervention_on_site_uuid_value1\",\n    \"intervention_name\":\"échafaudage E1\",\n    \"place_on_site_uuid\": \"nice_uuid_1\",\n    \"place_name\": \"nice\",\n    \"organization_id\": \"iter\",\n    \"type_intervention\": \"scaffolding_request\",\n    \"forms\":{\n        \"1\": {   \n            \"form_name\":\"initial_request\",\n            \"form_on_site_uuid\": \"form_on_site_uuid_value3b\"\n        },\n        \"2\":  {   \n            \"form_name\":\"visit\",\n            \"form_on_site_uuid\": \"form_on_site_uuid_value3c\"\n        },\n        \"3\":  {   \n            \"form_name\":\"reception\",\n            \"form_on_site_uuid\": \"form_on_site_uuid_value3d\"\n        }\n    },\n    \"user_roles\": \n    {\n        \"user\": {\n            \"user_id\":\"\"\n        },\n        \"requester\": {\n            \"user_id\":\"\"\n        },\n        \"supervisor\": {\n            \"user_id\":\"\"\n        }\n    }\n}\n    \n\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -773,7 +798,7 @@
 					"response": []
 				},
 				{
-					"name": "users list (tout tenants)",
+					"name": "users list",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -796,6 +821,45 @@
 								"api",
 								"v1",
 								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users list pagination",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/user?page=1&per_page=3",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "3"
+								}
 							]
 						}
 					},
@@ -968,6 +1032,66 @@
 								"api",
 								"v1",
 								"tenant"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tenants list by id uuid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/tenant/08bf69ee-3fa3-4a09-9114-3c0c4b93d7ce",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"tenant",
+								"08bf69ee-3fa3-4a09-9114-3c0c4b93d7ce"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tenants list by name",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/tenant/fidwork",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"tenant",
+								"fidwork"
 							]
 						}
 					},

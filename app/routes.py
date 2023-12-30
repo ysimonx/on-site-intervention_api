@@ -34,6 +34,7 @@ from .route_dir.field           import app_file_field
 from .route_dir.field_histo     import app_file_field_histo
 from .route_dir.backoffice      import app_file_backoffice
 from .route_dir.role            import app_file_role
+from .route_dir.section         import app_file_section
 
 
 
@@ -98,6 +99,9 @@ app.register_blueprint(app_file_form_template,
                        url_prefix=url_prefix)
 app.register_blueprint(app_file_organization,
                        url_prefix=url_prefix)
+app.register_blueprint(app_file_section,
+                       url_prefix=url_prefix)
+
 url_prefix_backoffice = "/backoffice/v1"
 app.register_blueprint(app_file_backoffice,
                        url_prefix=url_prefix_backoffice)
@@ -301,6 +305,7 @@ def populate_type_intervention():
                 "4" :{"form_name":"rapport de vérifications",
                       "sections": {
                           "1": { "section_name" : "rapport de vérifications rub a",
+                                 "section_type" : "section type 1",
                                  "fields": {
                                      "1": { "field_name": "field aa",
                                            "field_type": "field_type 1"},
@@ -312,6 +317,7 @@ def populate_type_intervention():
                                 },
                                  
                           "2": { "section_name" : "rapport de vérifications rub b",
+                                 "section_type" : "section type 1",
                                  "fields": {
                                      "1": { "field_name": "field ba",
                                            "field_type": "field_type 1"},
@@ -321,6 +327,7 @@ def populate_type_intervention():
                                            "field_type": "field_type 1"},
                                  } },
                           "3": { "section_name" : "rapport de vérifications rub c",
+                                 "section_type" : "section type 1",
                                  "fields": {
                                      "1": { "field_name": "field ca",
                                            "field_type": "field_type 1"},

@@ -18,9 +18,10 @@ class Form(db.Model, MyMixin):
     
     fields                      = relationship("Field",   
                                                 cascade="all, delete", 
-                                                backref=backref("form_backref",lazy="joined")
-                                            )
+                                                backref=backref("form_backref",lazy="joined")                                        )
    
+    sections                    =      relationship("Section")
+    
 
     def to_json(self):
         return {
@@ -35,6 +36,7 @@ class Form(db.Model, MyMixin):
             'average_latitude':               self.average_latitude,
             'average_longitude':              self.average_longitude,
             'fields':  [{"field": item.to_json_light()} for item in self.fields] ,
+            'sections':  [{"section": item.to_json_light()} for item in self.sections] ,
         }
         
     def to_json_light(self):
