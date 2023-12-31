@@ -2,6 +2,7 @@ import os
 import logging
 import datetime
 import json
+import uuid
 from flask                      import jsonify, abort, render_template
 from flask_mail                 import Mail
 from flask_jwt_extended         import JWTManager
@@ -193,159 +194,181 @@ def populate_type_intervention():
     types_interventions= {
         "scaffolding request": {  
             "type_intervention": "scaffolding request",
+            "intervention_on_site_uuid": "67ecd9b0-ff04-4eae-80fa-c55c2c3a45bf",
             "forms": {
                 "1" :{"form_name":"initial request",
+                      "form_on_site_uuid": "9f1f20e3-d3cd-4a58-97fc-2e42a4d7b736",
                       "sections": {
                           "1": { "section_name" : "initial request rub a",
                                  "section_type" : "section type 1",
+                                 "section_on_site_uuid": "ef637435-30fe-4a3f-941f-f29a8df8f865",
                                  "fields": {
                                      "1": { "field_name": "field aa",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"46d8ccd9-5580-4c92-b9cc-eebb76b9c57c"},
                                      "2": { "field_name": "field ab",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"0b3f2281-cb74-4122-bdb5-353214e7c611"},
                                      "3": { "field_name": "field ac",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"0b3f2281-cb74-4122-bdb5-353214e7c611"},
                                  }
                                 },
                                  
                           "2": { "section_name" : "initial request rub b",
                                 "section_type" : "section type 2",
+                                "section_on_site_uuid": "6b8b8b4c-8bca-4697-8c3c-6b70d4fd9b51",
                                  "fields": {
                                      "1": { "field_name": "field ba",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"0b3f2281-cb74-4122-bdb5-353214e7c611"},
                                      "2": { "field_name": "field bb",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"30a238fe-5de1-48c6-b91a-3d177124f634"},
                                      "3": { "field_name": "field bc",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"f249bf91-9bfd-4516-96a5-94bd31e9e391"},
                                  } },
                           "3": { "section_name" : "initial request rub c",
                                 "section_type" : "section type 3",
+                                "section_on_site_uuid": "83ce8e7f-1c28-4270-bede-9bd5dcd6ab0e",
                                  "fields": {
                                      "1": { "field_name": "field ca",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"9d4f8747-f238-4c41-81b7-b16adb97d9c7"},
                                      "2": { "field_name": "field cb",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"7669d2b9-e626-4acc-842c-6922d2737a1f"},
                                      "3": { "field_name": "field cc",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"d76e74ca-b7ce-463c-b833-4ba45585d224"},
                                  } },
                      }
                     },
                 "2" :{"form_name":"visit",
+                      "form_on_site_uuid": "a81c475c-3b9d-40da-839d-56eeee06e85a",
                       "sections": {
                           "1": { "section_name" : "visit rub a",
                                 "section_type" : "section type 1",
+                                "section_on_site_uuid": "de3b8182-df35-4c6a-9aea-8d652efd8142",
                                  "fields": {
                                      "1": { "field_name": "field aa",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"8dd3f411-6f67-43c4-9d9d-1d420cc6bc68"},
                                      "2": { "field_name": "field ab",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"0b1a49af-757f-4127-a0fb-f525d2f71f70"},
                                      "3": { "field_name": "field ac",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"29c05fa8-c1d6-4026-bd4a-356a1e0eca7b"},
                                  }
                                 },
                                  
                           "2": { "section_name" : "visit rub b",
                                 "section_type" : "section type 1",
+                                "section_on_site_uuid": "8f3b42c1-1fff-4dee-a0e2-c58a1dd3c7d9",
                                  "fields": {
                                      "1": { "field_name": "field ba",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"c6efbbcc-acb6-4520-ab3e-706ff064c03f"},
                                      "2": { "field_name": "field bb",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"e389e844-b78e-418a-91d4-8ba21b3da02c"},
                                      "3": { "field_name": "field bc",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"508562c5-1212-4a23-8111-0fb2d5f2199e"},
                                  } },
                           "3": { "section_name" : "visit rub c",
                                 "section_type" : "section type 1",
+                                "section_on_site_uuid": "3f1a44a3-e045-48f0-a035-a4e8422d58d9",
                                  "fields": {
                                      "1": { "field_name": "field ca",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"e55e2d27-c8c2-489e-aede-bf50f468bf37"},
                                      "2": { "field_name": "field cb",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"c68585b0-fcc9-4bde-ac18-b903bc983273"},
                                      "3": { "field_name": "field cc",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"4ec24f20-b64d-44e7-ad1d-b5d037f6407b"},
                                  } },
                      }
                     },
                 "3" :{"form_name":"commissioning",
+                      "form_on_site_uuid": "e773e72b-e00e-4fcc-b6be-fbfb70307351",
                       "sections": {
                           "1": { "section_name" : "commissioning rub a",
                                 "section_type" : "section type 1",
+                                "section_on_site_uuid": "7c1b3d74-b98a-43a5-9520-dee3a22f7dcb",
                                  "fields": {
                                      "1": { "field_name": "field aa",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"27f76c97-0ea7-4274-ae09-62748bfc4a33"},
                                      "2": { "field_name": "field ab",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"f1ee438e-580f-4760-a748-6621f3c32ecf"},
                                      "3": { "field_name": "field ac",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"54dfe367-ba00-40e6-9eb1-cda38bc7d896"},
                                  }
                                 },
                                  
                           "2": { "section_name" : "commissioning rub b",
                                 "section_type" : "section type 1",
+                                "section_on_site_uuid": "9d33f2b7-6543-4738-b974-1892ce675260",
                                  "fields": {
                                      "1": { "field_name": "field ba",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"f00da6cd-aa31-49bd-a2f0-a85fe275240e"},
                                      "2": { "field_name": "field bb",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"20a26c7c-321f-407d-ba39-2b6ca7c623dc"},
                                      "3": { "field_name": "field bc",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"e9f823c0-956d-4cf9-b3e6-cd13e58f1551"},
                                  } },
                           "3": { "section_name" : "commissioning rub c",
                                 "section_type" : "section type 1",
+                                "section_on_site_uuid": "0d19ba0a-1af3-4f7d-9243-b7ae04634c39",
                                  "fields": {
                                      "1": { "field_name": "field ca",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"5c69d56e-fdb6-4bd3-8973-620479e4045f"},
                                      "2": { "field_name": "field cb",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"2d502bd6-7e18-4018-8821-1b7d66b7fe03"},
                                      "3": { "field_name": "field cc",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"672e17c1-9aec-4a54-a2a0-35b5c59fdb55"},
                                  } },
                      }
                       },
                 "4" :{"form_name":"rapport de vérifications",
+                      "form_on_site_uuid": "3e5a68a0-ac2f-4bf0-9f96-e2cf205b658e",
                       "sections": {
                           "1": { "section_name" : "rapport de vérifications rub a",
                                  "section_type" : "section type 1",
+                                 "section_on_site_uuid": "0d19ba0a-1af3-4f7d-9243-b7ae04634c39",
                                  "fields": {
                                      "1": { "field_name": "field aa",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"11aa7a09-14ff-4766-b1ba-e541a25ed9e5"},
                                      "2": { "field_name": "field ab",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"398e5a3c-d583-4265-ba40-e01dd2a1c28a"},
                                      "3": { "field_name": "field ac",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"042089d1-6b32-49cf-b3a7-1e86e68e26e4"},
                                  }
                                 },
                                  
                           "2": { "section_name" : "rapport de vérifications rub b",
                                  "section_type" : "section type 1",
+                                 "section_on_site_uuid": "8f21a7d9-854e-4faf-8f26-180b7b5cc6c3",
                                  "fields": {
                                      "1": { "field_name": "field ba",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"6312e0e9-2210-4487-8c7c-8e210448b6f3"},
                                      "2": { "field_name": "field bb",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"8940a306-5532-440e-b43b-cce0538b8820"},
                                      "3": { "field_name": "field bc",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"eafc1f34-c858-441c-b061-86d799547651"},
                                  } },
                           "3": { "section_name" : "rapport de vérifications rub c",
                                  "section_type" : "section type 1",
+                                 "section_on_site_uuid": "026d86e1-7256-4fb9-a306-e413fbd925cc",
                                  "fields": {
                                      "1": { "field_name": "field ca",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"bdc1b557-039c-42db-9f59-adcaf25435f0"},
                                      "2": { "field_name": "field cb",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"7a24e3d4-fbf4-40a8-85ae-4dc0be6faf1d"},
                                      "3": { "field_name": "field cc",
-                                           "field_type": "field_type 1"},
+                                           "field_type": "field_type 1","field_on_site_uuid":"7a24e3d4-fbf4-40a8-85ae-4dc0be6faf1d"},
                                  } },
                      }}
             }
         },
         "calorifuge": {  
-             "type_intervention": "calorifuge",
+            "type_intervention": "calorifuge",
+            "intervention_on_site_uuid": "5ceba891-670a-40ea-ba7f-87bd4597dbde",
             "forms": {
-                "1" :{"form_name":"initial request 2"},
-                "2" :{"form_name":"visit 2"},
-                "3" :{"form_name":"commissioning 2"},
-                "4" :{"form_name":"rapport de vérifications 2"}
+                "1" :{"form_name":"initial request 2",
+                      "form_on_site_uuid": "b89cf79e-36d2-4a65-ad01-479dc2e769f8"},
+                "2" :{"form_name":"visit 2",
+                      "form_on_site_uuid": "f35f3474-2d1d-407f-ac72-1b70f89ff08f"},
+                "3" :{"form_name":"commissioning 2",
+                      "form_on_site_uuid": "6c4480f5-8e95-4a9b-9bcc-254e76d682c"},
+                "4" :{"form_name":"rapport de vérifications 2",
+                      "form_on_site_uuid": "47d8d1e6-9273-4286-8de3-ba6d80233b4f"}
             }
         }
     }
