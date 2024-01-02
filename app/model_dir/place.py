@@ -9,11 +9,12 @@ class Place(db.Model, MyMixin):
     __tablename__ = 'places'
     
     place_on_site_uuid  = db.Column(db.String(36), unique=True)
+    organization_id     = db.Column(db.String(36), db.ForeignKey("organizations.id"))
     
     average_latitude= db.Column(db.Float);
     average_longitude= db.Column(db.Float);
     
-    interventions   = relationship("Intervention")
+    # interventionsValues   = relationship("InterventionValues")
                                 
                                 
    
@@ -25,7 +26,8 @@ class Place(db.Model, MyMixin):
             'place_on_site_uuid'    : self.place_on_site_uuid,
             'average_latitude'      : self.average_latitude,
             'average_longitude'     : self.average_longitude,
-            'interventions'         :  [{"intervention": item.to_json()} for item in self.interventions] 
+            'organization_id'       : self.organization_id
+            # 'interventions'         :  [{"intervention": item.to_json()} for item in self.interventions] 
         }
         
     def to_json_light(self):
@@ -35,6 +37,7 @@ class Place(db.Model, MyMixin):
             'place_on_site_uuid':   self.place_on_site_uuid,
             'average_latitude':     self.average_latitude,
             'average_longitude':    self.average_longitude,
+            'organization_id'       : self.organization_id
             # 'interventions':  [{"intervention": item.to_json_light()} for item in self.interventions] 
         }
 

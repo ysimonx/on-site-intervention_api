@@ -9,15 +9,8 @@ class Intervention(db.Model, MyMixin):
     __tablename__ = 'interventions'
     
     intervention_on_site_uuid   = db.Column(db.String(36), index=True)
-    
-    organization_id  = db.Column(db.String(36), db.ForeignKey("organizations.id"))
-    version          = db.Column(db.Integer, default=1)
-
-    place_id                    = db.Column(db.String(36), db.ForeignKey("places.id"));
     type_intervention_id        = db.Column(db.String(36), db.ForeignKey("types_interventions.id"));
-    
-    place                       = relationship("Place",                    viewonly=True, back_populates="interventions")
-    type_intervention           = relationship("TypeIntervention",         viewonly=True, back_populates="interventions")
+    type_intervention           = relationship("TypeIntervention",         viewonly=True)
     forms                       = relationship("Form")
     
     
@@ -31,10 +24,7 @@ class Intervention(db.Model, MyMixin):
             'id':                           self.id,
             'intervention_name':            self.name,
             '_internal' :                   self.get_internal(),
-            'version':                      self.version,
             'intervention_on_site_uuid':    self.intervention_on_site_uuid,
-            'organization_id':               self.organization_id,
-            'place':                        self.place.to_json_light(),
             'forms': dict_forms,   
             'type_intervention':            self.type_intervention.to_name()
         }
@@ -43,15 +33,60 @@ class Intervention(db.Model, MyMixin):
         return {
             'id':                           self.id,
             'intervention_name':            self.name,
-            'version':                      self.version,
             'intervention_on_site_uuid':    self.intervention_on_site_uuid,
-            'organization_id':              self.organization_id,
-            'place_id':                     self.place_id,
-            'place':                        self.place.to_json_light(),
             'type_intervention':            self.type_intervention.to_name()
         }
 
    
+
+class InterventionValues(db.Model, MyMixin):
+    __tablename__ = 'interventions_values'
+    
+    intervention_values_on_site_uuid = db.Column(db.String(36), index=True)
+    place_id                    = db.Column(db.String(36), db.ForeignKey("places.id"));
+    version                     = db.Column(db.Integer, default=1)
+    
+    organization_id             = db.Column(db.String(36), db.ForeignKey("organizations.id"))
+    type_intervention_id        = db.Column(db.String(36), db.ForeignKey("types_interventions.id"));
+    place                       = relationship("Place", viewonly=True)
+
+    def to_json(self):
+        return {
+            'id':                             self.id,
+            'name':                           self.name,
+            '_internal' :                     self.get_internal(),
+            'intervention_values_on_site_uuid':                self.intervention_values_on_site_uuid,
+            
+            'type_intervention_id':           self.type_intervention_id,
+            'organization_id':                self.organization_id,
+            
+            'place_id':                       self.place_id,
+            'place':                          self.place.to_json(),
+            'version':                        self.version,
+            # 'intervention':                   self.intervention.to_json(),
+        }
+        
+    def to_json_light(self):
+        return {
+            'id':                             self.id,
+            'name':                           self.name,
+            '_internal' :                     self.get_internal(),
+            'intervention_values_on_site_uuid':                self.intervention_values_on_site_uuid,
+            'place_id':                       self.place_id,
+            'place':                          self.place.to_json(),
+            'version':                        self.version,
+            # 'intervention':                   self.intervention.to_json(),
+        }
+       
+
+
+from sqlalchemy import event
+@event.listens_for(InterventionValues, 'before_insert')
+def do_stuff1(mapper, connect, target):
+    MyMixin.map_owner(mapper, connect, target)
+    
+
+
     
     
 from sqlalchemy import event

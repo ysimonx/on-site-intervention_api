@@ -2,8 +2,8 @@ from flask import Blueprint, abort, make_response
 
 import hashlib
 
-from ..model_dir.intervention import Intervention
-from ..model_dir.type_intervention import TypeIntervention
+from ..model_dir.intervention import Intervention, InterventionValues
+from ..model_dir.type_intervention import TypeIntervention, TypeInterventionOrganization
 from ..model_dir.section import Section
 from ..model_dir.form import Form
 
@@ -35,7 +35,7 @@ def get_interventions():
     return jsonify([item.to_json() for item in interventions])
 
 
-@app_file_intervention.route('/intervention', methods=['POST'])
+@app_file_intervention.route('/intervention_old', methods=['POST'])
 @jwt_required()
 def create_intervention():
     
@@ -95,15 +95,128 @@ def create_intervention():
     db.session.commit()  
     
                             
-    db.session.commit()                
-                        
-
+    
      
     # re read intervention, for forms 
     intervention= Intervention.query.filter(Intervention.intervention_on_site_uuid == intervention_on_site_uuid).first()
-           
             
     return jsonify(intervention.to_json()), 201
+
+
+
+
+
+@app_file_intervention.route("/intervention_values", methods=["GET"])
+def get_intervention_values():
+    
+    query_interventionValues = InterventionValues.query
+    
+    if  'organization_id' in request.args:
+        
+        organization_id=request.args.get("organization_id")
+        _organisation=getByIdOrByName(Organization, organization_id)
+        if _organisation is None:
+            abort(make_response(jsonify(error="organization is not found"), 400))
+        query_interventionValues = query_interventionValues.filter(InterventionValues.organization_id == _organisation.id)
+
+    if  'type_intervention_id' in request.args:
+        
+        type_intervention_id=request.args.get("type_intervention_id")
+        _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
+        
+        if _type_intervention is None:
+            abort(make_response(jsonify(error="_type_intervention is not found"), 400))
+        query_interventionValues = query_interventionValues.filter(InterventionValues.type_intervention_id == _type_intervention.id)
+
+
+
+    interventionValues = query_interventionValues.all()
+    
+    
+    # else:
+        # _organisation=getByIdOrByName(Organization, request.args.get("organization_id"))
+        # if _organisation is None:
+        #     abort(make_response(jsonify(error="organization is not found"), 404))
+        # 
+        # interventions = Intervention.query.filter(Intervention.organization_id==_organisation.id).all()
+        
+    return jsonify([item.to_json() for item in interventionValues])
+
+
+@app_file_intervention.route('/intervention_values', methods=['POST'])
+@jwt_required()
+def post_intervention_values():
+    
+    if not request.json:
+        abort(make_response(jsonify(error="no json provided in request"), 400))
+
+    intervention_values_on_site_uuid   = request.json.get('intervention_values_on_site_uuid')
+    organization_id             = request.json.get('organization_id')
+    type_intervention_id        = request.json.get('type_intervention_id')
+    intervention_name           = request.json.get('intervention_name')
+    place_on_site_uuid          = request.json.get('place_on_site_uuid')
+    place_id                    = request.json.get('place_id')
+    place_name                  = request.json.get('place_name')
+    
+    
+    _organization=getByIdOrByName(Organization, organization_id)
+    _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
+      
+    print(type_intervention_id)              
+    print(_type_intervention)
+    
+
+    if place_id is not None:
+        place = Place.query.get(place)
+    else:
+        if place_on_site_uuid is not None:
+            place = Place.query.filter(Place.place_on_site_uuid == place_on_site_uuid).first()
+    
+    # organization=None    
+    # if organization_id is not None:
+    
+   
+    if place is None:
+        place = Place(
+            place_on_site_uuid = place_on_site_uuid,
+            name = place_name,
+            organization_id = _organization.id)
+        db.session.add(place)
+    else:
+        place.organization_id = _organization.id
+    
+    db.session.commit()  
+    
+   
+    interventionValues= InterventionValues.query.filter(InterventionValues.intervention_values_on_site_uuid == intervention_values_on_site_uuid).first()
+    if interventionValues is None:
+        interventionValues = InterventionValues(
+                        intervention_values_on_site_uuid = intervention_values_on_site_uuid,
+                        name = intervention_name, 
+                        place_id = place.id,
+                        version=1,
+                        organization_id = _organization.id,
+                        type_intervention_id = _type_intervention.id,
+                       
+        )
+        
+        db.session.add(interventionValues)
+    else:
+        # print(intervention.to_json())
+        interventionValues.name = intervention_name
+        interventionValues.place_id = place.id
+        interventionValues.version = interventionValues.version + 1
+        interventionValues.organization_id = _organization.id,
+        interventionValues.type_intervention_id = _type_intervention.id,
+       
+        
+        
+    db.session.commit()  
+    
+          
+     
+            
+    return jsonify(interventionValues.to_json()), 201
 
 
 @app_file_intervention.route("/intervention/<id>", methods=["GET"])
