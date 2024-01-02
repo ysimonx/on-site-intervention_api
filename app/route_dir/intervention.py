@@ -156,27 +156,18 @@ def post_intervention_values():
     type_intervention_id        = request.json.get('type_intervention_id')
     intervention_name           = request.json.get('intervention_name')
     place_on_site_uuid          = request.json.get('place_on_site_uuid')
-    place_id                    = request.json.get('place_id')
     place_name                  = request.json.get('place_name')
     
     
     _organization=getByIdOrByName(Organization, organization_id)
     _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
       
-    print(type_intervention_id)              
-    print(_type_intervention)
-    
 
-    if place_id is not None:
-        place = Place.query.get(place_id)
-    else:
-        if place_on_site_uuid is not None:
+    if place_on_site_uuid is not None:
             place = Place.query.filter(Place.place_on_site_uuid == place_on_site_uuid).first()
     
-    # organization=None    
-    # if organization_id is not None:
+    # je n'ai trouvé ni avec place_id, ni avec place_on_site_uuid, je dois en creer une 
     
-   
     if place is None:
         place = Place(
             place_on_site_uuid = place_on_site_uuid,
