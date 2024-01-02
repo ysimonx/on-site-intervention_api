@@ -107,6 +107,7 @@ def create_intervention():
 
 
 @app_file_intervention.route("/intervention_values", methods=["GET"])
+@jwt_required()
 def get_intervention_values():
     
     query_interventionValues = InterventionValues.query
@@ -167,7 +168,7 @@ def post_intervention_values():
     
 
     if place_id is not None:
-        place = Place.query.get(place)
+        place = Place.query.get(place_id)
     else:
         if place_on_site_uuid is not None:
             place = Place.query.filter(Place.place_on_site_uuid == place_on_site_uuid).first()
