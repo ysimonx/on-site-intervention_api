@@ -14,7 +14,6 @@ class Field(db.Model, MyMixin):
     field_on_site_uuid          = db.Column(db.String(36), unique=True)
     type_field_id               = db.Column(db.String(36),  db.ForeignKey("types_fields.id"), nullable=True)
     field_name                  = db.Column(db.String(255), index=True)
-    field_value                 = db.Column(db.String(255), index=True)
     section_id                  = db.Column(db.String(36),  db.ForeignKey("sections.id"), nullable=True)
     field_order_in_section      = db.Column(db.Integer, default=1)
     intervention_id             = db.Column(db.String(36),  db.ForeignKey("interventions.id"), nullable=True)
@@ -33,7 +32,6 @@ class Field(db.Model, MyMixin):
             '_internal' :           self.get_internal(),
             'field_name':           self.field_name,
             'field_order_in_section':          self.field_order_in_section,
-            'field_value':          self.field_value,
             'type_field_id':           self.type_field_id,
             'section_id':            self.section_id,
             'intervention_id':            self.intervention_id,
@@ -50,7 +48,6 @@ class Field(db.Model, MyMixin):
             'name':                 self.name,
             '_internal' :           self.get_internal(),
             'field_name':           self.field_name,
-            'field_value':          self.field_value,
             'type_field_id':        self.type_field_id,
             'section_id':            self.section_id,
             'intervention_id':            self.intervention_id,

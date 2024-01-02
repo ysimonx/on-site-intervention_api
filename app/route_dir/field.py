@@ -80,7 +80,6 @@ def create_field():
         abort(make_response(jsonify(error="field_on_site_uuid already created"), 400))
         
     field_name          = request.json.get("field_name", None)
-    field_value         = request.json.get("field_value", None)
     type_field          = request.json.get("type_field", None)
     form_on_site_uuid = request.json.get("form_on_site_uuid", None)
     form_id           = request.json.get("form_id", None)
@@ -98,7 +97,6 @@ def create_field():
         field_name=field_name,
         field_on_site_uuid=request.json.get('field_on_site_uuid'),
         form_id=form_id,
-        field_value=field_value,
         type_field_id = type_field.id,
         form_on_site_uuid=form_on_site_uuid,
         average_latitude=average_latitude,
