@@ -15,6 +15,14 @@ from app.model_dir.company      import Company
 from app.model_dir.tenant       import Tenant
 from app.model_dir.organization import Organization
 from app.model_dir.type_field   import TypeField
+from app.model_dir.place        import Place
+from app.model_dir.intervention import Intervention
+from app.model_dir.section      import Section
+from app.model_dir.field        import Field
+from app.model_dir.form         import Form
+
+
+
 from app.model_dir.type_intervention   import TypeIntervention, TypeInterventionOrganization
 
 from .route_dir.tenant          import app_file_tenant
@@ -362,13 +370,17 @@ def populate_type_intervention():
             "intervention_on_site_uuid": "5ceba891-670a-40ea-ba7f-87bd4597dbde",
             "forms": {
                 "1" :{"form_name":"initial request 2",
-                      "form_on_site_uuid": "b89cf79e-36d2-4a65-ad01-479dc2e769f8"},
+                      "form_on_site_uuid": "b89cf79e-36d2-4a65-ad01-479dc2e769f8",
+                       "sections": {}},
                 "2" :{"form_name":"visit 2",
-                      "form_on_site_uuid": "f35f3474-2d1d-407f-ac72-1b70f89ff08f"},
+                      "form_on_site_uuid": "f35f3474-2d1d-407f-ac72-1b70f89ff08f",
+                       "sections": {}},
                 "3" :{"form_name":"commissioning 2",
-                      "form_on_site_uuid": "6c4480f5-8e95-4a9b-9bcc-254e76d682c"},
+                      "form_on_site_uuid": "6c4480f5-8e95-4a9b-9bcc-254e76d682c",
+                       "sections": {}},
                 "4" :{"form_name":"rapport de vérifications 2",
-                      "form_on_site_uuid": "47d8d1e6-9273-4286-8de3-ba6d80233b4f"}
+                      "form_on_site_uuid": "47d8d1e6-9273-4286-8de3-ba6d80233b4f",
+                       "sections": {}}
             }
         }
     }
@@ -400,11 +412,107 @@ def populate_type_intervention():
                 db.session.add(_type_intervention_organization)
             else:
                  _type_intervention_organization.config_text=item["config"]
+      
+            update_organizations_interventions_templates(_organization, _type_intervention, json.loads(item["config"]))
                 
             
                 
     db.session.commit()
     
+def update_organizations_interventions_templates( _organization,  _type_intervention, template ):
+      
+    intervention_on_site_uuid = template["intervention_on_site_uuid"]
+    intervention_name = template["type_intervention"]
+    forms = template["forms"]
+          
+    intervention= Intervention.query.filter(Intervention.intervention_on_site_uuid == intervention_on_site_uuid).first()
+    if intervention is None:
+        intervention = Intervention(
+                        intervention_on_site_uuid = intervention_on_site_uuid,
+                        name = intervention_name, 
+                        organization_id = _organization.id, 
+                        place_id = None,
+                        version=1,
+                        type_intervention_id = _type_intervention.id)
+        
+        db.session.add(intervention)
+    else:
+        # print(intervention.to_json())
+        intervention.name = intervention_name
+        intervention.place_id = None
+        intervention.version = intervention.version + 1
+        intervention.type_intervention_id = _type_intervention.id
+        
+        
+    db.session.commit()  
+    
+    if forms is not None:
+        for key_form in  forms.keys():
+            form_values =forms[key_form]
+            form_name = form_values["form_name"]
+            form_on_site_uuid = form_values["form_on_site_uuid"]
+            _form= Form.query.filter(Form.form_on_site_uuid == form_on_site_uuid).first()
+            if _form is None:
+                _form=Form( 
+                       intervention_id = intervention.id,
+                       name=intervention_on_site_uuid+"_form_"+form_name,
+                       form_name= form_name, 
+                       form_on_site_uuid=form_on_site_uuid,
+                       form_order= int(key_form))
+                db.session.add(_form)
+                # db.session.commit()
+            
+            print("------------------")
+            print(form_values)
+            
+            sections=form_values["sections"]
+            if sections is not None:
+                for key_sections in sections.keys():
+                    print("Section #", key_sections)
+                    section_values=sections[key_sections]
+                    section_on_site_uuid = section_values['section_on_site_uuid']
+                    section_name=section_values['section_name']
+                    section_type=section_values['section_type']
+                    
+                    _section= Section.query.filter(Section.section_on_site_uuid == section_on_site_uuid).first()
+                    if _section is None:
+                        _section=Section(
+                            form_id=_form.id,
+                            intervention_id = intervention.id,
+                            section_on_site_uuid=section_on_site_uuid,
+                            section_name=section_name,
+                            section_type=section_type,
+                            section_order_in_form=int(key_sections)
+                        )
+                        db.session.add(_section)
+                        # db.session.commit()
+                   
+                    
+                    fields=section_values["fields"]
+                    if fields is not None:
+                        for key_field in fields.keys():
+                            print("Field #", key_field)
+                            field_attributes=fields[key_field]
+                            field_on_site_uuid = field_attributes['field_on_site_uuid']
+                            field_name         = field_attributes['field_name']
+                            field_type         = field_attributes['field_type']
+                            field_order_in_section=int(key_field)
+                            
+                            _field= Field.query.filter(Field.field_on_site_uuid == field_on_site_uuid).first()
+                            if _field is None:
+                                _field=Field(
+                                    section_id=_section.id,
+                                    intervention_id = intervention.id,
+                                    field_on_site_uuid=field_on_site_uuid,
+                                    field_name=field_name,
+                                    # field_type=field_type,
+                                    field_order_in_section=int(key_field)
+                                )
+                                db.session.add(_field)
+                               #  db.session.commit()
+                            
+    db.session.commit()                
+                        
 
     
 def populate_user_data():
