@@ -53,7 +53,7 @@ class InterventionValues(db.Model, MyMixin):
     def to_json(self):
         return {
             'id':                             self.id,
-            'name':                           self.name,
+            'intervention_name':              self.name,
             '_internal' :                     self.get_internal(),
             'intervention_values_on_site_uuid':                self.intervention_values_on_site_uuid,
             
@@ -69,7 +69,7 @@ class InterventionValues(db.Model, MyMixin):
     def to_json_light(self):
         return {
             'id':                             self.id,
-            'name':                           self.name,
+            'intervention_name':                           self.name,
             '_internal' :                     self.get_internal(),
             'intervention_values_on_site_uuid':                self.intervention_values_on_site_uuid,
             'place_id':                       self.place_id,
