@@ -52,6 +52,7 @@ class InterventionValues(db.Model, MyMixin):
 
     type_intervention           = db.relationship("TypeIntervention")
     organization                = db.relationship("Organization")
+    hashtag                     = db.Column(db.Integer, default=1)
     
     def to_json(self):
         return {
@@ -95,4 +96,5 @@ from sqlalchemy import event
 @event.listens_for(Intervention, 'before_insert')
 def do_stuff1(mapper, connect, target):
     MyMixin.map_owner(mapper, connect, target)
+     
     

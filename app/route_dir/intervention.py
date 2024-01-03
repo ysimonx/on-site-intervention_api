@@ -19,7 +19,7 @@ from .. import db, getByIdOrByName
 app_file_intervention= Blueprint('intervention',__name__)
 
 import json
-
+from sqlalchemy import func
 
 @app_file_intervention.route("/intervention", methods=["GET"])
 def get_interventions():
@@ -182,6 +182,11 @@ def post_intervention_values():
    
     interventionValues= InterventionValues.query.filter(InterventionValues.intervention_values_on_site_uuid == intervention_values_on_site_uuid).first()
     if interventionValues is None:
+        
+        max_id = db.session.query(func.max(InterventionValues.hashtag)).scalar()
+        if max_id is None:
+            max_id = 1
+            
         interventionValues = InterventionValues(
                         intervention_values_on_site_uuid = intervention_values_on_site_uuid,
                         name = intervention_name, 
@@ -189,6 +194,7 @@ def post_intervention_values():
                         version=1,
                         organization_id = _organization.id,
                         type_intervention_id = _type_intervention.id,
+                        hashtag = max_id + 1
                        
         )
         
