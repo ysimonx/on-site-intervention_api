@@ -52,7 +52,7 @@ class InterventionValues(db.Model, MyMixin):
 
     type_intervention           = db.relationship("TypeIntervention")
     organization                = db.relationship("Organization")
-    hashtag                     = db.Column(db.Integer, default=1)
+    hashtag                     = db.Column(db.Integer, default=1, index=True)
     
     def to_json(self):
         return {
@@ -64,6 +64,7 @@ class InterventionValues(db.Model, MyMixin):
             'type_intervention':                   self.type_intervention.to_json(),
             'place':                          self.place.to_json(),
             'version':                        self.version, 
+            'hashtag':                        self.hashtag,
         }
         
     def to_json_light(self):
@@ -78,7 +79,7 @@ class InterventionValues(db.Model, MyMixin):
             'version':                        self.version,
             'organization_name':              self.organization.name,
             'type_intervention_name':         self.type_intervention.name
-
+            'hashtag':                        self.hashtag,
         }
        
 
