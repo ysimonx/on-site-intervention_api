@@ -1,4 +1,5 @@
 from .. import db,  getByIdOrByName
+from ..model_dir.mymixin import user_role
 import uuid
 from flask import Flask, abort, make_response, request, jsonify
 from sqlalchemy.orm import declarative_base, relationship, backref
@@ -20,7 +21,8 @@ class Organization(db.Model, MyMixin):
     time_created    = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
     time_updated    = db.Column(db.DateTime(timezone=True), onupdate=db.func.now())
     
-                
+    roles = db.relationship('Role')
+             
   
         
     def to_json(self):
@@ -28,6 +30,8 @@ class Organization(db.Model, MyMixin):
             'id':               self.id,
             '_internal' :       self.get_internal(),
             'name':     self.name,
+            'roles'         :  [{"role": item.to_json_light()} for item in self.roles] 
+        
         }
 
     def to_json_light(self):

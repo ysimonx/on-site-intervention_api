@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session,abort, make_response
-from ..model_dir.mymixin import User
+from ..model_dir.mymixin import User, Role
 from ..model_dir.company import Company
 from ..model_dir.tenant import Tenant
 from ..model_dir.organization import Organization
@@ -104,7 +104,7 @@ def get_user_config():
             "user": me,
             "organizations": [user_organization.to_json() for user_organization in user_organizations],
             "config_organization_type_intervention": [type_intervention_organization.to_json_config() for type_intervention_organization in types_interventions_organizations]
-           }
+            }
     
     return (result), 200
 

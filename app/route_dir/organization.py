@@ -20,6 +20,8 @@ def get_organization_list():
     return jsonify([item.to_json() for item in items])
 
 
+
+
 @app_file_organization.route('/organization', methods=['POST'])
 @jwt_required()
 def create_organization():

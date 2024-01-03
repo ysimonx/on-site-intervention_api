@@ -109,18 +109,22 @@ class Role(db.Model, MyMixin):
    
     organization_id  = db.Column(db.String(36), db.ForeignKey("organizations.id"))
     organization        = relationship("Organization")
+    
+    
     def to_json(self):
         return {
             'id':               self.id,
             '_internal' :       self.get_internal(),
             'name':             self.name,
+            'organization':     self.organization.to_json(),
+            'users':      [{"user": item.to_json_light()} for item in self.users] 
         }
 
     def to_json_light(self):
         return {
             'id':               self.id,
             'name':             self.name,
-            
+            'users':      [{"user": item.to_json_light()} for item in self.users] 
         }
         
     def to_json_anonymous(self):
@@ -179,7 +183,27 @@ class User(db.Model, MyMixin):
 
     def to_json_light(self):
         
-        return self.to_json()
+
+        organizations=[];
+        dict_organization_roles={}
+        
+        for item in self.roles:
+            print(item.organization.name)
+            
+            if not item.organization_id in organizations:
+                dict_organization_roles[item.organization.name] = {"roles":[]}
+                organizations.append(item.organization_id)
+            dict_organization_roles[item.organization.name]["roles"].append(item.name)
+        
+        return {
+            'id':           self.id,
+            'email':        self.email,
+            'phone':        self.phone,
+            'firstname':    self.firstname,
+            'lastname':     self.lastname,
+            'company':      self.company.name,
+            'organizations':   dict_organization_roles
+        }
         
     def to_json_anonymous(self):
         return {
