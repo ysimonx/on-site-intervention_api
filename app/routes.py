@@ -430,17 +430,12 @@ def update_organizations_interventions_templates( _organization,  _type_interven
         intervention = Intervention(
                         intervention_on_site_uuid = intervention_on_site_uuid,
                         name = intervention_name, 
-                        organization_id = _organization.id, 
-                        place_id = None,
-                        version=1,
                         type_intervention_id = _type_intervention.id)
         
         db.session.add(intervention)
     else:
         # print(intervention.to_json())
         intervention.name = intervention_name
-        intervention.place_id = None
-        intervention.version = intervention.version + 1
         intervention.type_intervention_id = _type_intervention.id
         
         
@@ -529,11 +524,11 @@ def populate_user_data():
                          "organizations_roles": [
                             {
                              "organization":"sandbox",
-                             "roles": ["admin","toy"]
+                             "roles": ["admin","toy", "supervisor"]
                             },
                             {
                              "organization":"iter",
-                             "roles": ["admin","gnass"]
+                             "roles": ["admin","gnass", "supervisor"]
                             }
                          ]
                          

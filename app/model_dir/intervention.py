@@ -50,32 +50,34 @@ class InterventionValues(db.Model, MyMixin):
     type_intervention_id        = db.Column(db.String(36), db.ForeignKey("types_interventions.id"));
     place                       = relationship("Place", viewonly=True)
 
+    type_intervention           = db.relationship("TypeIntervention")
+    organization                = db.relationship("Organization")
+    
     def to_json(self):
         return {
             'id':                             self.id,
             'intervention_name':              self.name,
             '_internal' :                     self.get_internal(),
             'intervention_values_on_site_uuid':                self.intervention_values_on_site_uuid,
-            
-            'type_intervention_id':           self.type_intervention_id,
-            'organization_id':                self.organization_id,
-            
-            'place_id':                       self.place_id,
+            'organization':                   self.organization.to_json(),
+            'type_intervention':                   self.type_intervention.to_json(),
             'place':                          self.place.to_json(),
-            'version':                        self.version,
-            # 'intervention':                   self.intervention.to_json(),
+            'version':                        self.version, 
         }
         
     def to_json_light(self):
-        return {
+      return {
             'id':                             self.id,
-            'intervention_name':                           self.name,
-            '_internal' :                     self.get_internal(),
+            'intervention_name':              self.name,
             'intervention_values_on_site_uuid':                self.intervention_values_on_site_uuid,
+            'type_intervention_id':           self.type_intervention_id,
+            'organization_id':                self.organization_id,
             'place_id':                       self.place_id,
-            'place':                          self.place.to_json(),
+            'place_name':                          self.place.name,
             'version':                        self.version,
-            # 'intervention':                   self.intervention.to_json(),
+            'organization_name':              self.organization.name,
+            'type_intervention_name':         self.type_intervention.name
+
         }
        
 

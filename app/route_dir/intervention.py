@@ -141,7 +141,7 @@ def get_intervention_values():
         # 
         # interventions = Intervention.query.filter(Intervention.organization_id==_organisation.id).all()
         
-    return jsonify([item.to_json() for item in interventionValues])
+    return jsonify([item.to_json_light() for item in interventionValues])
 
 
 @app_file_intervention.route('/intervention_values', methods=['POST'])
@@ -204,10 +204,7 @@ def post_intervention_values():
         
         
     db.session.commit()  
-    
-          
-     
-            
+         
     return jsonify(interventionValues.to_json()), 201
 
 
