@@ -30,7 +30,7 @@ class Organization(db.Model, MyMixin):
             'id':               self.id,
             '_internal' :       self.get_internal(),
             'name':     self.name,
-            'roles'         :  [{"role": item.to_json_light()} for item in self.roles] 
+            'roles'         :  [{item.name: item.to_json_light()} for item in self.roles] 
         
         }
 
