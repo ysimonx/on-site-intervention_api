@@ -44,7 +44,10 @@ def login():
     
     if user is None:
         abort(make_response(jsonify(error="error login"), 401))
-        
+    
+    if user.active == False:    
+        abort(make_response(jsonify(error="account desactivated"), 401))
+    
     result_check = user.check_password(password)
     if not result_check:
         abort(make_response(jsonify(error="error password"), 401))
@@ -172,7 +175,13 @@ def create_user():
 @jwt_required(refresh=True)
 def refresh():
     current_user = get_jwt_identity()
-    ret = {
-        'access_token': create_access_token(identity=current_user)
-    }
-    return jsonify(ret), 200
+    user = User.query.get(current_user)
+    print(user.active)
+    if user.active == True:
+        ret = {
+            'access_token': create_access_token(identity=current_user)
+        }
+    
+        return jsonify(ret), 200
+    
+    abort(make_response(jsonify(error="account desactivated"), 401))
