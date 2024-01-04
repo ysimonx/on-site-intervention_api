@@ -177,7 +177,7 @@ class User(db.Model, MyMixin):
             'firstname':    self.firstname,
             'lastname':     self.lastname,
             'company':      self.company.name,
-            'organizations':   dict_organization_roles
+            'organizations_roles':   dict_organization_roles
             
         }
 
@@ -202,7 +202,7 @@ class User(db.Model, MyMixin):
             'firstname':    self.firstname,
             'lastname':     self.lastname,
             'company':      self.company.name,
-            'organizations':   dict_organization_roles
+            'organizations_roles':   dict_organization_roles
         }
         
     def to_json_anonymous(self):

@@ -75,7 +75,7 @@ class InterventionValues(db.Model, MyMixin):
             'type_intervention_id':           self.type_intervention_id,
             'organization_id':                self.organization_id,
             'place_id':                       self.place_id,
-            'place_name':                          self.place.name,
+            'place_name':                     self.place.name,
             'version':                        self.version,
             'organization_name':              self.organization.name,
             'type_intervention_name':         self.type_intervention.name,
