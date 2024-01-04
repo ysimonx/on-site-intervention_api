@@ -73,6 +73,14 @@ def get_user_list():
     items = User.query.all()
     return jsonify([item.to_json() for item in items])
 
+@app_file_user.route("/user/active", methods=["GET"])
+@jwt_required()
+def get_user_active_list():
+    items = User.query.filter(User.active == True).all()
+    return jsonify([item.to_json() for item in items])
+
+
+
 
 @app_file_user.route("/user/me", methods=["GET"])
 @jwt_required()

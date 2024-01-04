@@ -144,6 +144,7 @@ class User(db.Model, MyMixin):
     phone       = db.Column(db.String(100))
     company_id  = db.Column(db.String(36), db.ForeignKey("companies.id"))
     company     = db.relationship("Company", viewonly=True)
+    active      = db.Column(db.Boolean, nullable=False, default=True)
 
     roles = db.relationship('Role', secondary=user_role, backref='users')
 
@@ -177,13 +178,13 @@ class User(db.Model, MyMixin):
             'firstname':    self.firstname,
             'lastname':     self.lastname,
             'company':      self.company.name,
-            'organizations_roles':   dict_organization_roles
+            'organizations_roles':   dict_organization_roles,
+            'active':       self.active,
             
         }
 
     def to_json_light(self):
         
-
         organizations=[];
         dict_organization_roles={}
         
@@ -202,8 +203,24 @@ class User(db.Model, MyMixin):
             'firstname':    self.firstname,
             'lastname':     self.lastname,
             'company':      self.company.name,
-            'organizations_roles':   dict_organization_roles
+            'organizations_roles':   dict_organization_roles,
+            'active':       self.active,
         }
+    
+    
+    def to_json_ultra_light(self):
+        
+        
+        return {
+            'id':           self.id,
+            'email':        self.email,
+            'phone':        self.phone,
+            'firstname':    self.firstname,
+            'lastname':     self.lastname,
+            'company':      self.company.name,
+            'active':       self.active,
+        }
+        
         
     def to_json_anonymous(self):
         return {

@@ -984,6 +984,36 @@
 					"response": []
 				},
 				{
+					"name": "users list active",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/user/active",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "users list pagination",
 					"request": {
 						"auth": {

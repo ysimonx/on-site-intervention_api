@@ -48,12 +48,15 @@ class InterventionValues(db.Model, MyMixin):
     
     organization_id             = db.Column(db.String(36), db.ForeignKey("organizations.id"))
     type_intervention_id        = db.Column(db.String(36), db.ForeignKey("types_interventions.id"));
-    place                       = relationship("Place", viewonly=True)
-
-    type_intervention           = db.relationship("TypeIntervention")
-    organization                = db.relationship("Organization")
+    supervisor_user_id          = db.Column(db.String(36), db.ForeignKey("users.id"))
     hashtag                     = db.Column(db.Integer, default=1, index=True)
     
+    place                       = db.relationship("Place", viewonly=True)
+    type_intervention           = db.relationship("TypeIntervention", viewonly=True)
+    organization                = db.relationship("Organization", viewonly=True)
+    supervisor_user             = db.relationship("User", viewonly=True)
+    
+
     def to_json(self):
         return {
             'id':                             self.id,
@@ -65,6 +68,8 @@ class InterventionValues(db.Model, MyMixin):
             'place':                          self.place.to_json(),
             'version':                        self.version, 
             'hashtag':                        self.hashtag,
+            'supervisor_user_id':             self.supervisor_user_id,
+            'supervisor_user':                None if self.supervisor_user is None else self.supervisor_user.to_json_ultra_light()
         }
         
     def to_json_light(self):
@@ -80,6 +85,8 @@ class InterventionValues(db.Model, MyMixin):
             'organization_name':              self.organization.name,
             'type_intervention_name':         self.type_intervention.name,
             'hashtag':                        self.hashtag,
+            'supervisor_user_id':             self.supervisor_user_id,
+            'supervisor_user':                None if self.supervisor_user is None else self.supervisor_user.to_json_ultra_light()
         }
        
 
