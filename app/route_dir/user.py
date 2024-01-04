@@ -91,18 +91,18 @@ def get_user_config():
     user_organizations=[]
     organizations = Organization.query.all()
     for organization in organizations:
-        if organization.name in me["organizations"].keys():
+        if organization.name in me["organizations_roles"].keys():
            user_organizations.append(organization)
        
     types_interventions_organizations=[] 
     _types_interventions_organizations = TypeInterventionOrganization.query.all()
     for _type_intervention_organization in _types_interventions_organizations:
-        if _type_intervention_organization.organization.name in me["organizations"].keys():
+        if _type_intervention_organization.organization.name in me["organizations_roles"].keys():
             types_interventions_organizations.append(_type_intervention_organization)
     
     result={
             "user": me,
-            "organizations": [user_organization.to_json() for user_organization in user_organizations],
+            "organizations": [{"organization" : user_organization.to_json()} for user_organization in user_organizations],
             "config_organization_type_intervention": [type_intervention_organization.to_json_config() for type_intervention_organization in types_interventions_organizations]
             }
     
