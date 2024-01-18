@@ -31,5 +31,6 @@ config = {
     'testing': TestingConfig,
     'production': ProductionConfig,
     'default': DevelopmentConfig,
-    'upload_dir': 'app/static/photos'
+    'upload_dir': 'app/static/photos',
+    'default_tenant_config': 'fidwork'
 }

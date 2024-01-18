@@ -47,10 +47,7 @@ class Tenant(db.Model):
             'id':               self.id,
         }
 
-    def getTenant():
-        _tenant = Tenant.query.filter(Tenant.name=="sandbox").first()
-        return _tenant
-    
+
     def getRequestTenant():
     
         #

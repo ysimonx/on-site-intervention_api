@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, current_app, make_response
+from flask import Blueprint, abort, current_app, make_response, g
 from sqlalchemy.orm.interfaces import *
 #   from sqlalchemy.orm import RelationshipDirection
 
@@ -109,7 +109,8 @@ def update_form():
     if form_on_site_uuid is None:
         abort(make_response(jsonify(error="missing form_on_site_uuid parameter"), 400))
     
-    tenant = Tenant.getRequestTenant()
+    if g.current_tenant is None:
+        abort(make_response(jsonify(error="missing tenant_id parameter"), 400))
     
     #
     # TODO
@@ -129,7 +130,7 @@ def update_form():
             intervention_on_site_uuid=intervention_on_site_uuid,
             average_latitude=average_latitude,
             average_longitude=average_longitude,
-            tenant_id = tenant.id
+            tenant_id = g.current_tenant.id
         )
         db.session.add(form)
         db.session.commit()
@@ -152,7 +153,7 @@ def update_form():
                     field = Field(
                         form_id           = form.id,
                         form_on_site_uuid = form.form_on_site_uuid,
-                        tenant_id = tenant.id
+                        tenant_id = g.current_tenant.id
                     )
               
                 if "field_name" in itemfield:

@@ -6,6 +6,7 @@ import uuid
 from flask                      import jsonify, abort, render_template, g, request
 from flask_mail                 import Mail
 from flask_jwt_extended         import JWTManager, get_jwt_identity, verify_jwt_in_request
+from config import config
 
 from .                          import create_app
 from .                          import db, getByIdOrEmail, getByIdOrByName
@@ -119,14 +120,14 @@ app.register_blueprint(app_file_backoffice,
 @app.before_request
 def before_request():
     g.current_user = None
+    g.current_tenant = None
     
     tenant_id=request.args.get("tenant_id")
     if tenant_id is not None:
         g.current_tenant = getByIdOrByName(obj=Tenant, id=tenant_id)
     else:
-        g.current_tenant = getByIdOrByName(obj=Tenant, id="fidwork")
-        
-    
+        g.current_tenant = getByIdOrByName(obj=Tenant, id=config["default_tenant_config"])
+            
     try:
         res = verify_jwt_in_request(optional=True)
         if res is not None:
@@ -135,9 +136,8 @@ def before_request():
     except:
         g.current_user = None
     
-
-    print(g.current_user)
-    print(g.current_tenant)
+    #print(g.current_user)
+    #print(g.current_tenant)
         
       
 @app.after_request
