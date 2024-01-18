@@ -3,9 +3,9 @@ import logging
 import datetime
 import json
 import uuid
-from flask                      import jsonify, abort, render_template
+from flask                      import jsonify, abort, render_template, g, request
 from flask_mail                 import Mail
-from flask_jwt_extended         import JWTManager
+from flask_jwt_extended         import JWTManager, get_jwt_identity, verify_jwt_in_request
 
 from .                          import create_app
 from .                          import db, getByIdOrEmail, getByIdOrByName
@@ -115,16 +115,38 @@ url_prefix_backoffice = "/backoffice/v1"
 app.register_blueprint(app_file_backoffice,
                        url_prefix=url_prefix_backoffice)
 
-"""
+
 @app.before_request
 def before_request():
-    app.logger.info("before_request")
+    g.current_user = None
+    
+    tenant_id=request.args.get("tenant_id")
+    if tenant_id is not None:
+        g.current_tenant = getByIdOrByName(obj=Tenant, id=tenant_id)
+    else:
+        g.current_tenant = getByIdOrByName(obj=Tenant, id="fidwork")
+        
+    
+    try:
+        res = verify_jwt_in_request(optional=True)
+        if res is not None:
+            current_user_id = get_jwt_identity()
+            g.current_user = getByIdOrEmail(obj=User,  id=current_user_id, tenant_id=tenant_id)
+    except:
+        g.current_user = None
+    
 
+    print(g.current_user)
+    print(g.current_tenant)
+        
+      
 @app.after_request
 def after_request(response):
-    app.logger.info("after_request")
+    if g.current_user is not None:
+        app.logger.info("user_id is "+ g.current_user.id)
+    else:
+       app.logger.info("no user")  
     return response
-"""
 
 
 # Setup log folder
