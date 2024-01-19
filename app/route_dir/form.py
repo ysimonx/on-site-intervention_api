@@ -29,8 +29,8 @@ def get_forms():
     forms = Form.query.all()
     
     tb=ThingsboardConnector()
-    for form in forms:
-        tb.syncAssetsFromInstanceAndChildren(form)
+    #for form in forms:
+    #    tb.syncAssetsFromInstanceAndChildren(form)
             
     return jsonify([item.to_json() for item in forms])
 

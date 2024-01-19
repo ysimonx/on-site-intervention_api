@@ -157,7 +157,7 @@ def post_intervention_values():
     intervention_name           = request.json.get('intervention_name')
     place_on_site_uuid          = request.json.get('place_on_site_uuid')
     place_name                  = request.json.get('place_name')
-    
+    config_text                 = request.json.get('config_text')
     
     _organization=getByIdOrByName(Organization, organization_id)
     _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
@@ -194,8 +194,8 @@ def post_intervention_values():
                         version=1,
                         organization_id = _organization.id,
                         type_intervention_id = _type_intervention.id,
-                        hashtag = max_id + 1
-                       
+                        hashtag = max_id + 1,
+                        config_text= config_text        
         )
         
         db.session.add(interventionValues)
@@ -206,7 +206,7 @@ def post_intervention_values():
         interventionValues.version = interventionValues.version + 1
         interventionValues.organization_id = _organization.id,
         interventionValues.type_intervention_id = _type_intervention.id,
-       
+        interventionValues.config_text= config_text
         
         
     db.session.commit()  
