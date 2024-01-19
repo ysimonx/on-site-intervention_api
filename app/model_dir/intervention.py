@@ -56,7 +56,7 @@ class InterventionValues(db.Model, MyMixin):
     organization                = db.relationship("Organization", viewonly=True)
     supervisor_user             = db.relationship("User", viewonly=True)
     
-    config_text                 =db.Column(db.Text)
+    template_text                 =db.Column(db.Text)
     
     def to_json(self):
         return {
@@ -71,7 +71,7 @@ class InterventionValues(db.Model, MyMixin):
             'hashtag':                        self.hashtag,
             'supervisor_user_id':             self.supervisor_user_id,
             'supervisor_user':                None if self.supervisor_user is None else self.supervisor_user.to_json_ultra_light(),
-            'config_text':                    self.config_text
+            'template_text':                    self.template_text
         }
         
     def to_json_light(self):
@@ -89,7 +89,7 @@ class InterventionValues(db.Model, MyMixin):
             'hashtag':                        self.hashtag,
             'supervisor_user_id':             self.supervisor_user_id,
             'supervisor_user':                None if self.supervisor_user is None else self.supervisor_user.to_json_ultra_light(),
-            'config_text':                    self.config_text
+            'template_text':                    self.template_text
         }
        
 

@@ -429,11 +429,11 @@ def populate_type_intervention():
                 (_type_intervention_organization) = TypeInterventionOrganization(
                     type_intervention_id=_type_intervention.id,
                     organization_id=_organization.id,
-                    config_text=item["config"]
+                    template_text=item["config"]
                 )
                 db.session.add(_type_intervention_organization)
             else:
-                 _type_intervention_organization.config_text=item["config"]
+                 _type_intervention_organization.template_text=item["config"]
       
             update_organizations_interventions_templates(_organization, _type_intervention, json.loads(item["config"]))
                 

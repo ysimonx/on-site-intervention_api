@@ -9,7 +9,7 @@ class TypeInterventionOrganization(db.Model):
     
     type_intervention_id = db.Column(db.String(36), db.ForeignKey('types_interventions.id'), primary_key=True)
     organization_id = db.Column(db.String(36), db.ForeignKey('organizations.id'), primary_key=True)
-    config_text=db.Column(db.Text)
+    template_text=db.Column(db.Text)
     
     type_intervention   = relationship("TypeIntervention")
     organization        = relationship("Organization")
@@ -19,13 +19,13 @@ class TypeInterventionOrganization(db.Model):
         return {
             'type_intervention':            self.type_intervention.name,
             'organization':                 self.organization.name,
-            'config_text':                     self.config_text,
+            'template_text':                     self.template_text,
         }
     
     def to_json_config(self):
         return {
             self.organization.name: {
-                self.type_intervention.name: self.config_text
+                self.type_intervention.name: self.template_text
             }
         }
         
