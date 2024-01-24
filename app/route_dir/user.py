@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session,abort, make_response
+from flask import Blueprint, render_template, session,abort, make_response, current_app
 from ..model_dir.mymixin import User, Role
 from ..model_dir.company import Company
 from ..model_dir.tenant import Tenant
@@ -12,6 +12,7 @@ from flask_jwt_extended import (
     create_refresh_token,
     get_jwt_identity, set_access_cookies, get_csrf_token
 )
+import json
 
 app_file_user = Blueprint('user',__name__)
 
@@ -104,17 +105,30 @@ def get_user_config():
     for organization in organizations:
         if organization.name in me["organizations_roles"].keys():
            user_organizations.append(organization)
+    
+    
+    dict_types_interventions_organizations={}
        
-    types_interventions_organizations=[] 
     _types_interventions_organizations = TypeInterventionOrganization.query.all()
     for _type_intervention_organization in _types_interventions_organizations:
         if _type_intervention_organization.organization.name in me["organizations_roles"].keys():
-            types_interventions_organizations.append(_type_intervention_organization)
+            if _type_intervention_organization.organization.name in dict_types_interventions_organizations.keys():
+                content = dict_types_interventions_organizations[_type_intervention_organization.organization.name]
+                content[_type_intervention_organization.type_intervention.name]=_type_intervention_organization.template_text
+            else:
+                content={}
+                content[_type_intervention_organization.type_intervention.name]=_type_intervention_organization.template_text
+                
+            dict_types_interventions_organizations[_type_intervention_organization.organization.name]=content
+            # current_app.logger.info(_type_intervention_organization.organization.name)
+            # current_app.logger.info(_type_intervention_organization.type_intervention.name)
     
+    json_string = json.dumps(dict_types_interventions_organizations, indent=4)  
+       
     result={
             "user": me,
             "organizations": [{"organization" : user_organization.to_json()} for user_organization in user_organizations],
-            "config_organization_type_intervention": [type_intervention_organization.to_json_config() for type_intervention_organization in types_interventions_organizations]
+            "config_organization_type_intervention": dict_types_interventions_organizations
             }
     
     return (result), 200

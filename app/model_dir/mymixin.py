@@ -124,7 +124,7 @@ class Role(db.Model, MyMixin):
         return {
             'id':               self.id,
             'name':             self.name,
-            'users':      [{"user": item.to_json_light()} for item in self.users] 
+            'users':            [{"user": item.to_json_light()} for item in self.users] 
         }
         
     def to_json_anonymous(self):
@@ -189,7 +189,7 @@ class User(db.Model, MyMixin):
         dict_organization_roles={}
         
         for item in self.roles:
-            print(item.organization.name)
+            # print(item.organization.name)
             
             if not item.organization_id in organizations:
                 dict_organization_roles[item.organization.name] = {"roles":[]}
