@@ -114,20 +114,18 @@ def get_user_config():
         if _type_intervention_organization.organization.name in me["organizations_roles"].keys():
             if _type_intervention_organization.organization.name in dict_types_interventions_organizations.keys():
                 content = dict_types_interventions_organizations[_type_intervention_organization.organization.name]
-                content[_type_intervention_organization.type_intervention.name]=_type_intervention_organization.template_text
             else:
                 content={}
-                content[_type_intervention_organization.type_intervention.name]=_type_intervention_organization.template_text
-                
+            content[_type_intervention_organization.type_intervention.name]=json.loads(_type_intervention_organization.template_text)
             dict_types_interventions_organizations[_type_intervention_organization.organization.name]=content
             # current_app.logger.info(_type_intervention_organization.organization.name)
             # current_app.logger.info(_type_intervention_organization.type_intervention.name)
     
-       
+    r = json.dumps(dict_types_interventions_organizations)   
     result={
             "user": me,
             "organizations": [{"organization" : user_organization.to_json()} for user_organization in user_organizations],
-            "config_organization_type_intervention": json.loads(dict_types_interventions_organizations)
+            "config_organization_type_intervention": dict_types_interventions_organizations
             }
     
     return (result), 200
