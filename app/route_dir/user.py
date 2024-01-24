@@ -123,12 +123,11 @@ def get_user_config():
             # current_app.logger.info(_type_intervention_organization.organization.name)
             # current_app.logger.info(_type_intervention_organization.type_intervention.name)
     
-    json_string = json.dumps(dict_types_interventions_organizations, indent=4)  
        
     result={
             "user": me,
             "organizations": [{"organization" : user_organization.to_json()} for user_organization in user_organizations],
-            "config_organization_type_intervention": dict_types_interventions_organizations
+            "config_organization_type_intervention": json.loads(dict_types_interventions_organizations)
             }
     
     return (result), 200
