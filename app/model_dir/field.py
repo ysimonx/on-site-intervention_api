@@ -82,7 +82,7 @@ class Field(db.Model, MyMixin):
         return dict_attributes
     
 
-class FieldValues(db.Model, MyMixin):
+class FieldValue(db.Model, MyMixin):
     __tablename__ = 'field_values'
     
     intervention_values_id              = db.Column(db.String(36), db.ForeignKey("interventions_values.id"));
@@ -116,7 +116,7 @@ def do_stuff1(mapper, connect, target):
     
     
 from sqlalchemy import event
-@event.listens_for(FieldValues, 'before_insert')
+@event.listens_for(FieldValue, 'before_insert')
 def do_stuff1(mapper, connect, target):
     MyMixin.map_owner(mapper, connect, target)
     
