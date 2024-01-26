@@ -57,14 +57,12 @@ class InterventionValues(db.Model, MyMixin):
     supervisor_user             = db.relationship("User", viewonly=True)
     
     template_text               = db.Column(db.Text)
-    fields_values               = db.relationship("FieldValues", viewonly=True)
+    fields_values               = db.relationship("FieldValue", viewonly=True)
     
     def to_json(self):
         dict_field_values={}
         for item in self.fields_values:
-            
             dict_field_values[item.field_on_site_uuid]=item.value;
-            
         
         return {
             'id':                             self.id,
@@ -79,15 +77,13 @@ class InterventionValues(db.Model, MyMixin):
             'supervisor_user_id':             self.supervisor_user_id,
             'supervisor_user':                None if self.supervisor_user is None else self.supervisor_user.to_json_ultra_light(),
             'template_text':                  self.template_text,
-            'field_on_site_uuid_values':                  dict_field_values
+            'field_on_site_uuid_values':      dict_field_values
         }
         
     def to_json_light(self):
       dict_field_values={}
       for item in self.fields_values:
-            
             dict_field_values[item.field_on_site_uuid]=item.value;
-            
             
       return {
             'id':                             self.id,
@@ -103,8 +99,8 @@ class InterventionValues(db.Model, MyMixin):
             'hashtag':                        self.hashtag,
             'supervisor_user_id':             self.supervisor_user_id,
             'supervisor_user':                None if self.supervisor_user is None else self.supervisor_user.to_json_ultra_light(),
-            'template_text':                    self.template_text,
-            'field_on_site_uuid_values':                  dict_field_values
+            'template_text':                  self.template_text,
+            'field_on_site_uuid_values':      dict_field_values
         }
        
 

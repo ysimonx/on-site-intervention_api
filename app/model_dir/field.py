@@ -115,3 +115,9 @@ def do_stuff1(mapper, connect, target):
     MyMixin.map_owner(mapper, connect, target)
     
     
+from sqlalchemy import event
+@event.listens_for(FieldValues, 'before_insert')
+def do_stuff1(mapper, connect, target):
+    MyMixin.map_owner(mapper, connect, target)
+    
+    
