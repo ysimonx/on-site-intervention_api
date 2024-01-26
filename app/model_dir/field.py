@@ -81,6 +81,34 @@ class Field(db.Model, MyMixin):
 
         return dict_attributes
     
+
+class FieldValues(db.Model, MyMixin):
+    __tablename__ = 'field_values'
+    
+    intervention_values_id              = db.Column(db.String(36), db.ForeignKey("interventions_values.id"));
+    field_id                            = db.Column(db.String(36), db.ForeignKey("fields.id"));
+    field_on_site_uuid                  = db.Column(db.String(36),  index=True)
+    value                               = db.Column(db.Text)
+    
+    field                               = db.relationship("Field", viewonly=True)
+    interventions_values                = db.relationship("InterventionValues", viewonly=True)
+   
+    def to_json(self):
+        return {
+            'id':                   self.id,
+            '_internal' :           self.get_internal(),
+            'intervention_values_id':   self.intervention_values_id,
+            'field_id'              :   self.field_id,
+            'field_on_site_uuid'    :   self.field_on_site_uuid,
+            'value'                 :   self.value
+        }
+    
+    def to_json_light(self):
+        return { 
+                self.field_on_site_uuid:  self.value
+        }
+         
+    
 from sqlalchemy import event
 @event.listens_for(Field, 'before_insert')
 def do_stuff1(mapper, connect, target):
