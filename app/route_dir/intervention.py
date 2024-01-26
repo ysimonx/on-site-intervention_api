@@ -10,7 +10,7 @@ from ..model_dir.form import Form
 from ..model_dir.place import Place
 from ..model_dir.organization import Organization
 from ..model_dir.form import Form
-from ..model_dir.field import Field
+from ..model_dir.field import Field, FieldValue
 from ..model_dir.field_histo import FieldHisto
 from flask import jsonify, request, abort
 from flask_jwt_extended import jwt_required
@@ -157,7 +157,8 @@ def post_intervention_values():
     intervention_name           = request.json.get('intervention_name')
     place_on_site_uuid          = request.json.get('place_on_site_uuid')
     place_name                  = request.json.get('place_name')
-    template_text                 = request.json.get('template_text')
+    template_text               = request.json.get('template_text')
+    field_on_site_uuid_values   = request.json.get('field_on_site_uuid_values')
     
     _organization=getByIdOrByName(Organization, organization_id)
     _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
@@ -208,9 +209,28 @@ def post_intervention_values():
         interventionValues.type_intervention_id = _type_intervention.id,
         interventionValues.template_text= template_text
         
-        
     db.session.commit()  
-         
+
+    for k, v in field_on_site_uuid_values.items():
+        print(k, v)
+    
+        _fieldValue = FieldValue.query.filter(FieldValue.intervention_values_id==interventionValues.id).filter(FieldValue.field_on_site_uuid==k).first()
+        
+        if _fieldValue is None:
+            _field= Field.query.filter(Field.field_on_site_uuid == k).first()
+            _fieldValue=FieldValue(
+                 intervention_values_id=interventionValues.id,
+                 field_on_site_uuid=k,
+                 field_id=_field.id,
+                 value=v
+             )
+            db.session.add(_fieldValue)
+        else:
+            _fieldValue.value = v
+        db.session.commit()                
+    
+            
+                
     return jsonify(interventionValues.to_json()), 201
 
 
