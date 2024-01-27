@@ -269,42 +269,89 @@ def populate_type_intervention():
                 "2" :{"form_name":"visit",
                       "form_on_site_uuid": "a81c475c-3b9d-40da-839d-56eeee06e85a",
                       "sections": {
-                          "1": { "section_name" : "visit rub a",
+                          "1": { "section_name" : "Techniques",
+                                "section_type" : "section type 1",
+                                "section_on_site_uuid": "11b19f92-b590-44d5-b29c-4144b709bd9b",
+                                 "fields": {
+                                    "1": { "field_name":"scaff_type",
+                                           "field_label":"Type",
+                                           "field_type":"list",
+                                           "field_on_site_uuid":"e28cbc05-2f4b-46f5-acca-c147ae8a1db8",
+                                           "values": [
+                                               "Fixe",
+                                               "Roulant",
+                                               "Balisage en dur",
+                                               "Protection", 
+                                               "Potence",
+                                               "Escalier",
+                                               "Autre"
+                                            ] 
+                                    },
+                                     "2": { "field_name":"visit_date",
+                                           "field_label":"Visit Date",
+                                           "field_type":"date",
+                                           "field_on_site_uuid":"a1d5131d-d8bc-4783-8c0b-fb81f5e4a459",
+                                           "default_value":"now"
+                                          
+                                    }
+                                 }
+                                },
+                          "2": { "section_name" : "Dimensions",
                                 "section_type" : "section type 1",
                                 "section_on_site_uuid": "de3b8182-df35-4c6a-9aea-8d652efd8142",
                                  "fields": {
-                                     "1": { "field_name": "field aa",
-                                           "field_type": "field_type 1","field_on_site_uuid":"8dd3f411-6f67-43c4-9d9d-1d420cc6bc68"},
-                                     "2": { "field_name": "field ab",
-                                           "field_type": "field_type 1","field_on_site_uuid":"0b1a49af-757f-4127-a0fb-f525d2f71f70"},
-                                     "3": { "field_name": "field ac",
-                                           "field_type": "field_type 1","field_on_site_uuid":"29c05fa8-c1d6-4026-bd4a-356a1e0eca7b"},
+                                      "1": { "field_name":"scaff_charge_exploitation_prevue",
+                                           "field_label":"Charge Exploit prévue",
+                                           "field_type":"list",
+                                           "field_on_site_uuid":"43f30456-0f0d-4fef-842c-01f869f85cdd",
+                                           "values": [
+                                               "Classe 3 (répartis 250kg/m2)",
+                                               "Classe 4 et 5 (300kg/m2>répartis<450kg/m2)",
+                                               "Classe 6 (450 Kg/m2>répartis<600kg/m2)",
+                                               "autre(à renseigner dans commentaire)", 
+                                               
+                                            ] 
+                                        },
+                                      "2": { "field_name":"scaff_conforme_notice",
+                                           "field_label":"Conforme Notice",
+                                           "field_type":"switch",
+                                           "field_on_site_uuid":"fb737b8d-db58-418f-a69f-b437539cdec6",
+                                           "value_on": "oui",
+                                           "value_off": "non"
+                                      },
+                                      "3": { "field_name":"visit_date_reception_prevue",
+                                           "field_label":"Date Réception prévue",
+                                           "field_type":"date",
+                                           "field_on_site_uuid":"4d83d71d-adfe-45f8-968c-5d9761f4c288",
+                                           "default_value":"j+15",
+                                      },
+                                     "4": { "field_name": "scaff_width",
+                                            "field_label": "Longueur",
+                                           "field_type": "integer",
+                                           "field_on_site_uuid":"8dd3f411-6f67-43c4-9d9d-1d420cc6bc68"
+                                           },
+                                     "5": { "field_name": "scaff_depth",
+                                           "field_label": "Largeur",
+                                           "field_type": "integer",
+                                           "field_on_site_uuid":"0b1a49af-757f-4127-a0fb-f525d2f71f70"},
+                                     "6": { "field_name": "scaff_height",
+                                            "field_label": "Hauteur",
+                                           "field_type": "integer",
+                                           "field_on_site_uuid":"29c05fa8-c1d6-4026-bd4a-356a1e0eca7b"},
+                                      "7": { "field_name":"scaff_nb_planchers_travail",
+                                           "field_label":"Nombre de planchers travail",
+                                           "field_type":"list",
+                                           "field_on_site_uuid":"552460e5-b326-4cba-816c-e84202f1f83c",
+                                           "values": [
+                                               "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"
+                                            ] 
+                                    },
                                  }
                                 },
                                  
-                          "2": { "section_name" : "visit rub b",
-                                "section_type" : "section type 1",
-                                "section_on_site_uuid": "8f3b42c1-1fff-4dee-a0e2-c58a1dd3c7d9",
-                                 "fields": {
-                                     "1": { "field_name": "field ba",
-                                           "field_type": "field_type 1","field_on_site_uuid":"c6efbbcc-acb6-4520-ab3e-706ff064c03f"},
-                                     "2": { "field_name": "field bb",
-                                           "field_type": "field_type 1","field_on_site_uuid":"e389e844-b78e-418a-91d4-8ba21b3da02c"},
-                                     "3": { "field_name": "field bc",
-                                           "field_type": "field_type 1","field_on_site_uuid":"508562c5-1212-4a23-8111-0fb2d5f2199e"},
-                                 } },
-                          "3": { "section_name" : "visit rub c",
-                                "section_type" : "section type 1",
-                                "section_on_site_uuid": "3f1a44a3-e045-48f0-a035-a4e8422d58d9",
-                                 "fields": {
-                                     "1": { "field_name": "field ca",
-                                           "field_type": "field_type 1","field_on_site_uuid":"e55e2d27-c8c2-489e-aede-bf50f468bf37"},
-                                     "2": { "field_name": "field cb",
-                                           "field_type": "field_type 1","field_on_site_uuid":"c68585b0-fcc9-4bde-ac18-b903bc983273"},
-                                     "3": { "field_name": "field cc",
-                                           "field_type": "field_type 1","field_on_site_uuid":"4ec24f20-b64d-44e7-ad1d-b5d037f6407b"},
-                                 } },
-                     }
+                         
+                            
+                        }
                     },
                 "3" :{"form_name":"commissioning",
                       "form_on_site_uuid": "e773e72b-e00e-4fcc-b6be-fbfb70307351",
