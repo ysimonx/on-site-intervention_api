@@ -12,9 +12,10 @@ def formatted_date_iso(date):
 class Tenant(db.Model):
     __tablename__ = 'tenants'
    
-    id              = db.Column(db.String(36), primary_key=True, default=uuid.uuid4)
-    name            = db.Column(db.String(255), index=True)
-
+    id                     = db.Column(db.String(36), primary_key=True, default=uuid.uuid4)
+    name                   = db.Column(db.String(255), index=True)
+    admin_tenant_user_id   = db.Column(db.String(36), db.ForeignKey("users.id"))
+    
     time_created    = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
     time_updated    = db.Column(db.DateTime(timezone=True), onupdate=db.func.now())
     

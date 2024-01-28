@@ -43,16 +43,13 @@ def getByIdOrByName(obj, id, tenant_id=None, organization_id=None):
     
     return None
 
-def getByIdOrEmail(obj, id, tenant_id):
+def getByIdOrEmail(obj, id):
     result = None
     try:
         uuid.UUID(str(id))
         result = obj.query.get(id)
     except ValueError:
-        if tenant_id is None:
-            result = obj.query.filter(obj.email==id).first()
-        else:
-            result = obj.query.filter(obj.email==id).filter(obj.tenant_id==tenant_id).first()
+        result = obj.query.filter(obj.email==id).first()
     return result
 
 def getByIdOrFilename(obj, id):

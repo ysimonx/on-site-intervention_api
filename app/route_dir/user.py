@@ -41,7 +41,7 @@ def login():
         
     _tenant = getByIdOrByName(obj=Tenant, id=tenant_id, tenant_id=None)
     
-    user =    getByIdOrEmail(obj=User,  id=email, tenant_id = _tenant.id)
+    user = getByIdOrEmail(obj=User,  id=email)
     
     if user is None:
         abort(make_response(jsonify(error="error login"), 401))
@@ -159,9 +159,10 @@ def create_user():
         db.session.add(company)
         db.session.commit()
        
-    user = getByIdOrEmail(obj=User, id=request.json.get('email'), tenant_id=tenant.id)
+    user = getByIdOrEmail(obj=User, id=request.json.get('email'))
     if user is not None:
         user.phone = request.json.get('phone')
+        user.tenant_id = None, # user must not be associated to a specific tenant
         user.password = request.json.get('password')
         user.hash_password()   
     else:
@@ -169,7 +170,7 @@ def create_user():
             email=          request.json.get('email'),
             password =      request.json.get('password'),
             company_id =    company.id,
-            tenant_id =     tenant.id,
+            tenant_id = None, # user must not be associated to a specific tenant
             phone =         request.json.get('phone')
             )
 

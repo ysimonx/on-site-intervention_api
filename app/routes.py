@@ -132,7 +132,7 @@ def before_request():
         res = verify_jwt_in_request(optional=True)
         if res is not None:
             current_user_id = get_jwt_identity()
-            g.current_user = getByIdOrEmail(obj=User,  id=current_user_id, tenant_id=tenant_id)
+            g.current_user = getByIdOrEmail(obj=User,  id=current_user_id)
     except:
         g.current_user = None
     
@@ -582,7 +582,12 @@ def update_organizations_interventions_templates( _organization,  _type_interven
 def populate_user_data():
     dataTenant =  {
         
-                "fidwork": [
+                "fidwork": {
+                    "tenant_admin_user": {
+                         "email": "yannick.simon@gmail.com", 
+                         "password": "12345678" 
+                    },
+                    "users": [
                     { 
                          "email": "yannick.simon@gmail.com", 
                          "password": "12345678", 
@@ -602,36 +607,55 @@ def populate_user_data():
                          ]
                          
                     },
-                ] 
+                ] }
                 
                 }
     
        
-    for tenant, users in dataTenant.items():
+    for tenant, item in dataTenant.items():
+        
+        _admin_tenant_user = getByIdOrEmail(obj=User, id=item["tenant_admin_user"]["email"])
+        if _admin_tenant_user is None:
+                _admin_tenant_user = User(
+                            email= item["tenant_admin_user"]["email"],
+                            password= item["tenant_admin_user"]["password"],
+                            tenant_id = None,
+                        )
+                _admin_tenant_user.hash_password()
+                db.session.add(_admin_tenant_user)  
+                app.logger.debug("_admin_tenant_user added %s", _admin_tenant_user.email)
+        
+           
         
         _tenant = getByIdOrByName(obj=Tenant, id=tenant, tenant_id=None)
         if _tenant is None:
-            _tenant = Tenant( name = tenant)
+            _tenant = Tenant( name = tenant, admin_tenant_user_id=_admin_tenant_user.id )
             db.session.add(_tenant)
-            db.session.commit() 
-            app.logger.debug("tenant added %s", _tenant.name)
+        else:
+            _tenant.admin_tenant_user_id=_admin_tenant_user.id
+        db.session.commit() 
+            
+        app.logger.debug("tenant added %s", _tenant.name)
          
-        for user in users:
+        for user in item["users"]:
             
             _company = getByIdOrByName(obj=Company, id=user["company"], tenant_id=_tenant.id)
             if _company is None:
-                _company = Company(name = user["company"], tenant_id = _tenant.id)
+                _company = Company(
+                    name = user["company"],
+                    tenant_id = _tenant.id
+                    )
                 db.session.add(_company)
                 db.session.commit() 
                 
                 
-            _user = getByIdOrEmail(obj=User, id=user["email"], tenant_id=_tenant.id)
+            _user = getByIdOrEmail(obj=User, id=user["email"])
             if _user is None:
                 _user = User(
                             email= user["email"],
                             password= user["password"],
                             phone= user["phone"],
-                            tenant_id = _tenant.id,
+                            tenant_id = None,
                             company_id = _company.id,
                             firstname=user["firstname"],
                             lastname=user["lastname"]
@@ -640,7 +664,7 @@ def populate_user_data():
                 db.session.add(_user)  
                 app.logger.debug("user added %s", _user.email)
             else:
-                _user.tenant_id     = _tenant.id
+                _user.tenant_id     = None
                 _user.firstname     = user["firstname"]
                 _user.lastname      = user["lastname"]
                 _user.password      = user["password"]
