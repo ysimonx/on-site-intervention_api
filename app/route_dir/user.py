@@ -33,14 +33,7 @@ app_file_user = Blueprint('user',__name__)
 def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-    tenant_id = request.json.get("tenant_id", None)
-    
-    if tenant_id is None:
-        abort(make_response(jsonify(error="error login tenant_id missing in request"), 401))
-        
-        
-    _tenant = getByIdOrByName(obj=Tenant, id=tenant_id, tenant_id=None)
-    
+
     user = getByIdOrEmail(obj=User,  id=email)
     
     if user is None:
