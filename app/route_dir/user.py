@@ -93,21 +93,24 @@ def get_user_config():
     me = g.current_user.to_json()
     
     
+ 
     
     # detail des sites qui me concernent
     user_sites=[]
     sites = Site.query.all()
     for site in sites:
+        json_site = site.to_json()
+        tenant_id = site.tenant_id
+        if tenant_id is not None:
+            _tenant=getByIdOrByName(obj=Tenant, id=tenant_id)
+            json_site["tenant"]=_tenant.to_json_light()
         if site.name in me["sites_roles"].keys(): # ceux pour lesquels j'ai un role
-           user_sites.append(site)
+           user_sites.append(json_site)
         else:
-           tenant_id = site.tenant_id
-           if tenant_id is not None:
-                _tenant=getByIdOrByName(obj=Tenant, id=tenant_id)
-                if _tenant is not None:
-                    if _tenant.admin_tenant_user_id==g.current_user.id:
-                        # ceux pour lesquels je suis admin du Tenant
-                        user_sites.append(site)
+            if _tenant is not None:
+                if _tenant.admin_tenant_user_id==g.current_user.id:
+                    # ceux pour lesquels je suis admin du Tenant
+                    user_sites.append(json_site)
             
                 
     
@@ -130,8 +133,8 @@ def get_user_config():
     r = json.dumps(dict_types_interventions_sites)   
     result={
             "user": me,
-            "site_member_of": [{"site" : user_site.to_json()} for user_site in user_sites],
-            "tenant_administrator_of" : [{"tenant": item.to_json()} for item in my_tenants] ,
+            "site_member_of": [{"site" : user_site} for user_site in user_sites],
+            "tenant_administrator_of" : [{"tenant": item.to_json_light()} for item in my_tenants] ,
             "config_site_type_intervention": dict_types_interventions_sites,
             }
     

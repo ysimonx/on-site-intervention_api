@@ -22,8 +22,7 @@ class Site(db.Model, MyMixin):
     time_updated    = db.Column(db.DateTime(timezone=True), onupdate=db.func.now())
     
     roles = db.relationship('Role')
-             
-  
+     
         
     def to_json(self):
         return {

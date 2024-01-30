@@ -201,7 +201,7 @@ def swagger():
 
 def populate_tenant():
 
-    tenants=["fidwork"];
+    tenants=["ctei"];
 
     for newtenant in tenants:
             tenant=getByIdOrByName(Tenant, newtenant, None)
@@ -585,7 +585,7 @@ def update_sites_interventions_templates( _site,  _type_intervention, template )
 def populate_user_data():
     dataTenant =  {
         
-                "fidwork": {
+                "ctei": {
                     "tenant_admin_user": {
                          "email": "yannick.simon@gmail.com", 
                          "password": "12345678",
