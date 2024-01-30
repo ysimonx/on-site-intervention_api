@@ -121,7 +121,7 @@ def get_user_config():
     result={
             "user": me,
             "site_member_of": [{"site" : user_site.to_json()} for user_site in user_sites],
-            "tenant_administrator_of" : [{item.name : item.to_json()} for item in my_tenants] ,
+            "tenant_administrator_of" : [{"tenant": item.to_json()} for item in my_tenants] ,
             "config_site_type_intervention": dict_types_interventions_sites,
             }
     
