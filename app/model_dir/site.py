@@ -1,5 +1,5 @@
 from .. import db,  getByIdOrByName
-from ..model_dir.mymixin import user_role
+from .mymixin import user_role
 import uuid
 from flask import Flask, abort, make_response, request, jsonify
 from sqlalchemy.orm import declarative_base, relationship, backref
@@ -12,8 +12,8 @@ def formatted_date_iso(date):
     return date.isoformat()
 
 
-class Organization(db.Model, MyMixin):
-    __tablename__ = 'organizations'
+class Site(db.Model, MyMixin):
+    __tablename__ = 'sites'
    
     id              = db.Column(db.String(36), primary_key=True, default=uuid.uuid4)
     name            = db.Column(db.String(255), index=True)
@@ -45,36 +45,36 @@ class Organization(db.Model, MyMixin):
             'id':               self.id,
         }
 
-    def getOrganization():
-        _organization = Organization.query.filter(Organization.name=="sandbox").first()
-        return _organization
+    def getSite():
+        _site = Site.query.filter(Site.name=="sandbox").first()
+        return _site
     
-    def getRequestOrganization():
+    def getRequestSite():
     
         #
         # TODO
-        # should verify that this user is an authorized one for this organization
+        # should verify that this user is an authorized one for this site
         # should verify that this user has a role able to upload photo
         # 
     
         if request.is_json:
-            if not 'organization_id' in request.json:
-                abort(make_response(jsonify(error="missing organization_id parameter"), 400))
-            organization_id                   = request.json.get('organization_id')
+            if not 'site_id' in request.json:
+                abort(make_response(jsonify(error="missing site_id parameter"), 400))
+            site_id                   = request.json.get('site_id')
         else:
-            if not 'organization_id' in request.form:
-                abort(make_response(jsonify(error="missing organization_id parameter"), 400))   
-            organization_id                   = request.form.get('organization_id')  
+            if not 'site_id' in request.form:
+                abort(make_response(jsonify(error="missing site_id parameter"), 400))   
+            site_id                   = request.form.get('site_id')  
               
             
-        organization=getByIdOrByName(Organization, organization_id)
-        if organization is None:
-            abort(make_response(jsonify(error="organization not found"), 400))
+        site=getByIdOrByName(Site, site_id)
+        if site is None:
+            abort(make_response(jsonify(error="site not found"), 400))
             
-        return organization
+        return site
         
 from sqlalchemy import event
-@event.listens_for(Organization, 'before_insert')
+@event.listens_for(Site, 'before_insert')
 def do_stuff1(mapper, connect, target):
     MyMixin.map_owner(mapper, connect, target)
     

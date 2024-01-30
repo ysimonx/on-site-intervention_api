@@ -2,8 +2,8 @@ from flask import Blueprint, render_template, session,abort, make_response, curr
 from ..model_dir.mymixin import User, Role
 from ..model_dir.company import Company
 from ..model_dir.tenant import Tenant
-from ..model_dir.organization import Organization
-from ..model_dir.type_intervention import TypeIntervention, TypeInterventionOrganization
+from ..model_dir.site import Site
+from ..model_dir.type_intervention import TypeIntervention, TypeInterventionSite
 
 from flask import jsonify, request, abort
 from .. import db, getByIdOrEmail, getByIdOrByName
@@ -92,33 +92,33 @@ def get_user_config():
     # qui je suis
     me = User.me().to_json()
     
-    # detail des organizations qui me concernent
-    user_organizations=[]
-    organizations = Organization.query.all()
-    for organization in organizations:
-        if organization.name in me["organizations_roles"].keys():
-           user_organizations.append(organization)
+    # detail des sites qui me concernent
+    user_sites=[]
+    sites = Site.query.all()
+    for site in sites:
+        if site.name in me["sites_roles"].keys():
+           user_sites.append(site)
     
     
-    dict_types_interventions_organizations={}
+    dict_types_interventions_sites={}
        
-    _types_interventions_organizations = TypeInterventionOrganization.query.all()
-    for _type_intervention_organization in _types_interventions_organizations:
-        if _type_intervention_organization.organization.name in me["organizations_roles"].keys():
-            if _type_intervention_organization.organization.name in dict_types_interventions_organizations.keys():
-                content = dict_types_interventions_organizations[_type_intervention_organization.organization.name]
+    _types_interventions_sites = TypeInterventionSite.query.all()
+    for _type_intervention_site in _types_interventions_sites:
+        if _type_intervention_site.site.name in me["sites_roles"].keys():
+            if _type_intervention_site.site.name in dict_types_interventions_sites.keys():
+                content = dict_types_interventions_sites[_type_intervention_site.site.name]
             else:
                 content={}
-            content[_type_intervention_organization.type_intervention.name]=json.loads(_type_intervention_organization.template_text)
-            dict_types_interventions_organizations[_type_intervention_organization.organization.name]=content
-            # current_app.logger.info(_type_intervention_organization.organization.name)
-            # current_app.logger.info(_type_intervention_organization.type_intervention.name)
+            content[_type_intervention_site.type_intervention.name]=json.loads(_type_intervention_site.template_text)
+            dict_types_interventions_sites[_type_intervention_site.site.name]=content
+            # current_app.logger.info(_type_intervention_site.site.name)
+            # current_app.logger.info(_type_intervention_site.type_intervention.name)
     
-    r = json.dumps(dict_types_interventions_organizations)   
+    r = json.dumps(dict_types_interventions_sites)   
     result={
             "user": me,
-            "organizations": [{"organization" : user_organization.to_json()} for user_organization in user_organizations],
-            "config_organization_type_intervention": dict_types_interventions_organizations
+            "sites": [{"site" : user_site.to_json()} for user_site in user_sites],
+            "config_site_type_intervention": dict_types_interventions_sites
             }
     
     return (result), 200

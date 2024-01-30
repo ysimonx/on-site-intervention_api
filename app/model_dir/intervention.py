@@ -46,14 +46,14 @@ class InterventionValues(db.Model, MyMixin):
     place_id                    = db.Column(db.String(36), db.ForeignKey("places.id"));
     version                     = db.Column(db.Integer, default=1)
     
-    organization_id             = db.Column(db.String(36), db.ForeignKey("organizations.id"))
+    site_id             = db.Column(db.String(36), db.ForeignKey("sites.id"))
     type_intervention_id        = db.Column(db.String(36), db.ForeignKey("types_interventions.id"));
     supervisor_user_id          = db.Column(db.String(36), db.ForeignKey("users.id"))
     hashtag                     = db.Column(db.Integer, default=1, index=True)
     
     place                       = db.relationship("Place", viewonly=True)
     type_intervention           = db.relationship("TypeIntervention", viewonly=True)
-    organization                = db.relationship("Organization", viewonly=True)
+    site                = db.relationship("Site", viewonly=True)
     supervisor_user             = db.relationship("User", viewonly=True)
     
     template_text               = db.Column(db.Text)
@@ -69,7 +69,7 @@ class InterventionValues(db.Model, MyMixin):
             'intervention_name':              self.name,
             '_internal' :                     self.get_internal(),
             'intervention_values_on_site_uuid':                self.intervention_values_on_site_uuid,
-            'organization':                   self.organization.to_json(),
+            'site':                   self.site.to_json(),
             'type_intervention':                   self.type_intervention.to_json(),
             'place':                          self.place.to_json(),
             'version':                        self.version, 
@@ -90,11 +90,11 @@ class InterventionValues(db.Model, MyMixin):
             'intervention_name':              self.name,
             'intervention_values_on_site_uuid':                self.intervention_values_on_site_uuid,
             'type_intervention_id':           self.type_intervention_id,
-            'organization_id':                self.organization_id,
+            'site_id':                self.site_id,
             'place_id':                       self.place_id,
             'place_name':                     self.place.name,
             'version':                        self.version,
-            'organization_name':              self.organization.name,
+            'site_name':              self.site.name,
             'type_intervention_name':         self.type_intervention.name,
             'hashtag':                        self.hashtag,
             'supervisor_user_id':             self.supervisor_user_id,

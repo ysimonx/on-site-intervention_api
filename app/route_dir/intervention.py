@@ -3,12 +3,12 @@ from flask import Blueprint, abort, make_response
 import hashlib
 
 from ..model_dir.intervention import Intervention, InterventionValues
-from ..model_dir.type_intervention import TypeIntervention, TypeInterventionOrganization
+from ..model_dir.type_intervention import TypeIntervention, TypeInterventionSite
 from ..model_dir.section import Section
 from ..model_dir.form import Form
 
 from ..model_dir.place import Place
-from ..model_dir.organization import Organization
+from ..model_dir.site import Site
 from ..model_dir.form import Form
 from ..model_dir.field import Field, FieldValue
 from ..model_dir.field_histo import FieldHisto
@@ -23,14 +23,14 @@ from sqlalchemy import func
 
 @app_file_intervention.route("/intervention", methods=["GET"])
 def get_interventions():
-    if not 'organization_id' in request.args:
+    if not 'site_id' in request.args:
         interventions = Intervention.query.all()
     else:
-        _organisation=getByIdOrByName(Organization, request.args.get("organization_id"))
-        if _organisation is None:
-            abort(make_response(jsonify(error="organization is not found"), 404))
+        _site=getByIdOrByName(Site, request.args.get("site_id"))
+        if _site is None:
+            abort(make_response(jsonify(error="site is not found"), 404))
         
-        interventions = Intervention.query.filter(Intervention.organization_id==_organisation.id).all()
+        interventions = Intervention.query.filter(Intervention.site_id==_site.id).all()
         
     return jsonify([item.to_json() for item in interventions])
 
@@ -47,12 +47,12 @@ def create_intervention():
     intervention_name           = request.json.get('intervention_name')
     place_on_site_uuid          = request.json.get('place_on_site_uuid')
     place_name                  = request.json.get('place_name')
-    organization_id             = request.json.get('organization_id')
+    site_id             = request.json.get('site_id')
     type_intervention           = request.json.get('type_intervention')
     forms                       = request.json.get('forms')
    
-    if organization_id is None:
-        abort(make_response(jsonify(error="organization_id must be provided"), 400))
+    if site_id is None:
+        abort(make_response(jsonify(error="site_id must be provided"), 400))
       
 
     _type_intervention=getByIdOrByName(TypeIntervention, type_intervention)
@@ -67,9 +67,9 @@ def create_intervention():
         db.session.add(place)
         db.session.commit()  
         
-    _organisation=getByIdOrByName(Organization, organization_id)
-    if _organisation is None:
-        abort(make_response(jsonify(error="organization is not found"), 400))
+    _site=getByIdOrByName(Site, site_id)
+    if _site is None:
+        abort(make_response(jsonify(error="site is not found"), 400))
         
    
         
@@ -78,7 +78,7 @@ def create_intervention():
         intervention = Intervention(
                         intervention_on_site_uuid = intervention_on_site_uuid,
                         name = intervention_name, 
-                        organization_id = _organisation.id, 
+                        site_id = _site.id, 
                         place_id = place.id,
                         version=1,
                         type_intervention_id = _type_intervention.id)
@@ -112,13 +112,13 @@ def get_intervention_values():
     
     query_interventionValues = InterventionValues.query
     
-    if  'organization_id' in request.args:
+    if  'site_id' in request.args:
         
-        organization_id=request.args.get("organization_id")
-        _organisation=getByIdOrByName(Organization, organization_id)
-        if _organisation is None:
-            abort(make_response(jsonify(error="organization is not found"), 400))
-        query_interventionValues = query_interventionValues.filter(InterventionValues.organization_id == _organisation.id)
+        site_id=request.args.get("site_id")
+        _site=getByIdOrByName(Site, site_id)
+        if _site is None:
+            abort(make_response(jsonify(error="site is not found"), 400))
+        query_interventionValues = query_interventionValues.filter(InterventionValues.site_id == _site.id)
 
     if  'type_intervention_id' in request.args:
         
@@ -135,11 +135,11 @@ def get_intervention_values():
     
     
     # else:
-        # _organisation=getByIdOrByName(Organization, request.args.get("organization_id"))
-        # if _organisation is None:
-        #     abort(make_response(jsonify(error="organization is not found"), 404))
+        # _site=getByIdOrByName(Site, request.args.get("site_id"))
+        # if _site is None:
+        #     abort(make_response(jsonify(error="site is not found"), 404))
         # 
-        # interventions = Intervention.query.filter(Intervention.organization_id==_organisation.id).all()
+        # interventions = Intervention.query.filter(Intervention.site_id==_site.id).all()
         
     return jsonify([item.to_json_light() for item in interventionValues])
 
@@ -152,7 +152,7 @@ def post_intervention_values():
         abort(make_response(jsonify(error="no json provided in request"), 400))
 
     intervention_values_on_site_uuid   = request.json.get('intervention_values_on_site_uuid')
-    organization_id             = request.json.get('organization_id')
+    site_id             = request.json.get('site_id')
     type_intervention_id        = request.json.get('type_intervention_id')
     intervention_name           = request.json.get('intervention_name')
     place_on_site_uuid          = request.json.get('place_on_site_uuid')
@@ -160,7 +160,7 @@ def post_intervention_values():
     template_text               = request.json.get('template_text')
     field_on_site_uuid_values   = request.json.get('field_on_site_uuid_values')
     
-    _organization=getByIdOrByName(Organization, organization_id)
+    _site=getByIdOrByName(Site, site_id)
     _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
       
 
@@ -173,10 +173,10 @@ def post_intervention_values():
         place = Place(
             place_on_site_uuid = place_on_site_uuid,
             name = place_name,
-            organization_id = _organization.id)
+            site_id = _site.id)
         db.session.add(place)
     else:
-        place.organization_id = _organization.id
+        place.site_id = _site.id
     
     db.session.commit()  
     
@@ -193,7 +193,7 @@ def post_intervention_values():
                         name = intervention_name, 
                         place_id = place.id,
                         version=1,
-                        organization_id = _organization.id,
+                        site_id = _site.id,
                         type_intervention_id = _type_intervention.id,
                         hashtag = max_id + 1,
                         template_text= template_text        
@@ -205,7 +205,7 @@ def post_intervention_values():
         interventionValues.name = intervention_name
         interventionValues.place_id = place.id
         interventionValues.version = interventionValues.version + 1
-        interventionValues.organization_id = _organization.id,
+        interventionValues.site_id = _site.id,
         interventionValues.type_intervention_id = _type_intervention.id,
         interventionValues.template_text= template_text
         

@@ -23,7 +23,7 @@ def create_app(config_name):
     db.init_app(app)
     return app
 
-def getByIdOrByName(obj, id, tenant_id=None, organization_id=None):
+def getByIdOrByName(obj, id, tenant_id=None, site_id=None):
     result = None
     try:
         uuid.UUID(str(id))
@@ -36,8 +36,8 @@ def getByIdOrByName(obj, id, tenant_id=None, organization_id=None):
         if tenant_id is not None:
             result = result.filter(obj.tenant_id==tenant_id)
         
-        if organization_id is not None:
-            result = result.filter(obj.organization_id==organization_id)
+        if site_id is not None:
+            result = result.filter(obj.site_id==site_id)
         
         return result.first()
     

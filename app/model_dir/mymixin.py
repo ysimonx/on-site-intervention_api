@@ -107,8 +107,8 @@ user_role = db.Table('users_roles',
 class Role(db.Model, MyMixin):
     __tablename__ = 'roles'
    
-    organization_id  = db.Column(db.String(36), db.ForeignKey("organizations.id"))
-    organization        = relationship("Organization", viewonly=True)
+    site_id  = db.Column(db.String(36), db.ForeignKey("sites.id"))
+    site        = relationship("Site", viewonly=True)
     
     
     def to_json(self):
@@ -116,7 +116,7 @@ class Role(db.Model, MyMixin):
             'id':               self.id,
             '_internal' :       self.get_internal(),
             'name':             self.name,
-            'organization':     self.organization.to_json(),
+            'site':     self.site.to_json(),
             'users':      [{"user": item.to_json_light()} for item in self.users] 
         }
 
@@ -158,16 +158,16 @@ class User(db.Model, MyMixin):
     
     def to_json(self):
         
-        organizations=[];
-        dict_organization_roles={}
+        sites=[];
+        dict_site_roles={}
         
         for item in self.roles:
-            # print(item.organization.name)
+            # print(item.site.name)
             
-            if not item.organization_id in organizations:
-                dict_organization_roles[item.organization.name] = {"roles":[]}
-                organizations.append(item.organization_id)
-            dict_organization_roles[item.organization.name]["roles"].append(item.name)
+            if not item.site_id in sites:
+                dict_site_roles[item.site.name] = {"roles":[]}
+                sites.append(item.site_id)
+            dict_site_roles[item.site.name]["roles"].append(item.name)
         
         return {
             'id':           self.id,
@@ -178,23 +178,23 @@ class User(db.Model, MyMixin):
             'firstname':    self.firstname,
             'lastname':     self.lastname,
             'company':      self.company.name,
-            'organizations_roles':   dict_organization_roles,
+            'sites_roles':   dict_site_roles,
             'active':       self.active,
             
         }
 
     def to_json_light(self):
         
-        organizations=[];
-        dict_organization_roles={}
+        sites=[];
+        dict_site_roles={}
         
         for item in self.roles:
-            # print(item.organization.name)
+            # print(item.site.name)
             
-            if not item.organization_id in organizations:
-                dict_organization_roles[item.organization.name] = {"roles":[]}
-                organizations.append(item.organization_id)
-            dict_organization_roles[item.organization.name]["roles"].append(item.name)
+            if not item.site_id in sites:
+                dict_site_roles[item.site.name] = {"roles":[]}
+                sites.append(item.site_id)
+            dict_site_roles[item.site.name]["roles"].append(item.name)
         
         return {
             'id':           self.id,
@@ -203,7 +203,7 @@ class User(db.Model, MyMixin):
             'firstname':    self.firstname,
             'lastname':     self.lastname,
             'company':      self.company.name,
-            'organizations_roles':   dict_organization_roles,
+            'sites_roles':   dict_site_roles,
             'active':       self.active,
         }
     

@@ -4,27 +4,27 @@ from .mymixin import MyMixin
 from sqlalchemy.orm import declarative_base, relationship, backref
 import uuid
 
-class TypeInterventionOrganization(db.Model):
-    __tablename__ = 'types_interventions_organizations'
+class TypeInterventionSite(db.Model):
+    __tablename__ = 'types_interventions_sites'
     
     type_intervention_id = db.Column(db.String(36), db.ForeignKey('types_interventions.id'), primary_key=True)
-    organization_id = db.Column(db.String(36), db.ForeignKey('organizations.id'), primary_key=True)
+    site_id = db.Column(db.String(36), db.ForeignKey('sites.id'), primary_key=True)
     template_text=db.Column(db.Text)
     
     type_intervention   = relationship("TypeIntervention")
-    organization        = relationship("Organization")
+    site        = relationship("Site")
    
    
     def to_json(self):
         return {
             'type_intervention':            self.type_intervention.name,
-            'organization':                 self.organization.name,
+            'site':                 self.site.name,
             'template_text':                     self.template_text,
         }
     
     def to_json_config(self):
         return {
-            self.organization.name: {
+            self.site.name: {
                 self.type_intervention.name: self.template_text
             }
         }

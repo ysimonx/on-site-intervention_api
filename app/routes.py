@@ -14,7 +14,7 @@ from .                          import db, getByIdOrEmail, getByIdOrByName
 from app.model_dir.mymixin        import User, Role
 from app.model_dir.company      import Company
 from app.model_dir.tenant       import Tenant
-from app.model_dir.organization import Organization
+from app.model_dir.site import Site
 from app.model_dir.type_field   import TypeField
 from app.model_dir.place        import Place
 from app.model_dir.intervention import Intervention
@@ -24,10 +24,10 @@ from app.model_dir.form         import Form
 
 
 
-from app.model_dir.type_intervention   import TypeIntervention, TypeInterventionOrganization
+from app.model_dir.type_intervention   import TypeIntervention, TypeInterventionSite
 
 from .route_dir.tenant          import app_file_tenant
-from .route_dir.organization    import app_file_organization
+from .route_dir.site    import app_file_site
 from .route_dir.event           import app_file_event
 from .route_dir.notification    import app_file_notification
 from .route_dir.user            import app_file_user
@@ -107,7 +107,7 @@ app.register_blueprint(app_file_role,
                        url_prefix=url_prefix)
 app.register_blueprint(app_file_form_template,
                        url_prefix=url_prefix)
-app.register_blueprint(app_file_organization,
+app.register_blueprint(app_file_site,
                        url_prefix=url_prefix)
 app.register_blueprint(app_file_section,
                        url_prefix=url_prefix)
@@ -122,11 +122,14 @@ def before_request():
     g.current_user = None
     g.current_tenant = None
     
-    tenant_id=request.args.get("tenant_id")
-    if tenant_id is not None:
-        g.current_tenant = getByIdOrByName(obj=Tenant, id=tenant_id)
-    else:
-        g.current_tenant = getByIdOrByName(obj=Tenant, id=config["default_tenant_config"])
+    try:
+        tenant_id=request.args.get("tenant_id")
+        if tenant_id is not None:
+            g.current_tenant = getByIdOrByName(obj=Tenant, id=tenant_id)
+        else:
+            g.current_tenant = getByIdOrByName(obj=Tenant, id=config["default_tenant_config"])
+    except:
+        g.current_tenant = None
             
     try:
         res = verify_jwt_in_request(optional=True)
@@ -183,7 +186,7 @@ def init():
     print(app.config["JWT_TOKEN_LOCATION"] )
     app.config["JWT_TOKEN_LOCATION"] = ["headers"] 
     # db.drop_all()
-    # db.create_all()
+    db.create_all()
     populate_tenant()
     populate_user_data()
     populate_type_intervention()
@@ -457,10 +460,10 @@ def populate_type_intervention():
 
 
     list=[ 
-          {"type_intervention":"scaffolding request", "organization":"iter","config":json.dumps(types_interventions["scaffolding request"], indent=4)},
-          {"type_intervention":"scaffolding request", "organization":"sandbox","config":json.dumps(types_interventions["scaffolding request"], indent=4)},
-          {"type_intervention":"calorifuge", "organization":"iter","config":json.dumps(types_interventions["calorifuge"], indent=4)},
-          {"type_intervention":"calorifuge", "organization":"sandbox","config":json.dumps(types_interventions["calorifuge"], indent=4) } 
+          {"type_intervention":"scaffolding request", "site":"iter","config":json.dumps(types_interventions["scaffolding request"], indent=4)},
+          {"type_intervention":"scaffolding request", "site":"sandbox","config":json.dumps(types_interventions["scaffolding request"], indent=4)},
+          {"type_intervention":"calorifuge", "site":"iter","config":json.dumps(types_interventions["calorifuge"], indent=4)},
+          {"type_intervention":"calorifuge", "site":"sandbox","config":json.dumps(types_interventions["calorifuge"], indent=4) } 
           ];
     for item in list:
             _type_intervention=getByIdOrByName(TypeIntervention, item["type_intervention"], None)
@@ -469,26 +472,26 @@ def populate_type_intervention():
                 db.session.add(_type_intervention)
                 app.logger.debug("_type_intervention added %s", _type_intervention.name)
             db.session.commit()    
-            _organization=getByIdOrByName(Organization, item["organization"], None)
+            _site=getByIdOrByName(Site, item["site"], None)
 
-            _type_intervention_organization = TypeInterventionOrganization.query.get((_type_intervention.id,_organization.id))
-            if _type_intervention_organization is None:
-                (_type_intervention_organization) = TypeInterventionOrganization(
+            _type_intervention_site = TypeInterventionSite.query.get((_type_intervention.id,_site.id))
+            if _type_intervention_site is None:
+                (_type_intervention_site) = TypeInterventionSite(
                     type_intervention_id=_type_intervention.id,
-                    organization_id=_organization.id,
+                    site_id=_site.id,
                     template_text=item["config"]
                 )
-                db.session.add(_type_intervention_organization)
+                db.session.add(_type_intervention_site)
             else:
-                 _type_intervention_organization.template_text=item["config"]
+                 _type_intervention_site.template_text=item["config"]
       
-            update_organizations_interventions_templates(_organization, _type_intervention, json.loads(item["config"]))
+            update_sites_interventions_templates(_site, _type_intervention, json.loads(item["config"]))
                 
             
                 
     db.session.commit()
     
-def update_organizations_interventions_templates( _organization,  _type_intervention, template ):
+def update_sites_interventions_templates( _site,  _type_intervention, template ):
       
     intervention_on_site_uuid = template["intervention_on_site_uuid"]
     intervention_name = template["type_intervention"]
@@ -585,7 +588,7 @@ def populate_user_data():
                 "fidwork": {
                     "tenant_admin_user": {
                          "email": "yannick.simon@gmail.com", 
-                         "password": "12345678" 
+                         "password": "12345678",
                     },
                     "users": [
                     { 
@@ -595,13 +598,13 @@ def populate_user_data():
                          "firstname":"Yannick", 
                          "lastname":"Simon",
                          "company": "kysoe",
-                         "organizations_roles": [
+                         "sites_roles": [
                             {
-                             "organization":"sandbox",
+                             "site":"sandbox",
                              "roles": ["admin","toy", "supervisor"]
                             },
                             {
-                             "organization":"iter",
+                             "site":"iter",
                              "roles": ["admin","gnass", "supervisor"]
                             }
                          ]
@@ -669,37 +672,38 @@ def populate_user_data():
                 _user.lastname      = user["lastname"]
                 _user.password      = user["password"]
                 _user.phone         = user["phone"]
+                _user.company_id    = _company.id
                 _user.hash_password()
                 app.logger.debug("user updated %s", _user.email)
             
             _user.roles.clear()
                 
-            for organization_role in user["organizations_roles"]:
-                organization_name = organization_role["organization"]
-                _organization = getByIdOrByName(obj= Organization, id=organization_name,  tenant_id=_tenant.id)
-                if _organization is None:
-                    _organization = Organization(
-                                        name = organization_name,
+            for site_role in user["sites_roles"]:
+                site_name = site_role["site"]
+                _site = getByIdOrByName(obj= Site, id=site_name,  tenant_id=_tenant.id)
+                if _site is None:
+                    _site = Site(
+                                        name = site_name,
                                         tenant_id = _tenant.id
                                     )
-                    db.session.add(_organization)
+                    db.session.add(_site)
                     db.session.commit() 
                 
                 # annule et remplace les roles
                 
-                for role_name in organization_role["roles"]:
+                for role_name in site_role["roles"]:
                     _role = getByIdOrByName(
                         obj=Role, 
                         id=role_name, 
                         tenant_id=_tenant.id, 
-                        organization_id=_organization.id
+                        site_id=_site.id
                     )
                     # _role = Role.query.filter(Role.tenant_id==_tenant.id).filter(Role.name==role_name).first()
                     if _role is None:
                         _role = Role(
                             name=role_name, 
                             tenant_id=_tenant.id,
-                            organization_id=_organization.id
+                            site_id=_site.id
                         )
                         db.session.add(_role)
                         app.logger.debug("role added %s", _role.name)
