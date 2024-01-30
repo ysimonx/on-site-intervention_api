@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session,abort, make_response, current_app
+from flask import g, Blueprint, render_template, session,abort, make_response, current_app
 from ..model_dir.mymixin import User, Role
 from ..model_dir.company import Company
 from ..model_dir.tenant import Tenant
@@ -90,7 +90,9 @@ def get_user_me():
 def get_user_config():
     
     # qui je suis
-    me = User.me().to_json()
+    me = g.current_user.to_json()
+    
+    
     
     # detail des sites qui me concernent
     user_sites=[]
@@ -99,6 +101,7 @@ def get_user_config():
         if site.name in me["sites_roles"].keys():
            user_sites.append(site)
     
+    my_tenants=g.current_user.tenants_administrator
     
     dict_types_interventions_sites={}
        
@@ -117,8 +120,9 @@ def get_user_config():
     r = json.dumps(dict_types_interventions_sites)   
     result={
             "user": me,
-            "sites": [{"site" : user_site.to_json()} for user_site in user_sites],
-            "config_site_type_intervention": dict_types_interventions_sites
+            "site_member_of": [{"site" : user_site.to_json()} for user_site in user_sites],
+            "tenant_administrator_of" : [{item.name : item.to_json()} for item in my_tenants] ,
+            "config_site_type_intervention": dict_types_interventions_sites,
             }
     
     return (result), 200

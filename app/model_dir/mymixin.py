@@ -147,7 +147,7 @@ class User(db.Model, MyMixin):
     active      = db.Column(db.Boolean, nullable=False, default=True)
 
     roles = db.relationship('Role', secondary=user_role, backref='users')
-
+    tenants_administrator = db.relationship('Tenant', foreign_keys="[Tenant.admin_tenant_user_id]")
     def me():
         current_user = get_jwt_identity()
         user = User.query.get(current_user)
@@ -185,17 +185,6 @@ class User(db.Model, MyMixin):
 
     def to_json_light(self):
         
-        sites=[];
-        dict_site_roles={}
-        
-        for item in self.roles:
-            # print(item.site.name)
-            
-            if not item.site_id in sites:
-                dict_site_roles[item.site.name] = {"roles":[]}
-                sites.append(item.site_id)
-            dict_site_roles[item.site.name]["roles"].append(item.name)
-        
         return {
             'id':           self.id,
             'email':        self.email,
@@ -203,7 +192,6 @@ class User(db.Model, MyMixin):
             'firstname':    self.firstname,
             'lastname':     self.lastname,
             'company':      self.company.name,
-            'sites_roles':   dict_site_roles,
             'active':       self.active,
         }
     
