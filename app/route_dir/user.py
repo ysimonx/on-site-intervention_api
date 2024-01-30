@@ -98,8 +98,18 @@ def get_user_config():
     user_sites=[]
     sites = Site.query.all()
     for site in sites:
-        if site.name in me["sites_roles"].keys():
+        if site.name in me["sites_roles"].keys(): # ceux pour lesquels j'ai un role
            user_sites.append(site)
+        else:
+           tenant_id = site.tenant_id
+           if tenant_id is not None:
+                _tenant=getByIdOrByName(obj=Tenant, id=tenant_id)
+                if _tenant is not None:
+                    if _tenant.admin_tenant_user_id==g.current_user.id:
+                        # ceux pour lesquels je suis admin du Tenant
+                        user_sites.append(site)
+            
+                
     
     my_tenants=g.current_user.tenants_administrator
     
