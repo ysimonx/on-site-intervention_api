@@ -152,7 +152,7 @@ def post_intervention_values():
         abort(make_response(jsonify(error="no json provided in request"), 400))
 
     intervention_values_on_site_uuid   = request.json.get('intervention_values_on_site_uuid')
-    site_id             = request.json.get('site_id')
+    site_id                     = request.json.get('site_id')
     type_intervention_id        = request.json.get('type_intervention_id')
     intervention_name           = request.json.get('intervention_name')
     place_on_site_uuid          = request.json.get('place_on_site_uuid')
@@ -160,7 +160,8 @@ def post_intervention_values():
     template_text               = request.json.get('template_text')
     field_on_site_uuid_values   = request.json.get('field_on_site_uuid_values')
     
-    _site=getByIdOrByName(Site, site_id)
+    _site=getByIdOrByName(obj=Site, id=site_id, tenant_id=None )
+    
     _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
       
 
