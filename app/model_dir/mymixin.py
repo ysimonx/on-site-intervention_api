@@ -162,12 +162,10 @@ class User(db.Model, MyMixin):
         dict_site_roles={}
         
         for item in self.roles:
-            # print(item.site.name)
-            
             if not item.site_id in sites:
-                dict_site_roles[item.site.name] = {"roles":[]}
+                dict_site_roles[item.site.id] = {"roles":[], "site":item.site.to_json_light()}
                 sites.append(item.site_id)
-            dict_site_roles[item.site.name]["roles"].append(item.name)
+            dict_site_roles[item.site.id]["roles"].append(item.name)
         
         return {
             'id':           self.id,

@@ -92,11 +92,15 @@ def get_user_config():
     # qui je suis
     me = g.current_user.to_json()
     
+    #
+    my_tenants=g.current_user.tenants_administrator
     
  
     
     # detail des sites qui me concernent
-    user_sites=[]
+    dict_my_sites={}
+    
+    json_user_sites=[]
     sites = Site.query.all()
     for site in sites:
         json_site = site.to_json()
@@ -104,23 +108,21 @@ def get_user_config():
         if tenant_id is not None:
             _tenant=getByIdOrByName(obj=Tenant, id=tenant_id)
             json_site["tenant"]=_tenant.to_json_light()
-        if site.name in me["sites_roles"].keys(): # ceux pour lesquels j'ai un role
-           user_sites.append(json_site)
+        if site.id in me["sites_roles"].keys(): # ceux pour lesquels j'ai un role
+           json_user_sites.append(json_site)
+           dict_my_sites[site.name]=json_site
         else:
             if _tenant is not None:
                 if _tenant.admin_tenant_user_id==g.current_user.id:
                     # ceux pour lesquels je suis admin du Tenant
-                    user_sites.append(json_site)
-            
-                
-    
-    my_tenants=g.current_user.tenants_administrator
+                    json_user_sites.append(json_site)
+                    dict_my_sites[site.name]=json_site
     
     dict_types_interventions_sites={}
        
     _types_interventions_sites = TypeInterventionSite.query.all()
     for _type_intervention_site in _types_interventions_sites:
-        if _type_intervention_site.site.name in me["sites_roles"].keys():
+        if _type_intervention_site.site.name in dict_my_sites.keys():
             if _type_intervention_site.site.name in dict_types_interventions_sites.keys():
                 content = dict_types_interventions_sites[_type_intervention_site.site.name]
             else:
@@ -133,7 +135,7 @@ def get_user_config():
     r = json.dumps(dict_types_interventions_sites)   
     result={
             "user": me,
-            "site_member_of": [{"site" : user_site} for user_site in user_sites],
+            "site_member_of": [{"site" : item} for item in json_user_sites],
             "tenant_administrator_of" : [{"tenant": item.to_json_light()} for item in my_tenants] ,
             "config_site_type_intervention": dict_types_interventions_sites,
             }
