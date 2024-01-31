@@ -190,7 +190,7 @@ def init():
     populate_tenant()
     populate_user_data()
     populate_type_intervention()
-    populate_type_field()
+    # populate_type_field()
     app.logger.info("db init done")
     app.config["JWT_TOKEN_LOCATION"] = ["headers","cookies"] 
     return "ok"
@@ -201,7 +201,7 @@ def swagger():
 
 def populate_tenant():
 
-    tenants=["ctei"];
+    tenants=["ctei", "kysoe"];
 
     for newtenant in tenants:
             tenant=getByIdOrByName(Tenant, newtenant, None)
@@ -459,7 +459,9 @@ def populate_type_intervention():
     
 
 
-    list=[ 
+    list=[
+        {"type_intervention":"scaffolding request", "site":"trets","config":json.dumps(types_interventions["scaffolding request"], indent=4)},
+          {"type_intervention":"calorifuge", "site":"trets","config":json.dumps(types_interventions["calorifuge"], indent=4)},
           {"type_intervention":"scaffolding request", "site":"iter","config":json.dumps(types_interventions["scaffolding request"], indent=4)},
           {"type_intervention":"scaffolding request", "site":"sandbox","config":json.dumps(types_interventions["scaffolding request"], indent=4)},
           {"type_intervention":"calorifuge", "site":"iter","config":json.dumps(types_interventions["calorifuge"], indent=4)},
@@ -583,103 +585,153 @@ def update_sites_interventions_templates( _site,  _type_intervention, template )
 
     
 def populate_user_data():
-    dataTenant =  {
-        
-                "ctei": {
+        print("to")
+        dataTenant =  {
+                 "kysoe_tenant": {
                     "tenant_admin_user": {
-                         "email": "yannick.simon@gmail.com", 
-                         "password": "12345678",
+                                    "email": "luc.henquinet@ctei.fr", 
+                                    "password": "12345678", 
+                                    "phone": "+33651556170",
+                                    "firstname":"Luc", 
+                                    "lastname":"Henquinet",
+                                    "company": "ctei",
                     },
-                    "users": [
-                    { 
-                         "email": "yannick.simon@gmail.com", 
-                         "password": "12345678", 
-                         "phone": "+33651556170",
-                         "firstname":"Yannick", 
-                         "lastname":"Simon",
-                         "company": "kysoe",
-                         "sites_roles": [
-                            {
-                             "site":"sandbox",
-                             "roles": ["admin","toy", "supervisor"]
-                            },
-                            {
-                             "site":"iter",
-                             "roles": ["admin","gnass", "supervisor"]
+                    "sites": [
+                        {"site":
+                            { 
+                            "name": "trets",
+                            "users": [
+                                {"user":
+                                    { 
+                                    "email": "yannick.simon@gmail.com", 
+                                    "password": "12345678", 
+                                    "phone": "+33651556170",
+                                    "firstname":"Yannick", 
+                                    "lastname":"Simon",
+                                    "company": "kysoe",
+                                    "sites_roles":  ["admin", "supervisor"]
+                                    }
+                                },
+                                {"user":
+                                    { 
+                                    "email": "luc.henquinet@ctei.fr", 
+                                    "password": "12345678", 
+                                    "phone": "+33651556170",
+                                    "firstname":"Luc", 
+                                    "lastname":"Henquinet",
+                                    "company": "ctei",
+                                    "sites_roles":  ["admin", "supervisor"]
+                                    }
+                                }
+                            ]
                             }
-                         ]
-                         
+                        }
+                    ]
+                 },   
+                "ctei_tenant": {
+                    "tenant_admin_user": {
+                                    "email": "luc.henquinet@ctei.fr", 
+                                    "password": "12345678", 
+                                    "phone": "+33651556170",
+                                    "firstname":"Luc", 
+                                    "lastname":"Henquinet",
+                                    "company": "ctei",
                     },
-                ] }
-                
-                }
-    
-       
-    for tenant, item in dataTenant.items():
+                    "sites": [
+                        {"site":
+                            { 
+                            "name": "iter",
+                            
+                            "users": [
+                                {"user":
+                                    { 
+                                    "email": "yannick.simon@gmail.com", 
+                                    "password": "12345678", 
+                                    "phone": "+33651556170",
+                                    "firstname":"Yannick", 
+                                    "lastname":"Simon",
+                                    "company": "kysoe",
+                                    "sites_roles":  ["admin", "supervisor"]
+                                    }
+                                },
+                                {"user":
+                                    { 
+                                    "email": "luc.henquinet@ctei.fr", 
+                                    "password": "12345678", 
+                                    "phone": "+33651556170",
+                                    "firstname":"Luc", 
+                                    "lastname":"Henquinet",
+                                    "company": "ctei",
+                                    "sites_roles":  ["admin", "supervisor"]
+                                    }
+                                }
+                            ]
+                            }
+                        }
+                        ,
+                        {"site": 
+                            {
+                            "name": "sandbox",
+                            "users": [
+                                {"user":
+                                    { 
+                                    "email": "yannick.simon@gmail.com", 
+                                    "password": "12345678", 
+                                    "phone": "+33651556170",
+                                    "firstname":"Yannick", 
+                                    "lastname":"Simon",
+                                    "company": "kysoe",
+                                    "sites_roles":  ["admin", "supervisor"]
+                                    }
+                                },
+                                {"user":
+                                    { 
+                                    "email": "luc.henquinet@ctei.fr", 
+                                    "password": "12345678", 
+                                    "phone": "+33651556170",
+                                    "firstname":"Luc", 
+                                    "lastname":"Henquinet",
+                                    "company": "ctei",
+                                    "sites_roles":  ["admin", "supervisor"]
+                                    }
+                                }
+                            ]
+                            }
+                        }
+                    ] 
+                }     
+            }
         
-        _admin_tenant_user = getByIdOrEmail(obj=User, id=item["tenant_admin_user"]["email"])
-        if _admin_tenant_user is None:
+       
+        for tenant, itemtenant in dataTenant.items():
+            _admin_tenant_user = getByIdOrEmail(obj=User, id=itemtenant["tenant_admin_user"]["email"])
+            if _admin_tenant_user is None:
                 _admin_tenant_user = User(
-                            email= item["tenant_admin_user"]["email"],
-                            password= item["tenant_admin_user"]["password"],
-                            tenant_id = None,
-                        )
+                        email= itemtenant["tenant_admin_user"]["email"],
+                        password= itemtenant["tenant_admin_user"]["password"],
+                        tenant_id = None,
+                    )
                 _admin_tenant_user.hash_password()
                 db.session.add(_admin_tenant_user)  
-                app.logger.debug("_admin_tenant_user added %s", _admin_tenant_user.email)
-        
-           
-        
-        _tenant = getByIdOrByName(obj=Tenant, id=tenant, tenant_id=None)
-        if _tenant is None:
-            _tenant = Tenant( name = tenant, admin_tenant_user_id=_admin_tenant_user.id )
-            db.session.add(_tenant)
-        else:
-            _tenant.admin_tenant_user_id=_admin_tenant_user.id
-        db.session.commit() 
-            
-        app.logger.debug("tenant added %s", _tenant.name)
-         
-        for user in item["users"]:
-            
-            _company = getByIdOrByName(obj=Company, id=user["company"], tenant_id=_tenant.id)
-            if _company is None:
-                _company = Company(
-                    name = user["company"],
-                    tenant_id = _tenant.id
-                    )
-                db.session.add(_company)
-                db.session.commit() 
-                
-                
-            _user = getByIdOrEmail(obj=User, id=user["email"])
-            if _user is None:
-                _user = User(
-                            email= user["email"],
-                            password= user["password"],
-                            phone= user["phone"],
-                            tenant_id = None,
-                            company_id = _company.id,
-                            firstname=user["firstname"],
-                            lastname=user["lastname"]
-                        )
-                _user.hash_password()
-                db.session.add(_user)  
-                app.logger.debug("user added %s", _user.email)
+                app.logger.info("_admin_tenant_user added %s", _admin_tenant_user.email)
             else:
-                _user.tenant_id     = None
-                _user.firstname     = user["firstname"]
-                _user.lastname      = user["lastname"]
-                _user.password      = user["password"]
-                _user.phone         = user["phone"]
-                _user.company_id    = _company.id
-                _user.hash_password()
-                app.logger.debug("user updated %s", _user.email)
-            
-            _user.roles.clear()
+                app.logger.info("_admin_tenant_user exists %s", _admin_tenant_user.email)
                 
-            for site_role in user["sites_roles"]:
-                site_name = site_role["site"]
+            _tenant = getByIdOrByName(obj=Tenant, id=tenant, tenant_id=None)
+            if _tenant is None:
+                _tenant = Tenant( name = tenant, admin_tenant_user_id=_admin_tenant_user.id )
+                db.session.add(_tenant)
+                app.logger.info("tenant added %s", _tenant.name)
+            else:
+                _tenant.admin_tenant_user_id=_admin_tenant_user.id
+                app.logger.info("tenant updated %s", _tenant.name)
+            db.session.commit() 
+                
+            
+            for item in itemtenant["sites"]:
+                itemsite=item["site"]
+                site_name = itemsite["name"]
+                app.logger.info("- site %s", site_name)
                 _site = getByIdOrByName(obj= Site, id=site_name,  tenant_id=_tenant.id)
                 if _site is None:
                     _site = Site(
@@ -688,33 +740,74 @@ def populate_user_data():
                                     )
                     db.session.add(_site)
                     db.session.commit() 
-                
-                # annule et remplace les roles
-                
-                for role_name in site_role["roles"]:
-                    _role = getByIdOrByName(
-                        obj=Role, 
-                        id=role_name, 
-                        tenant_id=_tenant.id, 
-                        site_id=_site.id
-                    )
-                    # _role = Role.query.filter(Role.tenant_id==_tenant.id).filter(Role.name==role_name).first()
-                    if _role is None:
-                        _role = Role(
-                            name=role_name, 
-                            tenant_id=_tenant.id,
+                            
+                for item2 in itemsite["users"]:
+                    itemuser = item2["user"]
+                    app.logger.info("- site %s - user %s", site_name, itemuser["email"])
+                    _company = getByIdOrByName(obj=Company, id=itemuser["company"], tenant_id=_tenant.id)
+                    if _company is None:
+                        _company = Company(
+                            name = itemuser["company"],
+                            tenant_id = _tenant.id
+                            )
+                        db.session.add(_company)
+                        app.logger.info("- site %s - user %s - company %s added", site_name, itemuser["email"], _company.name)
+                        db.session.commit() 
+                    else:
+                        app.logger.info("- site %s - user %s - company %s exists", site_name, itemuser["email"], _company.name)
+                        
+                        
+                    _user = getByIdOrEmail(obj=User, id=itemuser["email"])
+                    if _user is None:
+                        _user = User(
+                                    email= itemuser["email"],
+                                    password= itemuser["password"],
+                                    phone= itemuser["phone"],
+                                    tenant_id = None,
+                                    company_id = _company.id,
+                                    firstname=itemuser["firstname"],
+                                    lastname=itemuser["lastname"]
+                                )
+                        _user.hash_password()
+                        db.session.add(_user)  
+                        app.logger.info("user added %s", _user.email)
+                    else:
+                        _user.tenant_id     = None
+                        _user.firstname     = itemuser["firstname"]
+                        _user.lastname      = itemuser["lastname"]
+                        _user.password      = itemuser["password"]
+                        _user.phone         = itemuser["phone"]
+                        _user.company_id    = _company.id
+                        _user.hash_password()
+                        app.logger.info("user updated %s", _user.email)
+                    
+                    # _user.roles.clear()
+                        
+                    for role_name in itemuser["sites_roles"]:
+                        app.logger.debug("role %s",role_name)
+                        _role = getByIdOrByName(
+                            obj=Role, 
+                            id=role_name, 
+                            tenant_id=_tenant.id, 
                             site_id=_site.id
                         )
-                        db.session.add(_role)
-                        app.logger.debug("role added %s", _role.name)
-                    _user.roles.append(_role)
-                
-            
-                    
+                        if _role is None:
+                            _role = Role(
+                                name=role_name, 
+                                tenant_id=_tenant.id,
+                                site_id=_site.id
+                            )
+                            db.session.add(_role)
+                            db.session.commit() 
+                            app.logger.debug("role added %s", _role.name)
+                        _user.roles.append(_role)
+                        app.logger.debug("role added %s for user %s", _role.name, _user.email)
+                        
 
-        #   
-    db.session.commit() 
-    app.logger.debug("populate users done")
+                
    
+        db.session.commit() 
+        app.logger.debug("populate users done")
+    
     
    

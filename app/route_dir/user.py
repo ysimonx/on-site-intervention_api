@@ -91,18 +91,18 @@ def get_user_config():
     
     # qui je suis
     me = g.current_user.to_json()
-    
+    print(me["sites_roles"])
     #
     my_tenants=g.current_user.tenants_administrator
     
  
-    
     # detail des sites qui me concernent
     dict_my_sites={}
     
     json_user_sites=[]
     sites = Site.query.all()
     for site in sites:
+        print(site.name)
         json_site = site.to_json()
         tenant_id = site.tenant_id
         if tenant_id is not None:
