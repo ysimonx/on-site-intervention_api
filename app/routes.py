@@ -190,7 +190,7 @@ def init():
     populate_tenant()
     populate_user_data()
     populate_type_intervention()
-    # populate_type_field()
+    populate_type_field()
     app.logger.info("db init done")
     app.config["JWT_TOKEN_LOCATION"] = ["headers","cookies"] 
     return "ok"
@@ -589,12 +589,12 @@ def populate_user_data():
         dataTenant =  {
                  "kysoe_tenant": {
                     "tenant_admin_user": {
-                                    "email": "luc.henquinet@ctei.fr", 
+                                    "email": "yannick.simon@gmail.com", 
                                     "password": "12345678", 
                                     "phone": "+33651556170",
-                                    "firstname":"Luc", 
-                                    "lastname":"Henquinet",
-                                    "company": "ctei",
+                                    "firstname":"Yannick", 
+                                    "lastname":"Simon",
+                                    "company": "kysoe",
                     },
                     "sites": [
                         {"site":

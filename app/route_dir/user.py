@@ -110,19 +110,19 @@ def get_user_config():
             json_site["tenant"]=_tenant.to_json_light()
         if site.id in me["sites_roles"].keys(): # ceux pour lesquels j'ai un role
            json_user_sites.append(json_site)
-           dict_my_sites[site.name]=json_site
+           dict_my_sites[site.id]=json_site
         else:
             if _tenant is not None:
                 if _tenant.admin_tenant_user_id==g.current_user.id:
                     # ceux pour lesquels je suis admin du Tenant
                     json_user_sites.append(json_site)
-                    dict_my_sites[site.name]=json_site
+                    dict_my_sites[site.id]=json_site
     
     dict_types_interventions_sites={}
        
     _types_interventions_sites = TypeInterventionSite.query.all()
     for _type_intervention_site in _types_interventions_sites:
-        if _type_intervention_site.site.name in dict_my_sites.keys():
+        if _type_intervention_site.site.id in dict_my_sites.keys():
             if _type_intervention_site.site.name in dict_types_interventions_sites.keys():
                 content = dict_types_interventions_sites[_type_intervention_site.site.name]
             else:
