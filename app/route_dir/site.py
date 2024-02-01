@@ -27,6 +27,37 @@ def get_site_list():
 
 
 
+@app_file_site.route("/site/<id>", methods=["DELETE"])
+@jwt_required() 
+def del_site(id):
+    
+    print(g.current_user)
+    # TO DO
+    # je dois trouver les sites pour lesquels j'ai des roles ...
+    _site = Site.query.get(id)
+    if _site is None:
+        abort(make_response(jsonify(error="site not found"), 404))
+
+    types_interventions_site = TypeInterventionSite.query.filter(TypeInterventionSite.site_id == _site.id).all()
+    print(types_interventions_site)
+    for _type_intervention_site in types_interventions_site:
+        db.session.delete(_type_intervention_site)
+    
+    roles = Role.query.filter(Role.site_id == _site.id).all()
+    print(roles)
+    for _role in roles:
+        # do : delete from users_roles where role_id=_role.id
+        result = db.session.execute('delete from users_roles where role_id= :val', {'val': _role.id})
+        
+        # puis enfin
+        db.session.delete(_role)
+    
+    db.session.delete(_site)
+    db.session.commit()
+    return jsonify({'result': True, 'id': id}),200
+
+
+
 
 @app_file_site.route('/site', methods=['POST'])
 @jwt_required()

@@ -146,7 +146,7 @@ class User(db.Model, MyMixin):
     company     = db.relationship("Company", viewonly=True)
     active      = db.Column(db.Boolean, nullable=False, default=True)
 
-    roles = db.relationship('Role', secondary=user_role, backref='users')
+    roles       = db.relationship('Role', secondary=user_role, backref='users')
     tenants_administrator = db.relationship('Tenant', foreign_keys="[Tenant.admin_tenant_user_id]")
     def me():
         current_user = get_jwt_identity()
