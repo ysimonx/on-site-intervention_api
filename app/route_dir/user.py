@@ -4,6 +4,7 @@ from ..model_dir.company import Company
 from ..model_dir.tenant import Tenant
 from ..model_dir.site import Site
 from ..model_dir.type_intervention import TypeIntervention, TypeInterventionSite
+from config import config
 
 from flask import jsonify, request, abort
 from .. import db, getByIdOrEmail, getByIdOrByName
@@ -118,26 +119,28 @@ def get_user_config():
                     json_user_sites.append(json_site)
                     dict_my_sites[site.id]=json_site
     
-    dict_types_interventions_sites={}
-       
-    _types_interventions_sites = TypeInterventionSite.query.all()
-    for _type_intervention_site in _types_interventions_sites:
-        if _type_intervention_site.site.id in dict_my_sites.keys():
-            if _type_intervention_site.site.name in dict_types_interventions_sites.keys():
-                content = dict_types_interventions_sites[_type_intervention_site.site.name]
-            else:
-                content={}
-            content[_type_intervention_site.type_intervention.name]=json.loads(_type_intervention_site.template_text)
-            dict_types_interventions_sites[_type_intervention_site.site.name]=content
-            # current_app.logger.info(_type_intervention_site.site.name)
-            # current_app.logger.info(_type_intervention_site.type_intervention.name)
+    # dict_types_interventions_sites={}
+    #
+    # _types_interventions_sites = TypeInterventionSite.query.all()
+    # for _type_intervention_site in _types_interventions_sites:
+    #     if _type_intervention_site.site.id in dict_my_sites.keys():
+    #         if _type_intervention_site.site.name in dict_types_interventions_sites.keys():
+    #             content = dict_types_interventions_sites[_type_intervention_site.site.name]
+    #         else:
+    #             content={}
+    #         content[_type_intervention_site.type_intervention.name]=json.loads(_type_intervention_site.template_text)
+    #         dict_types_interventions_sites[_type_intervention_site.site.name]=content
+    #         # current_app.logger.info(_type_intervention_site.site.name)
+    #         # current_app.logger.info(_type_intervention_site.type_intervention.name)
     
-    r = json.dumps(dict_types_interventions_sites)   
+    _types_intervention = config["types_interventions"]
+       
+      
     result={
             "user": me,
             "site_member_of": [{"site" : item} for item in json_user_sites],
             "tenant_administrator_of" : [{"tenant": item.to_json_light()} for item in my_tenants] ,
-            "config_site_type_intervention": dict_types_interventions_sites,
+            "config_types_intervention": _types_intervention
             }
     
     return (result), 200
