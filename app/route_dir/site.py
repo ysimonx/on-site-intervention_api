@@ -123,7 +123,46 @@ def post_site_user(site_id):
     return jsonify(_site.to_json()),200
 
 
+@app_file_site.route("/site/<site_id>/user", methods=["DELETE"])
+@jwt_required() 
+def rm_site_user(site_id):
+    
+    print(g.current_user)
+    _site = Site.query.get(site_id)
+    if _site is None:
+        abort(make_response(jsonify(error="site not found"), 404))
 
+    tenant_id = _site.tenant_id
+    if tenant_id is not None:
+        _tenant=getByIdOrByName(obj=Tenant, id=tenant_id)
+
+    if not request.json:
+        abort(make_response(jsonify(error="no json provided in request"), 400))
+
+    user_email = request.json.get('user_email', None)
+    if user_email is None:
+        abort(make_response(jsonify(error="missing user_email parameter"), 400))
+            
+     
+    _user = getByIdOrEmail(obj=User, id=user_email)
+    if _user is None:
+        abort(make_response(jsonify(error="this user_email is not found"), 400))
+
+    
+    for role in _site.roles:
+        current_app.logger.info("role %s",role.name)
+        _role = getByIdOrByName(
+            obj=Role, 
+            id=role.name, 
+            tenant_id=_tenant.id, 
+            site_id=_site.id
+        )
+        if _role is not None:
+            result = db.session.execute('delete from users_roles where role_id= :val and user_id= :val2', {'val': _role.id, 'val2':_user.id})
+            current_app.logger.info("delete role '%s' for site '%s' for user '%s'", _role.name, _site.name, _user.email)
+
+    db.session.commit()
+    return jsonify(_site.to_json()),200
 
 
 
