@@ -167,6 +167,12 @@ class User(db.Model, MyMixin):
                 sites.append(item.site_id)
             dict_site_roles[item.site.id]["roles"].append(item.name)
         
+        if self.company is None:
+            company_name = ""
+        else:
+            company_name=self.company.name
+            
+            
         return {
             'id':           self.id,
             '_internal' :   self.get_internal(),
@@ -175,7 +181,7 @@ class User(db.Model, MyMixin):
             'phone':        self.phone,
             'firstname':    self.firstname,
             'lastname':     self.lastname,
-            'company':      self.company.name,
+            'company':      company_name,
             'sites_roles':   dict_site_roles,
             'active':       self.active,
             
