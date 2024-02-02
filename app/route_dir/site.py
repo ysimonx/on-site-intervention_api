@@ -35,7 +35,13 @@ def get_site(id):
     if _site is None:
         abort(make_response(jsonify(error="site not found"), 404))
 
-    return jsonify(_site.to_json()),200
+    json_site = _site.to_json()
+    tenant_id = _site.tenant_id
+    if tenant_id is not None:
+        _tenant=getByIdOrByName(obj=Tenant, id=tenant_id)
+        json_site["tenant"]=_tenant.to_json_light()
+        
+    return jsonify(json_site),200
 
 
 
