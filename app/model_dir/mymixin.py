@@ -182,14 +182,18 @@ class User(db.Model, MyMixin):
         }
 
     def to_json_light(self):
-        
+        if self.company is None:
+            company_name = ""
+        else:
+            company_name=self.company.name
+            
         return {
             'id':           self.id,
             'email':        self.email,
             'phone':        self.phone,
             'firstname':    self.firstname,
             'lastname':     self.lastname,
-            'company':      self.company.name,
+            'company':      company_name,
             'active':       self.active,
         }
     

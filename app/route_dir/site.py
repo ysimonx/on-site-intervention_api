@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session,abort, make_response
+from flask import Blueprint, render_template, session,abort, make_response, current_app
 from ..model_dir.site import Site
 from ..model_dir.mymixin         import User, Role
 from ..model_dir.tenant import Tenant
@@ -36,12 +36,92 @@ def get_site(id):
         abort(make_response(jsonify(error="site not found"), 404))
 
     json_site = _site.to_json()
+
     tenant_id = _site.tenant_id
     if tenant_id is not None:
         _tenant=getByIdOrByName(obj=Tenant, id=tenant_id)
         json_site["tenant"]=_tenant.to_json_light()
         
     return jsonify(json_site),200
+
+
+@app_file_site.route("/site/<site_id>/user", methods=["POST"])
+@jwt_required() 
+def post_site_user(site_id):
+    
+    print(g.current_user)
+    _site = Site.query.get(site_id)
+    if _site is None:
+        abort(make_response(jsonify(error="site not found"), 404))
+
+    tenant_id = _site.tenant_id
+    if tenant_id is not None:
+        _tenant=getByIdOrByName(obj=Tenant, id=tenant_id)
+    
+    if not request.json:
+        abort(make_response(jsonify(error="no json provided in request"), 400))
+
+    user_email = request.json.get('user_email', None)
+    if user_email is None:
+        abort(make_response(jsonify(error="missing user_email parameter"), 400))
+
+
+    roles = request.json.get('roles', None)
+    if roles is None:
+                abort(make_response(jsonify(error="missing roles parameter"), 400))
+                
+     
+    _user = getByIdOrEmail(obj=User, id=user_email)
+    if _user is None:
+        _user = User(
+                    email= user_email,
+                    password= "12345678",
+                    tenant_id = None
+                )
+        _user.hash_password()
+        db.session.add(_user)  
+        db.session.commit()
+        current_app.logger.info("user added %s", _user.email)
+    
+        
+    for role_name in roles:
+        current_app.logger.info("role %s",role_name)
+        _role = getByIdOrByName(
+            obj=Role, 
+            id=role_name, 
+            tenant_id=_tenant.id, 
+            site_id=_site.id
+        )
+        if _role is not None:
+            current_app.logger.info("role exists %s", _role.name)
+        else:
+            _role = Role(
+                name=role_name, 
+                tenant_id=_tenant.id,
+                site_id=_site.id
+            )
+            db.session.add(_role)
+            current_app.logger.info("role added %s", _role.name)
+            db.session.commit()
+                            
+                            
+        result = db.session.execute('delete from users_roles where role_id= :val and user_id= :val2', {'val': _role.id, 'val2':_user.id})
+        current_app.logger.info("delete all roles for site '%s' for user '%s'", _site.name, _user.email)
+
+    for role_name in roles:
+        current_app.logger.info("role %s",role_name)
+        _role = getByIdOrByName(
+            obj=Role, 
+            id=role_name, 
+            tenant_id=_tenant.id, 
+            site_id=_site.id
+        )
+        _user.roles.append(_role)
+        db.session.commit()
+        
+    db.session.commit()
+    return jsonify(_site.to_json()),200
+
 
 
 
@@ -71,6 +151,7 @@ def del_site(id):
         
         # puis enfin
         db.session.delete(_role)
+    
     
     db.session.delete(_site)
     db.session.commit()
