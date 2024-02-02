@@ -30,7 +30,6 @@ class Site(db.Model, MyMixin):
             '_internal' :       self.get_internal(),
             'name':             self.name,
             'roles'         :  [{item.name: item.to_json_light()} for item in self.roles] 
-        
         }
 
     def to_json_light(self):

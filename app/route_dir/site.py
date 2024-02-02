@@ -26,6 +26,20 @@ def get_site_list():
     return jsonify([item.to_json() for item in items])
 
 
+@app_file_site.route("/site/<id>", methods=["GET"])
+@jwt_required() 
+def get_site(id):
+    
+    print(g.current_user)
+    _site = Site.query.get(id)
+    if _site is None:
+        abort(make_response(jsonify(error="site not found"), 404))
+
+    return jsonify(_site.to_json()),200
+
+
+
+
 
 @app_file_site.route("/site/<id>", methods=["DELETE"])
 @jwt_required() 
