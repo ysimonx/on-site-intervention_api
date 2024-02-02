@@ -264,5 +264,6 @@ config = {
                        "sections": {}}
             }
         }
-    }
+    },
+    "roles": ["admin", "coordinator","billing","commissioning","user","operator"]
 }

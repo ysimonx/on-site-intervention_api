@@ -255,6 +255,26 @@ def create_site():
                 db.session.commit()
     
     
+    # j'ajoute tous les roles par defaut    
+    for role_name in config["roles"]:
+        _role = getByIdOrByName(
+                            obj=Role, 
+                            id=role_name, 
+                            tenant_id=_tenant.id, 
+                            site_id=_site.id
+                        )
+        if _role is None:
+                            _role = Role(
+                                name=role_name, 
+                                tenant_id=_tenant.id,
+                                site_id=_site.id
+                            )
+                            db.session.add(_role)
+                            db.session.commit() 
+        
+        
+    # j'ajoute tous le role "admin" par defaut au _user (moi)
+    
     _role = getByIdOrByName(
                             obj=Role, 
                             id="admin", 
@@ -269,8 +289,9 @@ def create_site():
                             )
                             db.session.add(_role)
                             db.session.commit() 
-                           
     _user.roles.append(_role)
+    
+
     db.session.commit() 
      
     return jsonify(_site.to_json()), 201

@@ -378,7 +378,7 @@ def populate_user_data():
                                     "firstname":"Yannick", 
                                     "lastname":"Simon",
                                     "company": "kysoe",
-                                    "sites_roles":  ["admin", "supervisor"]
+                                    "sites_roles":  config["roles"]
                                     }
                                 },
                                 {"user":
@@ -389,7 +389,7 @@ def populate_user_data():
                                     "firstname":"Luc", 
                                     "lastname":"Henquinet",
                                     "company": "ctei",
-                                    "sites_roles":  ["admin", "supervisor"]
+                                    "sites_roles":  config["roles"]
                                     }
                                 }
                             ]
@@ -420,7 +420,7 @@ def populate_user_data():
                                     "firstname":"Yannick", 
                                     "lastname":"Simon",
                                     "company": "kysoe",
-                                    "sites_roles":  ["admin", "supervisor"]
+                                    "sites_roles": config["roles"]
                                     }
                                 },
                                 {"user":
@@ -431,7 +431,7 @@ def populate_user_data():
                                     "firstname":"Luc", 
                                     "lastname":"Henquinet",
                                     "company": "ctei",
-                                    "sites_roles":  ["admin", "supervisor"]
+                                    "sites_roles":  config["roles"]
                                     }
                                 }
                             ]
@@ -450,7 +450,7 @@ def populate_user_data():
                                     "firstname":"Yannick", 
                                     "lastname":"Simon",
                                     "company": "kysoe",
-                                    "sites_roles":  ["admin", "supervisor"]
+                                    "sites_roles": config["roles"]
                                     }
                                 },
                                 {"user":
@@ -461,7 +461,7 @@ def populate_user_data():
                                     "firstname":"Luc", 
                                     "lastname":"Henquinet",
                                     "company": "ctei",
-                                    "sites_roles":  ["admin", "supervisor"]
+                                    "sites_roles": config["roles"]
                                     }
                                 }
                             ]
