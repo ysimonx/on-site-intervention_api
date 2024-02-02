@@ -39,6 +39,7 @@ def getByIdOrByName(obj, id, tenant_id=None, site_id=None):
         if site_id is not None:
             result = result.filter(obj.site_id==site_id)
         
+        
         return result.first()
     
     return None

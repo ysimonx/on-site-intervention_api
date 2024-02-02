@@ -83,12 +83,12 @@ def post_site_user(site_id):
         db.session.commit()
         current_app.logger.info("user added %s", _user.email)
     
-        
-    for role_name in roles:
-        current_app.logger.info("role %s",role_name)
+    # je créé tous les roles nécessaires et supprime tous les roles attribués à ce user pour ce site 
+    for role in _site.roles:
+        current_app.logger.info("role %s",role.name)
         _role = getByIdOrByName(
             obj=Role, 
-            id=role_name, 
+            id=role.name, 
             tenant_id=_tenant.id, 
             site_id=_site.id
         )
@@ -106,7 +106,7 @@ def post_site_user(site_id):
                             
                             
         result = db.session.execute('delete from users_roles where role_id= :val and user_id= :val2', {'val': _role.id, 'val2':_user.id})
-        current_app.logger.info("delete all roles for site '%s' for user '%s'", _site.name, _user.email)
+        current_app.logger.info("delete role '%s' for site '%s' for user '%s'", _role.name, _site.name, _user.email)
 
     for role_name in roles:
         current_app.logger.info("role %s",role_name)
