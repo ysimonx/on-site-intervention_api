@@ -265,5 +265,5 @@ config = {
             }
         }
     },
-    "roles": ["admin", "coordinator","billing","commissioning","user","operator"]
+    "roles": ["admin", "coordinator","billing","commissioning","user","operator","scaffolder"]
 }

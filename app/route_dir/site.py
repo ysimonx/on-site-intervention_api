@@ -2,6 +2,11 @@ from flask import Blueprint, render_template, session,abort, make_response, curr
 from ..model_dir.site import Site
 from ..model_dir.mymixin         import User, Role
 from ..model_dir.tenant import Tenant
+from ..model_dir.intervention import InterventionValues
+from ..model_dir.place import Place
+
+from ..model_dir.field import FieldValue
+
 from ..model_dir.type_intervention import TypeIntervention, TypeInterventionSite
 import json
 
@@ -191,7 +196,18 @@ def del_site(id):
         # puis enfin
         db.session.delete(_role)
     
+    intervention_values = InterventionValues.query.filter(InterventionValues.site_id == _site.id).all()
+    for _intervention_values in intervention_values:
+        field_values = FieldValue.query.filter(FieldValue.intervention_values_id==_intervention_values.id).all()
+        for _field_values in field_values:
+            db.session.delete(_field_values)
+        db.session.delete(_intervention_values)
     
+    places = Place.query.filter(Place.site_id == _site.id).all()
+    for place in places:
+        db.session.delete(place)
+    
+        
     db.session.delete(_site)
     db.session.commit()
     return jsonify({'result': True, 'id': id}),200
