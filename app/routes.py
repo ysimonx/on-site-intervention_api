@@ -6,7 +6,7 @@ import uuid
 from flask                      import jsonify, abort, render_template, g, request
 from flask_mail                 import Mail
 from flask_jwt_extended         import JWTManager, get_jwt_identity, verify_jwt_in_request
-from config import config
+from config import config, Config
 
 from .                          import create_app
 from .                          import db, getByIdOrEmail, getByIdOrByName
@@ -68,12 +68,20 @@ UPLOAD_FOLDER = 'static'
 app.config['MAX_CONTENT_LENGTH']        = 16 * 1000 * 1000
 app.config['UPLOAD_FOLDER']             = UPLOAD_FOLDER
 
+
 # Setup Mail
-app.config['MAIL_SERVER']               = 'smtp.example.com'
-app.config['MAIL_PORT']                 = 465
-app.config['MAIL_USE_SSL']              = True
-app.config['MAIL_USERNAME']             = 'username'
-app.config['MAIL_PASSWORD']             = 'password'
+
+app.config['MAIL_SERVER']               = Config.MAIL_SERVER
+app.config['MAIL_PORT']                 = Config.MAIL_PORT 
+app.config['MAIL_USE_SSL']              = Config.MAIL_USE_SSL
+app.config['MAIL_USERNAME']             = Config.MAIL_USERNAME
+app.config['MAIL_PASSWORD']             = Config.MAIL_PASSWORD
+# app.config['MAIL_USE_TLS'] = True
+# app.config['MAIL_USE_SSL'] = False
+
+
+
+
 mail = Mail(app)
 
 # Setup Routes

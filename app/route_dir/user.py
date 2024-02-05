@@ -4,7 +4,13 @@ from ..model_dir.company import Company
 from ..model_dir.tenant import Tenant
 from ..model_dir.site import Site
 from ..model_dir.type_intervention import TypeIntervention, TypeInterventionSite
-from config import config
+from config import config, Config
+from flask_mail import Mail, Message
+
+
+import random
+import string
+
 
 from flask import jsonify, request, abort
 from .. import db, getByIdOrEmail, getByIdOrByName
@@ -78,7 +84,38 @@ def get_user_active_list():
     return jsonify([item.to_json() for item in items])
 
 
+@app_file_user.route('/user/reset_password', methods=['POST'])
+def reset_password():
+    if not request.json:
+        abort(make_response(jsonify(error="missing json body"), 400))
+        
+    if not 'email' in request.json:
+        abort(make_response(jsonify(error="missing email parameter"), 400))
+  
+    _user = getByIdOrEmail(obj=User, id=request.json.get('email'))
+    if _user is None:
+          abort(make_response(jsonify(error="error"), 400))
+    
+    # get random password pf length 8 with letters, digits, and symbols
+    characters = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(random.choice(characters) for i in range(20))
 
+    _user.password=password
+    _user.hash_password()
+    db.session.add(_user)  
+    db.session.commit()
+                        
+    msg = Message(subject='Password reset required for FIDWORK',
+                  sender= Config.MAIL_FROM,
+                  recipients=[_user.email])
+    msg.body = "here is your new password : "+password
+    
+    with current_app.app_context():
+        mail = Mail()
+        mail.send(msg)
+    
+    return jsonify({"message":"password changed and email sent"}),200
+    
 
 @app_file_user.route("/user/me", methods=["GET"])
 @jwt_required()
