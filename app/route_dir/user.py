@@ -51,7 +51,18 @@ def login():
     
     result_check = user.check_password(password)
     if not result_check:
-        abort(make_response(jsonify(error="error password"), 401))
+        if user.new_password is None:
+            abort(make_response(jsonify(error="error password"), 401))
+        else:
+            result_check = user.check_new_password(password)
+            if result_check:
+                user.password = user.new_password
+                user.new_password = None
+                db.session.add(user)
+                db.session.commit()
+            else:
+                abort(make_response(jsonify(error="error password"), 401))
+            
         
     
     access_token = create_access_token(identity=user.id)
@@ -100,8 +111,8 @@ def reset_password():
     characters = string.ascii_letters + string.digits + string.punctuation
     password = ''.join(random.choice(characters) for i in range(20))
 
-    _user.password=password
-    _user.hash_password()
+    _user.new_password=password
+    _user.hash_new_password()
     db.session.add(_user)  
     db.session.commit()
                         

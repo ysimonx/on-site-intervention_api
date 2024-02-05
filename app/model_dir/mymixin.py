@@ -137,8 +137,9 @@ class Role(db.Model, MyMixin):
 class User(db.Model, MyMixin):
     __tablename__ = 'users'
    
-    email       = db.Column(db.String(100), index=True)
-    password    = db.Column(db.String(100))
+    email           = db.Column(db.String(100), index=True)
+    password        = db.Column(db.String(100))
+    new_password    = db.Column(db.String(100))
     firstname   = db.Column(db.String(100))
     lastname    = db.Column(db.String(100))
     phone       = db.Column(db.String(100))
@@ -227,8 +228,15 @@ class User(db.Model, MyMixin):
     def hash_password(self):
             self.password = generate_password_hash(self.password).decode('utf8')
     
+    def hash_new_password(self):
+              self.new_password = generate_password_hash(self.new_password).decode('utf8')
+    
+    
     def check_password(self, password):
             return check_password_hash(self.password, password)
+
+    def check_new_password(self, password):
+        return check_password_hash(self.new_password, password)
 
 
 
