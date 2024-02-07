@@ -177,7 +177,7 @@ config = {
                                            "field_label":"Scaffolder",
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"1481ef60-16f5-4090-94a4-daf787ae5926",
-                                           "values": "scaffolder",
+                                           "values": ["scaffolder"]
                                       },
                                  }
                          }
