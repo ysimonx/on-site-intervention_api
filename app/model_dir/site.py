@@ -1,6 +1,7 @@
 from .. import db,  getByIdOrByName
 from .mymixin import user_role
 import uuid
+import json
 from flask import Flask, abort, make_response, request, jsonify
 from sqlalchemy.orm import declarative_base, relationship, backref
 
@@ -21,14 +22,24 @@ class Site(db.Model, MyMixin):
     time_created    = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
     time_updated    = db.Column(db.DateTime(timezone=True), onupdate=db.func.now())
     
+    dict_of_lists   =  db.Column(db.Text)
+    
     roles = db.relationship('Role')
      
         
     def to_json(self):
+        print("- - - - - - - -")
+        print(self.dict_of_lists)
+        if self.dict_of_lists is None:
+            dict_of_lists={}
+        else:
+            dict_of_lists =json.loads(self.dict_of_lists)
+            
         return {
             'id':               self.id,
             '_internal' :       self.get_internal(),
             'name':             self.name,
+            'dict_of_lists':    dict_of_lists,
             'roles'         :  [{item.name: item.to_json_light()} for item in self.roles] 
         }
 
@@ -43,10 +54,7 @@ class Site(db.Model, MyMixin):
             'id':               self.id,
         }
 
-    def getSite():
-        _site = Site.query.filter(Site.name=="sandbox").first()
-        return _site
-    
+
     def getRequestSite():
     
         #

@@ -50,6 +50,25 @@ def get_site(id):
     return jsonify(json_site),200
 
 
+@app_file_site.route("/site/<site_id>/lists", methods=["POST"])
+@jwt_required() 
+def post_site_lists(site_id):
+    
+    _site = Site.query.get(site_id)
+    if _site is None:
+        abort(make_response(jsonify(error="site not found"), 404))
+
+    dict_of_lists = request.json.get('dict_of_lists', None)
+    if dict_of_lists is None:
+        abort(make_response(jsonify(error="missing dict_of_lists parameter"), 400))
+    
+    print(dict_of_lists)
+    _site.dict_of_lists = json.dumps(dict_of_lists)
+    db.session.commit()
+    
+    return jsonify(_site.to_json()),200
+
+
 @app_file_site.route("/site/<site_id>/user", methods=["POST"])
 @jwt_required() 
 def post_site_user(site_id):
@@ -171,14 +190,14 @@ def rm_site_user(site_id):
 
 
 
-@app_file_site.route("/site/<id>", methods=["DELETE"])
+@app_file_site.route("/site/<site_id>", methods=["DELETE"])
 @jwt_required() 
-def del_site(id):
+def del_site(site_id):
     
     print(g.current_user)
     # TO DO
     # je dois trouver les sites pour lesquels j'ai des roles ...
-    _site = Site.query.get(id)
+    _site = Site.query.get(site_id)
     if _site is None:
         abort(make_response(jsonify(error="site not found"), 404))
 
