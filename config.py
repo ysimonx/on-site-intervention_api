@@ -169,7 +169,18 @@ config = {
                                  }
                                 },
                                  
-                         
+                         "3": { "section_name" : "Interventants",
+                                "section_type" : "section type 3",
+                                "section_on_site_uuid": "b72ec40c-0194-47a0-9744-35137dde1e9d",
+                                 "fields": {
+                                       "1": { "field_name":"user_scaffolder",
+                                           "field_label":"Scaffolder",
+                                           "field_type":"user_from_role",
+                                           "field_on_site_uuid":"1481ef60-16f5-4090-94a4-daf787ae5926",
+                                           "values": "scaffolder",
+                                      },
+                                 }
+                         }
                             
                         }
                     },

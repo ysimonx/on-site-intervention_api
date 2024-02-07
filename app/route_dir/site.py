@@ -324,6 +324,7 @@ def create_site():
                             )
                             db.session.add(_role)
                             db.session.commit() 
+                            
     _user.roles.append(_role)
     
 
