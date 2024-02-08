@@ -180,6 +180,18 @@ config = {
                                            "values": ["scaffolder"]
                                       },
                                  }
+                         },
+                          "4": { "section_name" : "Medias",
+                                "section_type" : "section type 4",
+                                "section_on_site_uuid": "c4e6b4b9-4b87-4e75-b873-8376acb6fb71",
+                                 "fields": {
+                                       "1": { "field_name":"visit_pictures",
+                                           "field_label":"pictures",
+                                           "field_type":"gallery",
+                                           "field_on_site_uuid":"8c5b89ff-62eb-42c7-a259-334bd4a33c79",
+                                           "values": []
+                                      },
+                                 }
                          }
                             
                         }
