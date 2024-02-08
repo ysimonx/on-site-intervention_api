@@ -232,7 +232,7 @@ def del_site(site_id):
         
     db.session.delete(_site)
     db.session.commit()
-    return jsonify({'result': True, 'id': id}),200
+    return jsonify({"result": "ok", "id":site_id}),200
 
 
 
