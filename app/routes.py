@@ -140,7 +140,7 @@ def before_request():
         g.current_tenant = None
             
     try:
-        res = verify_jwt_in_request(optional=True)
+        res = verify_jwt_in_request(optional=True, refresh=True)
         if res is not None:
             current_user_id = get_jwt_identity()
             g.current_user = getByIdOrEmail(obj=User,  id=current_user_id)

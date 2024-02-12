@@ -249,12 +249,18 @@ def create_user():
 @app_file_user.route('/token/refresh', methods=['POST'])
 @jwt_required(refresh=True)
 def refresh():
-    current_user = get_jwt_identity()
-    user = User.query.get(current_user)
-    print(user.active)
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    if user is None:
+        msg = ("user %s is none on refresh token, should not happen" % current_user_id)
+        current_app.logger.info(msg)
+        abort(make_response(jsonify(error=msg), 401))
+            
+    current_app.logger.info("user %s can be refresh token", user.email)
+    
     if user.active == True:
         ret = {
-            'access_token': create_access_token(identity=current_user)
+            'access_token': create_access_token(identity=current_user_id)
         }
     
         return jsonify(ret), 200
