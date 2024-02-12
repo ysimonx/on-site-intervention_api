@@ -152,15 +152,16 @@ def before_request():
         g.current_user = None
 
     
-    res = verify_jwt_in_request(optional=True, refresh=True)
-    if res is not None:
-        app.logger.info("before request refresh token ok")
-        current_user_id = get_jwt_identity()
-        g.current_user2 = getByIdOrEmail(obj=User,  id=current_user_id)
-        app.logger.info("before request refresh token email = %s" % g.current_user2.email)
-    # except:
-    #     app.logger.info("before_request except on refresh token")
-    #     g.current_user2 = None
+    try:
+        res = verify_jwt_in_request(optional=True, refresh=True)
+        if res is not None:
+            app.logger.info("before request refresh token ok")
+            current_user_id = get_jwt_identity()
+            g.current_user2 = getByIdOrEmail(obj=User,  id=current_user_id)
+            app.logger.info("before request refresh token email = %s" % g.current_user2.email)
+    except Exception as e: 
+        app.logger.info("before_request except on refresh token : %s", e)
+        g.current_user2 = None
 
     if g.current_user is None:
         if g.current_user2 is not None:
