@@ -28,8 +28,6 @@ class Site(db.Model, MyMixin):
      
         
     def to_json(self):
-        print("- - - - - - - -")
-        print(self.dict_of_lists)
         if self.dict_of_lists is None:
             dict_of_lists={}
         else:

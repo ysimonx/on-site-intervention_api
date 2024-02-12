@@ -139,6 +139,10 @@ def get_user_me():
 def get_user_config():
     
     # qui je suis
+    if g.current_user is None:
+         abort(make_response(jsonify(error="g.current_user is none"), 400))
+         
+         
     me = g.current_user.to_json()
     print(me["sites_roles"])
     #
@@ -151,7 +155,6 @@ def get_user_config():
     json_user_sites=[]
     sites = Site.query.all()
     for site in sites:
-        print(site.name)
         json_site = site.to_json()
         tenant_id = site.tenant_id
         if tenant_id is not None:

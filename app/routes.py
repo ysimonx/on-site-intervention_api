@@ -138,17 +138,32 @@ def before_request():
             g.current_tenant = getByIdOrByName(obj=Tenant, id=config["default_tenant_config"])
     except:
         g.current_tenant = None
-            
+    
+    
+    try:
+        res = verify_jwt_in_request(optional=True)
+        if res is not None:
+            app.logger.info("before request access token ok")
+            current_user_id = get_jwt_identity()
+            g.current_user = getByIdOrEmail(obj=User,  id=current_user_id)
+            return
+    except:
+        app.logger.info("before_request except on access token")
+        g.current_user = None
+
     try:
         res = verify_jwt_in_request(optional=True, refresh=True)
         if res is not None:
+            app.logger.info("before request refresh token ok")
             current_user_id = get_jwt_identity()
             g.current_user = getByIdOrEmail(obj=User,  id=current_user_id)
+            return
     except:
+        app.logger.info("before_request except on refresh token")
         g.current_user = None
+
     
-    #print(g.current_user)
-    #print(g.current_tenant)
+    
         
       
 @app.after_request
