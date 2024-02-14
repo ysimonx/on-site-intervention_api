@@ -46,14 +46,14 @@ class InterventionValues(db.Model, MyMixin):
     place_id                    = db.Column(db.String(36), db.ForeignKey("places.id"));
     version                     = db.Column(db.Integer, default=1)
     
-    site_id             = db.Column(db.String(36), db.ForeignKey("sites.id"))
+    site_id                     = db.Column(db.String(36), db.ForeignKey("sites.id"))
     type_intervention_id        = db.Column(db.String(36), db.ForeignKey("types_interventions.id"));
     supervisor_user_id          = db.Column(db.String(36), db.ForeignKey("users.id"))
     hashtag                     = db.Column(db.Integer, default=1, index=True)
     
     place                       = db.relationship("Place", viewonly=True)
     type_intervention           = db.relationship("TypeIntervention", viewonly=True)
-    site                = db.relationship("Site", viewonly=True)
+    site                        = db.relationship("Site", viewonly=True)
     supervisor_user             = db.relationship("User", viewonly=True)
     
     template_text               = db.Column(db.Text)

@@ -141,12 +141,6 @@ def create_photo():
     if not 'longitude' in request.form:
         abort(make_response(jsonify(error="missing longitude parameter"), 400))
 
-    if not 'intervention_on_site_uuid' in request.form:
-        abort(make_response(jsonify(error="missing intervention_on_site_uuid parameter"), 400))
-
-    if not 'form_on_site_uuid' in request.form:
-        abort(make_response(jsonify(error="missing form_on_site_uuid parameter"), 400))
-       
     if not 'field_on_site_uuid' in request.form:
         abort(make_response(jsonify(error="missing field_on_site_uuid parameter"), 400))
        
@@ -165,8 +159,6 @@ def create_photo():
     latitude                    = request.form.get('latitude')
     longitude                   = request.form.get('longitude')
     field_on_site_uuid          = request.form.get('field_on_site_uuid')
-    form_on_site_uuid           = request.form.get('form_on_site_uuid')
-    intervention_on_site_uuid   = request.form.get('intervention_on_site_uuid')
     newfilename                 = photo_on_site_uuid+get_extension(filename)
     
 
@@ -178,16 +170,14 @@ def create_photo():
                     longitude=longitude, 
                     filename= newfilename, 
                     field_on_site_uuid=field_on_site_uuid, 
-                    form_on_site_uuid=form_on_site_uuid, 
-                    intervention_on_site_uuid=intervention_on_site_uuid,
                     tenant_id = _user.get_internal()["tenant_id"]
                 )
     
     db.session.add(photo)
     db.session.commit() 
 
-    tb=ThingsboardConnector()
-    tb.syncAsset(photo)
+    # tb=ThingsboardConnector()
+    # tb.syncAsset(photo)
 
     return jsonify(photo.to_json()), 201
 
