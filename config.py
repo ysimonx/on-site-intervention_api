@@ -39,6 +39,7 @@ config = {
     'testing': TestingConfig,
     'production': ProductionConfig,
     'default': DevelopmentConfig,
+    'upload_dir': os.getenv("UPLOAD_DIR"),
     'upload_dir': 'app/static/photos',
     'default_tenant_config': 'ctei',
     "types_interventions": {
