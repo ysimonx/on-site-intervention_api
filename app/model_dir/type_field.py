@@ -12,10 +12,10 @@ class TypeField(db.Model, MyMixin):
     
     fields   = relationship("Field")
      
-    fields                      = relationship("Field",   
-                                                cascade="all, delete", 
-                                                backref=backref("type_field_backref",lazy="joined")
-                                            )
+    fields   = relationship("Field",   
+                cascade="all, delete", 
+                backref=backref("type_field_backref",lazy="joined")
+            )
    
    
     def to_json(self):

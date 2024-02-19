@@ -416,11 +416,15 @@ def update_sites_interventions_templates( _site,  _type_intervention, template )
                         # db.session.commit()
                    
                     
+                    
                     fields=section_values["fields"]
                     if fields is not None:
                         for key_field in fields.keys():
                             print("Field #", key_field)
+                            
                             field_attributes=fields[key_field]
+                            print(field_attributes)
+                            
                             field_on_site_uuid = field_attributes['field_on_site_uuid']
                             field_name         = field_attributes['field_name']
                             field_type         = field_attributes['field_type']
@@ -433,11 +437,14 @@ def update_sites_interventions_templates( _site,  _type_intervention, template )
                                     intervention_id = intervention.id,
                                     field_on_site_uuid=field_on_site_uuid,
                                     field_name=field_name,
-                                    # field_type=field_type,
+                                    field_type=field_type,
                                     field_order_in_section=int(key_field)
                                 )
                                 db.session.add(_field)
-                               #  db.session.commit()
-                            
+                            else:
+                                print("UPDATE !")
+                                _field.field_type=field_type
+                                _field.field_name=field_name
+                                db.session.add(_field)
     db.session.commit()                
    

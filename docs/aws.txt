@@ -1,0 +1,134 @@
+
+# copy local dir to s3
+rclone copy /var/www/html/on-site-intervention_api/app/static/photos fidworkpublic:fidworkpublic/static/photos
+
+ou à voir
+
+rclone move -v --min-age 180 local/path/to/files remote:/path/to/files 
+
+
+et suivre toutes les instructions ci dessous
+
+
+# .aws/config
+[default]
+region = gra
+output = json
+
+
+#lister les buckets 
+aws s3 ls --endpoint-url https://s3.gra.io.cloud.ovh.net
+
+#lister les fichiers d'un bucket
+aws s3 ls s3://containerkysoe --endpoint-url https://s3.gra.io.cloud.ovh.net
+
+# recuperer les acls d'un container
+s3api get-bucket-acl --bucket containerkysoe --endpoint-url https://s3.gra.io.cloud.ovh.net
+{
+    "Owner": {
+        "DisplayName": "7541632602446836:user-7PKg7DFm43en",
+        "ID": "7541632602446836:user-7PKg7DFm43en"
+    },
+    "Grants": [
+        {
+            "Grantee": {
+                "DisplayName": "7541632602446836:user-7PKg7DFm43en",
+                "ID": "7541632602446836:user-7PKg7DFm43en",
+                "Type": "CanonicalUser"
+            },
+            "Permission": "FULL_CONTROL"
+        }
+    ]
+}
+
+# creation d'un bucket public "fidworkpublic"
+ aws s3api create-bucket --bucket fidworkpublic --region gra --acl public-read --endpoint-url https://s3.gra.io.cloud.ovh.net
+
+# verification
+aws s3api get-bucket-acl --bucket fidworkpublic --endpoint-url https://s3.gra.io.cloud.ovh.net
+{
+    "Owner": {
+        "DisplayName": "7541632602446836:user-7PKg7DFm43en",
+        "ID": "7541632602446836:user-7PKg7DFm43en"
+    },
+    "Grants": [
+        {
+            "Grantee": {
+                "Type": "Group",
+                "URI": "http://acs.amazonaws.com/groups/global/AllUsers"
+            },
+            "Permission": "READ"
+        },
+        {
+            "Grantee": {
+                "DisplayName": "7541632602446836:user-7PKg7DFm43en",
+                "ID": "7541632602446836:user-7PKg7DFm43en",
+                "Type": "CanonicalUser"
+            },
+            "Permission": "FULL_CONTROL"
+        }
+    ]
+}
+
+# envoi d'un fichier avec content-type et public-read
+
+aws s3 cp test.txt s3://fidworkpublic/static/photos/test.txt   --endpoint-url https://s3.gra.io.cloud.ovh.net --acl public-read --content-type text/plain
+ou
+aws s3api put-object --bucket fidworkpublic --key index.html --body index.html  --acl public-read --content-type text/html --endpoint-url https://s3.gra.io.cloud.ovh.net
+
+(# autoriser acces à un objet en public 
+aws s3api put-object-acl --bucket fidworkpublic --key "test.txt" --acl public-read --endpoint-url https://s3.gra.io.cloud.ovh.net
+)
+
+# activer le site web
+aws s3 website s3://fidworkstatic  --index-document index.html --error-document error.html --endpoint-url https://s3.gra.io.cloud.ovh.net/
+
+on obtient : 
+http://fidworkstatic.s3-website.gra.io.cloud.ovh.net/
+
+
+Avec rclone
+root@d2-4-gra11:~# cat ~/.config/rclone/rclone.conf
+[fidworkpublic]
+type = s3
+provider = Other
+env_auth = false
+access_key_id = ***
+secret_access_key = ***
+endpoint = https://s3.gra.io.cloud.ovh.net
+acl = public-read
+region = gra
+aocation_constraint = gra
+
+# rclone lsd fidworkpublic:/
+root@d2-4-gra11:~# rclone lsd fidworkpublic:/
+          -1 2024-02-15 10:02:47        -1 fidwork
+          -1 2024-02-15 10:43:10        -1 fidworkpublic
+          -1 2024-02-15 13:36:24        -1 fidworkstatic
+
+
+# rclone ls fidworkpublic:fidworkpublic
+       42 /test/index.html
+       40 error.html
+       42 index.html
+       42 static/photos/index.html
+        5 static/photos/test.txt
+      123 website-conf.json
+
+
+#List the contents of a bucket:
+
+$ rclone ls <remote_name>:mybucket
+
+# Synchronise /home/user/documents to a bucket:
+
+$ rclone sync /home/user/documents <remote_name>:mybucket
+
+#Copy a file /home/user/file.txt into a bucket:
+
+$ rclone copy /home/user/file.txt <remote_name>:mybucket
+
+#Download a file file.txt from a bucket:
+
+$ rclone copy <remote_name>:mybucket/file.txt fichier.txt
+

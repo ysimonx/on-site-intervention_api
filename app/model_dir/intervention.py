@@ -1,6 +1,6 @@
 from .. import db
 from .mymixin import MyMixin
-
+import json
 from sqlalchemy.orm import declarative_base, relationship, backref
 import uuid
 
@@ -69,8 +69,8 @@ class InterventionValues(db.Model, MyMixin):
             'intervention_name':              self.name,
             '_internal' :                     self.get_internal(),
             'intervention_values_on_site_uuid':                self.intervention_values_on_site_uuid,
-            'site':                   self.site.to_json(),
-            'type_intervention':                   self.type_intervention.to_json(),
+            'site':                           self.site.to_json(),
+            'type_intervention':              self.type_intervention.to_json(),
             'place':                          self.place.to_json(),
             'version':                        self.version, 
             'hashtag':                        self.hashtag,
@@ -79,7 +79,26 @@ class InterventionValues(db.Model, MyMixin):
             'template_text':                  self.template_text,
             'field_on_site_uuid_values':      dict_field_values
         }
-        
+    
+    def photos_to_json(self):
+        photos_total=[]
+        for item in self.fields_values:
+            if item.field.field_type == "gallery":
+                if item.value is not None:
+                    try:
+                        photos=json.loads(item.value)    
+                    except:
+                        photos=[]
+                    for photo in photos:
+                             photos_total.append(photo);
+                            
+        return {
+            'site_id':                        self.site.id,
+            'photos':        photos_total
+        }
+    
+    
+    
     def to_json_light(self):
       dict_field_values={}
       for item in self.fields_values:

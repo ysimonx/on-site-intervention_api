@@ -130,8 +130,38 @@ def get_intervention_values():
         query_interventionValues = query_interventionValues.filter(InterventionValues.type_intervention_id == _type_intervention.id)
 
 
+    interventionValues = query_interventionValues.all()
+
+    return jsonify([item.to_json() for item in interventionValues])
+
+
+@app_file_intervention.route("/intervention_values/photos", methods=["GET"])
+@jwt_required()
+def get_intervention_values_photos():
+    
+    query_interventionValues = InterventionValues.query
+    
+    if  'site_id' in request.args:
+        
+        site_id=request.args.get("site_id")
+        _site=getByIdOrByName(Site, site_id)
+        if _site is None:
+            abort(make_response(jsonify(error="site is not found"), 400))
+        query_interventionValues = query_interventionValues.filter(InterventionValues.site_id == _site.id)
+
+    if  'type_intervention_id' in request.args:
+        
+        type_intervention_id=request.args.get("type_intervention_id")
+        _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
+        
+        if _type_intervention is None:
+            abort(make_response(jsonify(error="_type_intervention is not found"), 400))
+        query_interventionValues = query_interventionValues.filter(InterventionValues.type_intervention_id == _type_intervention.id)
+
+    
 
     interventionValues = query_interventionValues.all()
+
     
     
     # else:
@@ -141,7 +171,7 @@ def get_intervention_values():
         # 
         # interventions = Intervention.query.filter(Intervention.site_id==_site.id).all()
         
-    return jsonify([item.to_json_light() for item in interventionValues])
+    return jsonify([item.photos_to_json() for item in interventionValues])
 
 
 @app_file_intervention.route('/intervention_values', methods=['POST'])

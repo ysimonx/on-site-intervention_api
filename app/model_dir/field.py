@@ -13,6 +13,9 @@ class Field(db.Model, MyMixin):
     
     field_on_site_uuid          = db.Column(db.String(36), unique=True)
     type_field_id               = db.Column(db.String(36),  db.ForeignKey("types_fields.id"), nullable=True)
+    
+    field_type                  = db.Column(db.String(100), nullable=True)
+    
     field_name                  = db.Column(db.String(255), index=True)
     section_id                  = db.Column(db.String(36),  db.ForeignKey("sections.id"), nullable=True)
     field_order_in_section      = db.Column(db.Integer, default=1)
@@ -39,7 +42,7 @@ class Field(db.Model, MyMixin):
             
             'photos':               [{"photo": item.to_json_light()} for item in self.photos] ,
             'files':                [{"file": item.to_json_light()} for item in self.files] ,
-            # 'type_field':           self.type_field_backref.to_json()
+            'type_field':           self.type_field
             
         }
         
@@ -55,7 +58,7 @@ class Field(db.Model, MyMixin):
             'intervention_id':      self.intervention_id,
             'photos':  [{"photo": item.to_json_light()} for item in self.photos],
             'files':                [{"file": item.to_json_light()} for item in self.files] ,
-            # 'type_field':           self.type_field_backref.to_json()
+            'type_field':           self.type_field
         }
 
     def get_attributes_for_thingsboard(self):
