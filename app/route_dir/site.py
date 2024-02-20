@@ -13,7 +13,7 @@ from ..model_dir.type_intervention import TypeIntervention, TypeInterventionSite
 import json
 
 from flask import jsonify, request, abort, g
-from .. import db, getByIdOrEmail, getByIdOrByName, update_sites_interventions_templates
+from .. import db, getByIdOrEmail, getByIdOrByName
 
 
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
@@ -414,7 +414,9 @@ def update_sites_interventions_templates( _site,  _type_intervention, template )
                         )
                         db.session.add(_section)
                         # db.session.commit()
-                   
+                    else:
+                            _section.section_name=section_name,
+                            
                     
                     
                     fields=section_values["fields"]

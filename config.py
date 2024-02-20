@@ -171,7 +171,7 @@ config = {
                                  }
                                 },
                                  
-                         "3": { "section_name" : "Interventants",
+                         "3": { "section_name" : "Intervenants",
                                 "section_type" : "section type 3",
                                 "section_on_site_uuid": "b72ec40c-0194-47a0-9744-35137dde1e9d",
                                  "fields": {

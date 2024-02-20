@@ -197,9 +197,9 @@ def init():
     print(app.config["JWT_TOKEN_LOCATION"] )
     app.config["JWT_TOKEN_LOCATION"] = ["headers"] 
     # db.drop_all()
-    db.create_all()
+    # db.create_all()
     populate_tenant()
-    populate_user_data()
+    # populate_user_data()
     populate_type_field()
     app.logger.info("db init done")
     app.config["JWT_TOKEN_LOCATION"] = ["headers","cookies"] 
@@ -211,7 +211,7 @@ def swagger():
 
 def populate_tenant():
 
-    tenants=["ctei", "kysoe"];
+    tenants=["ctei_tenant", "kysoe_tenant"];
 
     for newtenant in tenants:
             tenant=getByIdOrByName(Tenant, newtenant, None)
