@@ -48,13 +48,13 @@ class InterventionValues(db.Model, MyMixin):
     
     site_id                     = db.Column(db.String(36), db.ForeignKey("sites.id"))
     type_intervention_id        = db.Column(db.String(36), db.ForeignKey("types_interventions.id"));
-    supervisor_user_id          = db.Column(db.String(36), db.ForeignKey("users.id"))
+    assignee_user_id          = db.Column(db.String(36), db.ForeignKey("users.id"))
     hashtag                     = db.Column(db.Integer, default=1, index=True)
     
     place                       = db.relationship("Place", viewonly=True)
     type_intervention           = db.relationship("TypeIntervention", viewonly=True)
     site                        = db.relationship("Site", viewonly=True)
-    supervisor_user             = db.relationship("User", viewonly=True)
+    assignee_user                = db.relationship("User", viewonly=True)
     
     template_text               = db.Column(db.Text)
     fields_values               = db.relationship("FieldValue", viewonly=True)
@@ -74,8 +74,8 @@ class InterventionValues(db.Model, MyMixin):
             'place':                          self.place.to_json(),
             'version':                        self.version, 
             'hashtag':                        self.hashtag,
-            'supervisor_user_id':             self.supervisor_user_id,
-            'supervisor_user':                None if self.supervisor_user is None else self.supervisor_user.to_json_ultra_light(),
+            'assignee_user_id':             self.assignee_user_id,
+            'assignee_user':                None if self.assignee_user is None else self.assignee_user.to_json_ultra_light(),
             'template_text':                  self.template_text,
             'field_on_site_uuid_values':      dict_field_values
         }
@@ -116,8 +116,8 @@ class InterventionValues(db.Model, MyMixin):
             'site_name':              self.site.name,
             'type_intervention_name':         self.type_intervention.name,
             'hashtag':                        self.hashtag,
-            'supervisor_user_id':             self.supervisor_user_id,
-            'supervisor_user':                None if self.supervisor_user is None else self.supervisor_user.to_json_ultra_light(),
+            'assignee_user_id':             self.assignee_user_id,
+            'assignee_user':                None if self.assignee_user is None else self.assignee_user.to_json_ultra_light(),
             'template_text':                  self.template_text,
             'field_on_site_uuid_values':      dict_field_values
         }
