@@ -58,6 +58,36 @@
 					"response": []
 				},
 				{
+					"name": "interventions list values photos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/intervention_values/photos",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"intervention_values",
+								"photos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "interventions list values iter scaffolding request",
 					"request": {
 						"auth": {
@@ -73,7 +103,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url_base}}/api/v1/intervention_values?site_id=iter&type_intervention_id=scaffolding request",
+							"raw": "{{url_base}}/api/v1/intervention_values?organization_id=iter&type_intervention_id=scaffolding request",
 							"host": [
 								"{{url_base}}"
 							],
@@ -84,13 +114,51 @@
 							],
 							"query": [
 								{
-									"key": "site_id",
+									"key": "organization_id",
 									"value": "iter"
 								},
 								{
 									"key": "type_intervention_id",
 									"value": "scaffolding request"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "-> create intervention values iter scaffolding Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n    \"intervention_values_on_site_uuid\": \"a6e8b7e0-cf65-1e36-b00b-bdc2d9df1b21\",\n    \"type_intervention_id\": \"scaffolding request\",\n    \n    \"site_id\": \"iter\",\n    \"intervention_name\": \"B11-L2-R1-00001-A\",\n    \"place_on_site_uuid\": \"826eaeb6-7180-443d-bce4-f1840079a54d\",\n    \"place_name\": \"nowhere\",\n    \"template_text\": \"{a:1}\",\n    \"field_on_site_uuid_values\": {\n        \"8dd3f411-6f67-43c4-9d9d-1d420cc6bc68\": \"85\"\n    }\n}\n    \n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/intervention_values",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"intervention_values"
 							]
 						}
 					},
@@ -113,45 +181,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"new_d45832d0-33b5-1e34-a382-39227f91549c\",\n    \"intervention_name\": \"nouvelle 1c\",\n    \"site_id\": \"826eaeb6-7180-443d-bce4-f1840079a54d\",\n    \"intervention_values_on_site_uuid\": \"1116f5f0-4958-1e34-9287-a1e8e6dc3aa2\",\n    \"version\": 1,\n    \"type_intervention_id\": \"aec24222-6893-4f46-b1e0-1439b0a9a165\",\n    \"place_name\": \"nowhere\",\n    \"place_on_site_uuid\": \"826eaeb6-7180-443d-bce4-f1840079a54d\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url_base}}/api/v1/intervention_values",
-							"host": [
-								"{{url_base}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"intervention_values"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create intervention values iter scaffolding Copy",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{access_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "\n{\n    \"intervention_values_on_site_uuid\": \"intervention_values_on_site_uuid2\",\n    \"type_intervention_id\": \"scaffolding request\",\n    \"site_id\": \"iter\",\n    \"intervention_name\":\"échafaudage E1b\",\n    \"place_on_site_uuid\": \"nice_uuid_1\",\n    \"place_name\": \"nice\"\n \n}\n    \n\n",
+							"raw": "{\n    \"id\": \"new_d45832d0-33b5-1e34-a382-39227f91549c\",\n    \"intervention_name\": \"nouvelle 1c\",\n    \"organization_id\": \"826eaeb6-7180-443d-bce4-f1840079a54d\",\n    \"intervention_values_on_site_uuid\": \"1116f5f0-4958-1e34-9287-a1e8e6dc3aa2\",\n    \"version\": 1,\n    \"type_intervention_id\": \"aec24222-6893-4f46-b1e0-1439b0a9a165\",\n    \"place_name\": \"nowhere\",\n    \"place_on_site_uuid\": \"826eaeb6-7180-443d-bce4-f1840079a54d\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -189,7 +219,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "\n{\n    \"intervention_on_site_uuid\": \"intervention_on_site_uuid_value1\",\n    \"intervention_name\":\"échafaudage E1\",\n    \"place_on_site_uuid\": \"nice_uuid_1\",\n    \"place_name\": \"nice\",\n    \"site_id\": \"iter\",\n    \"type_intervention\": \"scaffolding_request\",\n    \"forms\":{\n        \"1\": {   \n            \"form_name\":\"initial_request\",\n            \"form_on_site_uuid\": \"form_on_site_uuid_value3b\"\n        },\n        \"2\":  {   \n            \"form_name\":\"visit\",\n            \"form_on_site_uuid\": \"form_on_site_uuid_value3c\"\n        },\n        \"3\":  {   \n            \"form_name\":\"reception\",\n            \"form_on_site_uuid\": \"form_on_site_uuid_value3d\"\n        }\n    },\n    \"user_roles\": \n    {\n        \"user\": {\n            \"user_id\":\"\"\n        },\n        \"requester\": {\n            \"user_id\":\"\"\n        },\n        \"supervisor\": {\n            \"user_id\":\"\"\n        }\n    }\n}\n    \n\n",
+							"raw": "\n{\n    \"intervention_on_site_uuid\": \"intervention_on_site_uuid_value1\",\n    \"intervention_name\":\"échafaudage E1\",\n    \"place_on_site_uuid\": \"nice_uuid_1\",\n    \"place_name\": \"nice\",\n    \"organization_id\": \"iter\",\n    \"type_intervention\": \"scaffolding_request\",\n    \"forms\":{\n        \"1\": {   \n            \"form_name\":\"initial_request\",\n            \"form_on_site_uuid\": \"form_on_site_uuid_value3b\"\n        },\n        \"2\":  {   \n            \"form_name\":\"visit\",\n            \"form_on_site_uuid\": \"form_on_site_uuid_value3c\"\n        },\n        \"3\":  {   \n            \"form_name\":\"reception\",\n            \"form_on_site_uuid\": \"form_on_site_uuid_value3d\"\n        }\n    },\n    \"user_roles\": \n    {\n        \"user\": {\n            \"user_id\":\"\"\n        },\n        \"requester\": {\n            \"user_id\":\"\"\n        },\n        \"supervisor\": {\n            \"user_id\":\"\"\n        }\n    }\n}\n    \n\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -227,7 +257,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": " {\"id\":\"new_c2c04c00-6ac9-1e2b-b5c1-113184a419ed\",\"intervention_name\":\"nouvelle\",\"site_id\":\"826eaeb6-7180-443d-bce4-f1840079a54d\",\"intervention_on_site_uuid\":\"c2c13660-6ac9-1e2b-b5c1-113184a419ed\",\"version\":1,\"type_intervention\":\"scaffolding request\",\"forms\":{\"1\":{\"form_on_site_uuid\":\"c22396d0-6ac9-1e2b-b5c1-113184a419ed\",\"form_name\":\"initial request\",\"sections\":{\"1\":{\"section_on_site_uuid\":\"c2823190-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"initial request rub a\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2996310-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field aa\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c29fa4a0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ab\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c29ff2c0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ac\",\"field_type\":\"field_type 1\"}}},\"2\":{\"section_on_site_uuid\":\"c2a3c350-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"initial request rub b\",\"section_type\":\"section type 2\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2a41170-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ba\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2a486a0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field bb\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2a4adb0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field bc\",\"field_type\":\"field_type 1\"}}},\"3\":{\"section_on_site_uuid\":\"c2a4fbd0-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"initial request rub c\",\"section_type\":\"section type 3\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2a522e0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ca\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2a57100-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field cb\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2a59810-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field cc\",\"field_type\":\"field_type 1\"}}}}},\"2\":{\"form_on_site_uuid\":\"c2a60d40-6ac9-1e2b-b5c1-113184a419ed\",\"form_name\":\"visit\",\"sections\":{\"1\":{\"section_on_site_uuid\":\"c2a65b60-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"visit rub a\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2a68270-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field aa\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2a6a980-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ab\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2a6f7a0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ac\",\"field_type\":\"field_type 1\"}}},\"2\":{\"section_on_site_uuid\":\"c2a71eb0-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"visit rub b\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2a76cd0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ba\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2a793e0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field bb\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2a7e200-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field bc\",\"field_type\":\"field_type 1\"}}},\"3\":{\"section_on_site_uuid\":\"c2a80910-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"visit rub c\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2a83020-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ca\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2a87e40-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field cb\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2a8f370-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field cc\",\"field_type\":\"field_type 1\"}}}}},\"3\":{\"form_on_site_uuid\":\"c2a91a80-6ac9-1e2b-b5c1-113184a419ed\",\"form_name\":\"commissioning\",\"sections\":{\"1\":{\"section_on_site_uuid\":\"c2a968a0-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"commissioning rub a\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2a98fb0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field aa\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2a9b6c0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ab\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2aa04e0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ac\",\"field_type\":\"field_type 1\"}}},\"2\":{\"section_on_site_uuid\":\"c2aa2bf0-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"commissioning rub b\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2aa7a10-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ba\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2aaa120-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field bb\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2aac830-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field bc\",\"field_type\":\"field_type 1\"}}},\"3\":{\"section_on_site_uuid\":\"c2ab1650-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"commissioning rub c\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2ab3d60-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ca\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2ab8b80-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field cb\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2abb290-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field cc\",\"field_type\":\"field_type 1\"}}}}},\"4\":{\"form_on_site_uuid\":\"c2ac00b0-6ac9-1e2b-b5c1-113184a419ed\",\"form_name\":\"rapport de vérifications\",\"sections\":{\"1\":{\"section_on_site_uuid\":\"c2ac27c0-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"rapport de vérifications rub a\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2ac4ed0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field aa\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2ac9cf0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ab\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2acc400-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ac\",\"field_type\":\"field_type 1\"}}},\"2\":{\"section_on_site_uuid\":\"c2ad1220-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"rapport de vérifications rub b\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2ad3930-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ba\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2ad6040-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field bb\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2adae60-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field bc\",\"field_type\":\"field_type 1\"}}},\"3\":{\"section_on_site_uuid\":\"c2add570-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"rapport de vérifications rub c\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2adfc80-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ca\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2ae4aa0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field cb\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2aebfd0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field cc\",\"field_type\":\"field_type 1\"}}}}}}}\n",
+							"raw": " {\"id\":\"new_c2c04c00-6ac9-1e2b-b5c1-113184a419ed\",\"intervention_name\":\"nouvelle\",\"organization_id\":\"826eaeb6-7180-443d-bce4-f1840079a54d\",\"intervention_on_site_uuid\":\"c2c13660-6ac9-1e2b-b5c1-113184a419ed\",\"version\":1,\"type_intervention\":\"scaffolding request\",\"forms\":{\"1\":{\"form_on_site_uuid\":\"c22396d0-6ac9-1e2b-b5c1-113184a419ed\",\"form_name\":\"initial request\",\"sections\":{\"1\":{\"section_on_site_uuid\":\"c2823190-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"initial request rub a\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2996310-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field aa\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c29fa4a0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ab\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c29ff2c0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ac\",\"field_type\":\"field_type 1\"}}},\"2\":{\"section_on_site_uuid\":\"c2a3c350-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"initial request rub b\",\"section_type\":\"section type 2\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2a41170-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ba\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2a486a0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field bb\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2a4adb0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field bc\",\"field_type\":\"field_type 1\"}}},\"3\":{\"section_on_site_uuid\":\"c2a4fbd0-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"initial request rub c\",\"section_type\":\"section type 3\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2a522e0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ca\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2a57100-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field cb\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2a59810-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field cc\",\"field_type\":\"field_type 1\"}}}}},\"2\":{\"form_on_site_uuid\":\"c2a60d40-6ac9-1e2b-b5c1-113184a419ed\",\"form_name\":\"visit\",\"sections\":{\"1\":{\"section_on_site_uuid\":\"c2a65b60-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"visit rub a\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2a68270-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field aa\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2a6a980-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ab\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2a6f7a0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ac\",\"field_type\":\"field_type 1\"}}},\"2\":{\"section_on_site_uuid\":\"c2a71eb0-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"visit rub b\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2a76cd0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ba\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2a793e0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field bb\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2a7e200-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field bc\",\"field_type\":\"field_type 1\"}}},\"3\":{\"section_on_site_uuid\":\"c2a80910-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"visit rub c\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2a83020-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ca\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2a87e40-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field cb\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2a8f370-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field cc\",\"field_type\":\"field_type 1\"}}}}},\"3\":{\"form_on_site_uuid\":\"c2a91a80-6ac9-1e2b-b5c1-113184a419ed\",\"form_name\":\"commissioning\",\"sections\":{\"1\":{\"section_on_site_uuid\":\"c2a968a0-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"commissioning rub a\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2a98fb0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field aa\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2a9b6c0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ab\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2aa04e0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ac\",\"field_type\":\"field_type 1\"}}},\"2\":{\"section_on_site_uuid\":\"c2aa2bf0-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"commissioning rub b\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2aa7a10-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ba\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2aaa120-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field bb\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2aac830-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field bc\",\"field_type\":\"field_type 1\"}}},\"3\":{\"section_on_site_uuid\":\"c2ab1650-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"commissioning rub c\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2ab3d60-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ca\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2ab8b80-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field cb\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2abb290-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field cc\",\"field_type\":\"field_type 1\"}}}}},\"4\":{\"form_on_site_uuid\":\"c2ac00b0-6ac9-1e2b-b5c1-113184a419ed\",\"form_name\":\"rapport de vérifications\",\"sections\":{\"1\":{\"section_on_site_uuid\":\"c2ac27c0-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"rapport de vérifications rub a\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2ac4ed0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field aa\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2ac9cf0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ab\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2acc400-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ac\",\"field_type\":\"field_type 1\"}}},\"2\":{\"section_on_site_uuid\":\"c2ad1220-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"rapport de vérifications rub b\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2ad3930-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ba\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2ad6040-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field bb\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2adae60-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field bc\",\"field_type\":\"field_type 1\"}}},\"3\":{\"section_on_site_uuid\":\"c2add570-6ac9-1e2b-b5c1-113184a419ed\",\"section_name\":\"rapport de vérifications rub c\",\"section_type\":\"section type 1\",\"fields\":{\"1\":{\"field_on_site_uuid\":\"c2adfc80-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field ca\",\"field_type\":\"field_type 1\"},\"2\":{\"field_on_site_uuid\":\"c2ae4aa0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field cb\",\"field_type\":\"field_type 1\"},\"3\":{\"field_on_site_uuid\":\"c2aebfd0-6ac9-1e2b-b5c1-113184a419ed\",\"field_name\":\"field cc\",\"field_type\":\"field_type 1\"}}}}}}}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -343,7 +373,7 @@
 					"response": []
 				},
 				{
-					"name": "create form",
+					"name": "create form obsolete -> intervention_values",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -387,7 +417,51 @@
 					"response": []
 				},
 				{
-					"name": "update form",
+					"name": "create form Copy obsolete -> intervention values",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"form_on_site_uuid\": \"report_on_site_uuid_value51\",\n    \"intervention_on_site_uuid\": \"intervention_on_site_uuid_value1\",\n    \"form_name\":\"visite de l'échafaudage E1\",\n    \"tenant_id\": \"sandbox\",\n    \"sections\": [\n        {\n            \"section_on_site_uuid\":\"section_on_site_uuid_value_1\",\n            \"section_name\" : \"initial request rub a\",\n            \"section_type\" : \"section type 1\",\n            \"fields\":[\n                {\n                        \"field_on_site_uuid\": \"field_on_site_uuid_value_51\",\n                        \"field_name\": \"hauteur\",\n                        \"field_value\": \"100.1\",\n                        \"type_field\": \"double\",\n                        \"average_latitude\": 0.1,\n                        \"average_longitude\": 0.2,\n                        \"photos_on_site_uuid\": [\n                            \"photo_on_site_uuid_valuec\"\n                        ]\n                },\n                        {\n                        \"field_on_site_uuid\": \"field_on_site_uuid_value_52\",\n                        \"field_name\": \"hauteur\",\n                        \"field_value\": \"100.1\",\n                        \"type_field\": \"double\",\n                        \"average_latitude\": 0.1,\n                        \"average_longitude\": 0.2,\n                        \"photos_on_site_uuid\": [\n                            \"photo_on_site_uuid_valued\"\n                        ]\n                }\n\n            ]\n        }\n    ]\n}\n    \n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/form",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"form"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update form obsolete -> intervention values",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -755,7 +829,7 @@
 									"type": "text"
 								},
 								{
-									"key": "site_id",
+									"key": "organization_id",
 									"value": "iter",
 									"type": "text"
 								}
@@ -914,6 +988,14 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		},
@@ -921,8 +1003,18 @@
 			"name": "users",
 			"item": [
 				{
-					"name": "create user",
+					"name": "resetpasswordbyemail",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -933,7 +1025,52 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\":\"yannick.simon6@gmail.com\",\n    \"password\":\"12345678\",\n    \"company\": \"kysoe5\",\n    \"tenant_id\": \"fidwork\"\n}",
+							"raw": "{\n    \"email\":\"yannick.simon@gmail.com\"\n}\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/user/reset_password",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"reset_password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create user with context of an existing tenant Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"yannick.simon6@gmail.com\",\n    \"password\":\"12345678\",\n    \"company\": \"kysoe5\",\n    \"tenant_id\": \"ctei\"\n}\n\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -949,6 +1086,51 @@
 								"api",
 								"v1",
 								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add role for existing user on site",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"yannick.simon6@gmail.com\",\n    \"sites_roles\":  { \n        \"site\": {\n         \"id\": \"\",\n         \"name\": \"iter\",\n         \"roles\" : [\"admin\", \"supervisor\"]\n        }\n    }\n}\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/user/sites_roles",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"sites_roles"
 							]
 						}
 					},
@@ -1108,6 +1290,36 @@
 								"user",
 								"me",
 								"config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{refresh_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/token/refresh",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"token",
+								"refresh"
 							]
 						}
 					},
@@ -1389,6 +1601,285 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "add or update site (create roles and update templates)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"site_name\":\"sandbox\",\n    \"tenant_id\":\"ctei_tenant\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/site",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"site"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "del site",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"site_name\":\"new site name\",\n    \"tenant_id\":\"kysoe_tenant\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/site/5a592592-c591-41e6-b0cc-9576d2c3a3c9",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"site",
+								"5a592592-c591-41e6-b0cc-9576d2c3a3c9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "read site",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"site_name\":\"new site name\",\n    \"tenant_id\":\"kysoe_tenant\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/site/52e45cd6-06b0-4ff5-9d6e-b83e47ddf196",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"site",
+								"52e45cd6-06b0-4ff5-9d6e-b83e47ddf196"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add user to site with roles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\"user_email\":\"qsdf\",\"roles\":[\"1d335cf7-6a08-41d1-8e8e-8490a472535b\"]}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/site/52e45cd6-06b0-4ff5-9d6e-b83e47ddf196/user",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"site",
+								"52e45cd6-06b0-4ff5-9d6e-b83e47ddf196",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update lists in site",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n    \"dict_of_lists\": {\n    \"batiments\": [\"b1\",\"b2\"],\n    \"levels\": [\"l1\",\"l2\"]\n    }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/site/52e45cd6-06b0-4ff5-9d6e-b83e47ddf196/lists",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"site",
+								"52e45cd6-06b0-4ff5-9d6e-b83e47ddf196",
+								"lists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rm user's roles from site",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"user_email\":\"qsdf3\"}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/site/52e45cd6-06b0-4ff5-9d6e-b83e47ddf196/user",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"site",
+								"52e45cd6-06b0-4ff5-9d6e-b83e47ddf196",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add user to site with roles Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_email\":\"yannick.simon@gmail.com\",\n    \"roles\":[\"gnass\",\"gnass2\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}/api/v1/site/52e45cd6-06b0-4ff5-9d6e-b83e47ddf196/user",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"site",
+								"52e45cd6-06b0-4ff5-9d6e-b83e47ddf196",
+								"user"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1480,7 +1971,55 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\":\"yannick.simon@gmail.com\",\n    \"password\":\"12345678\",\n    \"tenant_id\": \"fidwork\"\n}",
+					"raw": "{\n    \"email\":\"yannick.simon@gmail.com\",\n    \"password\":\"12345678\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/api/v1/login",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login luc",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res=pm.response.json();",
+							"pm.environment.set('access_token', res.access_token);",
+							"pm.environment.set('refresh_token', res.refresh_token);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-ty",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"luc.henquinet@ctei.fr\",\n    \"password\":\"12345678\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
