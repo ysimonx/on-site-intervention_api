@@ -33,6 +33,8 @@ class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     SQLALCHEMY_ECHO = False
 
+# >>> import uuid
+# >>> print(uuid.uuid4())
 
 config = {
     'development': DevelopmentConfig,
@@ -178,6 +180,11 @@ config = {
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"1481ef60-16f5-4090-94a4-daf787ae5926",
                                            "values": ["scaffolder"]
+                                      },
+                                       "2": { "field_name":"signature_scaffolder",
+                                           "field_label":"Signature",
+                                           "field_type":"signature",
+                                           "field_on_site_uuid":"983287bb-62c3-42cf-86f2-f15d1b9b4204",
                                       },
                                  }
                          },
