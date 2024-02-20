@@ -47,6 +47,13 @@ config = {
         "scaffolding request": {  
             "type_intervention": "scaffolding request",
             "intervention_on_site_uuid": "67ecd9b0-ff04-4eae-80fa-c55c2c3a45bf",
+            "list_statuses" : [
+                  "initiated",
+                  "assigned",
+                  "chrono",
+                  "commissionned",
+                  "canceled"
+            ],
             "forms": {
                 "1" :{"form_name":"initial request",
                       "form_on_site_uuid": "9f1f20e3-d3cd-4a58-97fc-2e42a4d7b736",
@@ -287,6 +294,13 @@ config = {
         "calorifuge": {  
             "type_intervention": "calorifuge",
             "intervention_on_site_uuid": "5ceba891-670a-40ea-ba7f-87bd4597dbde",
+            "list_statuses" : [
+                  "initiated",
+                  "assigned",
+                  "chrono",
+                  "commissionned",
+                  "canceled"
+            ],
             "forms": {
                 "1" :{"form_name":"initial request 2",
                       "form_on_site_uuid": "b89cf79e-36d2-4a65-ad01-479dc2e769f8",
