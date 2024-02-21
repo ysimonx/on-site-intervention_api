@@ -167,7 +167,7 @@ def create_photo():
     longitude                   = request.form.get('longitude')
     field_on_site_uuid          = request.form.get('field_on_site_uuid')
     newfilename                 = photo_on_site_uuid+get_extension(filename)
-    newfilename_resized         = photo_on_site_uuid+"_w300"++get_extension(filename)
+    newfilename_resized         = photo_on_site_uuid+"_w300"+get_extension(filename)
 
     file.save(os.path.join(UPLOAD_FOLDER, newfilename))
     resize_image(os.path.join(UPLOAD_FOLDER, newfilename), os.path.join(UPLOAD_FOLDER, newfilename_resized))
