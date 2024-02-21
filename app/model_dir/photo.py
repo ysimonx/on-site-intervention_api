@@ -22,6 +22,7 @@ class Photo(db.Model, MyMixin):
     intervention_on_site_uuid   = db.Column(db.String(36),  index=True)
     
     filename            = db.Column(db.String(255))
+    filename_lowres     = db.Column(db.String(255))
     latitude            = db.Column(db.Float);
     longitude           = db.Column(db.Float);
     
@@ -34,7 +35,8 @@ class Photo(db.Model, MyMixin):
             'field_on_site_uuid':           self.field_on_site_uuid,
             'form_on_site_uuid':          self.form_on_site_uuid,
             'intervention_on_site_uuid':    self.intervention_on_site_uuid,
-            'filename':                     self.filename
+            'filename':                     self.filename,
+            'filename_lowres':              self.filename_lowres
         }
         
     def to_json_light(self):
@@ -45,7 +47,8 @@ class Photo(db.Model, MyMixin):
             'field_on_site_uuid':           self.field_on_site_uuid,
             'form_on_site_uuid':            self.form_on_site_uuid,
             'intervention_on_site_uuid':    self.intervention_on_site_uuid,
-            'filename':                     self.filename
+            'filename':                     self.filename,
+            'filename_lowres':              self.filename_lowres
         }
 
 from sqlalchemy import event

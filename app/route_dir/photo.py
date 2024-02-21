@@ -1,4 +1,6 @@
 from flask import Blueprint, abort, make_response
+from PIL import Image
+from resizeimage import resizeimage
 
 import os
 from config import config
@@ -112,7 +114,12 @@ def add_geolocation(image_path, latitude, longitude):
     except Exception as e:
         print(f"Error: {str(e)}")
 
-
+def resize_image(filename_source, filename_destination):
+    fd_img = open(filename_source, 'r')
+    img = Image.open(fd_img)
+    img = resizeimage.resize_width(img, 300)
+    img.save(filename_destination, img.format)
+    fd_img.close()
 
 @app_file_photo.route("/photo", methods=["GET"])
 @jwt_required()
@@ -160,15 +167,19 @@ def create_photo():
     longitude                   = request.form.get('longitude')
     field_on_site_uuid          = request.form.get('field_on_site_uuid')
     newfilename                 = photo_on_site_uuid+get_extension(filename)
-    
+    newfilename_resized         = photo_on_site_uuid+"_w300"++get_extension(filename)
 
     file.save(os.path.join(UPLOAD_FOLDER, newfilename))
+    resize_image(os.path.join(UPLOAD_FOLDER, newfilename), os.path.join(UPLOAD_FOLDER, newfilename_resized))
+    
     add_geolocation(os.path.join(UPLOAD_FOLDER, newfilename), float(latitude), float(longitude))
+    add_geolocation(os.path.join(UPLOAD_FOLDER, newfilename_resized), float(latitude), float(longitude))
     
     photo = Photo(  photo_on_site_uuid=photo_on_site_uuid,
                     latitude=latitude, 
                     longitude=longitude, 
                     filename= newfilename, 
+                    filename_lowres=newfilename_resized,
                     field_on_site_uuid=field_on_site_uuid, 
                     tenant_id = _user.get_internal()["tenant_id"]
                 )

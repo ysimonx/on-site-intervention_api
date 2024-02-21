@@ -12,6 +12,8 @@ pip install jsonpickle
 pip install tb_rest_client
 pip install requests
 pip install Flask-Migrate
+pip install Pillow
+pip install python-resize-image
 
 
 
