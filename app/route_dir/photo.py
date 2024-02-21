@@ -23,11 +23,14 @@ app_file_photo= Blueprint('photo',__name__)
 import piexif
 from fractions import Fraction
 
-
+# extension for file upload
 ALLOWED_EXTENSIONS = {'jpg', 'jpeg'}
 
 # Setup upload folder
 UPLOAD_FOLDER = config["upload_dir"]
+
+# resize width
+RESIZE_WIDTH = 300
 
 # cf fileupload : https://flask.palletsprojects.com/en/2.2.x/patterns/fileuploads/
 
@@ -121,7 +124,7 @@ def resize_image(filename_source, filename_destination):
     # cf https://stackoverflow.com/questions/4228530/pil-thumbnail-is-rotating-my-image
     fixed_img = ImageOps.exif_transpose(img)
     
-    fixed_img = resizeimage.resize_width(fixed_img, 300)
+    fixed_img = resizeimage.resize_width(fixed_img, RESIZE_WIDTH)
     fixed_img.save(filename_destination, img.format)
     fd_img.close()
 
@@ -171,7 +174,7 @@ def create_photo():
     longitude                   = request.form.get('longitude')
     field_on_site_uuid          = request.form.get('field_on_site_uuid')
     newfilename                 = photo_on_site_uuid+get_extension(filename)
-    newfilename_resized         = photo_on_site_uuid+"_w300"+get_extension(filename)
+    newfilename_resized         = photo_on_site_uuid+"_w"+RESIZE_WIDTH+get_extension(filename)
 
     file.save(os.path.join(UPLOAD_FOLDER, newfilename))
     resize_image(os.path.join(UPLOAD_FOLDER, newfilename), os.path.join(UPLOAD_FOLDER, newfilename_resized))
