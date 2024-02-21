@@ -115,7 +115,7 @@ def add_geolocation(image_path, latitude, longitude):
         print(f"Error: {str(e)}")
 
 def resize_image(filename_source, filename_destination):
-    fd_img = open(filename_source, 'r')
+    fd_img = open(filename_source, 'rb')
     img = Image.open(fd_img)
     img = resizeimage.resize_width(img, 300)
     img.save(filename_destination, img.format)
