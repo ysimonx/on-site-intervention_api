@@ -1,5 +1,5 @@
 from flask import Blueprint, abort, make_response
-from PIL import Image
+from PIL import Image, ImageOps
 from resizeimage import resizeimage
 
 import os
@@ -117,8 +117,12 @@ def add_geolocation(image_path, latitude, longitude):
 def resize_image(filename_source, filename_destination):
     fd_img = open(filename_source, 'rb')
     img = Image.open(fd_img)
-    img = resizeimage.resize_width(img, 300)
-    img.save(filename_destination, img.format)
+    
+    # cf https://stackoverflow.com/questions/4228530/pil-thumbnail-is-rotating-my-image
+    fixed_img = ImageOps.exif_transpose(img)
+    
+    fixed_img = resizeimage.resize_width(fixed_img, 300)
+    fixed_img.save(filename_destination, img.format)
     fd_img.close()
 
 @app_file_photo.route("/photo", methods=["GET"])
