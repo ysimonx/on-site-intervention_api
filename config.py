@@ -96,6 +96,23 @@ config = {
                                            "field_on_site_uuid":"36448a1b-3f11-463a-bf60-7668f32da094",
                                            "values":["contractor"]
                                     },
+                                      "2": { "field_name":"user_name",
+                                           "field_label":"name",
+                                           "field_type":"text",
+                                           "field_on_site_uuid":"9303ae9d-ac90-4a1c-bd11-123a8e94b462",
+                                           "values":[]
+                                    },
+                                       "3": { "field_name":"user_phone",
+                                           "field_label":"telephone",
+                                           "field_type":"text",
+                                           "field_on_site_uuid":"6ab0e41c-7283-451f-a34c-a01f92ce3e61",
+                                           "values":[]
+                                    },"4": { "field_name":"user_email",
+                                           "field_label":"email",
+                                           "field_type":"text",
+                                           "field_on_site_uuid":"fad83ca8-94e3-482f-93a6-aa28e18f0dcd",
+                                           "values":[]
+                                    }
                                  
                                 },
                                }
