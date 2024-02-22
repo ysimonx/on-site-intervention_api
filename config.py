@@ -48,7 +48,7 @@ config = {
             "type_intervention": "scaffolding request",
             "intervention_on_site_uuid": "67ecd9b0-ff04-4eae-80fa-c55c2c3a45bf",
             "mandatory_lists": {
-                  { "status": 
+                  "status": 
                         {
                         "type": "fixed",
                         "values":
@@ -59,9 +59,8 @@ config = {
                               "commissionned",
                               "canceled"
                               ]
-                        }
-                  },
-                  { "scaff_type":
+                        },
+                  "scaff_type":
                         {
                         "type": "fixed",
                         "values": [
@@ -73,17 +72,15 @@ config = {
                                     "Escalier",
                                     "Autre"
                               ] 
-                        }
-                  },
-                  { "contractor": 
+                        },
+                  "contractor": 
                         {
                         "type": "administrable",
                         "values":
                               [
                               
                               ]
-                        }
-                  },
+                        },
             },
             "updat"
                 "forms": {
