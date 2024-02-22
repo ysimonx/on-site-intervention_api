@@ -86,43 +86,21 @@ config = {
                 "1" :{"form_name":"initial request",
                       "form_on_site_uuid": "9f1f20e3-d3cd-4a58-97fc-2e42a4d7b736",
                       "sections": {
-                          "1": { "section_name" : "initial request rub a",
+                          "1": { "section_name" : "User",
                                  "section_type" : "section type 1",
                                  "section_on_site_uuid": "ef637435-30fe-4a3f-941f-f29a8df8f865",
                                  "fields": {
-                                     "1": { "field_name": "field aa",
-                                           "field_type": "field_type 1","field_on_site_uuid":"46d8ccd9-5580-4c92-b9cc-eebb76b9c57c"},
-                                     "2": { "field_name": "field ab",
-                                           "field_type": "field_type 1","field_on_site_uuid":"0b3f2281-cb74-4122-bdb5-353214e7c611"},
-                                     "3": { "field_name": "field ac",
-                                           "field_type": "field_type 1","field_on_site_uuid":"0b3f2281-cb74-4122-bdb5-353214e7c611"},
-                                 }
-                                },
+                                     "1": { "field_name":"contractor",
+                                           "field_label":"Contractor",
+                                           "field_type":"list_from_mandatory_lists",
+                                           "field_on_site_uuid":"e28cbc05-2f4b-46f5-acca-c147ae8a1db8",
+                                           "values":["contractor"]
+                                    },
                                  
-                          "2": { "section_name" : "initial request rub b",
-                                "section_type" : "section type 2",
-                                "section_on_site_uuid": "6b8b8b4c-8bca-4697-8c3c-6b70d4fd9b51",
-                                 "fields": {
-                                     "1": { "field_name": "field ba",
-                                           "field_type": "field_type 1","field_on_site_uuid":"0b3f2281-cb74-4122-bdb5-353214e7c611"},
-                                     "2": { "field_name": "field bb",
-                                           "field_type": "field_type 1","field_on_site_uuid":"30a238fe-5de1-48c6-b91a-3d177124f634"},
-                                     "3": { "field_name": "field bc",
-                                           "field_type": "field_type 1","field_on_site_uuid":"f249bf91-9bfd-4516-96a5-94bd31e9e391"},
-                                 } },
-                          "3": { "section_name" : "initial request rub c",
-                                "section_type" : "section type 3",
-                                "section_on_site_uuid": "83ce8e7f-1c28-4270-bede-9bd5dcd6ab0e",
-                                 "fields": {
-                                     "1": { "field_name": "field ca",
-                                           "field_type": "field_type 1","field_on_site_uuid":"9d4f8747-f238-4c41-81b7-b16adb97d9c7"},
-                                     "2": { "field_name": "field cb",
-                                           "field_type": "field_type 1","field_on_site_uuid":"7669d2b9-e626-4acc-842c-6922d2737a1f"},
-                                     "3": { "field_name": "field cc",
-                                           "field_type": "field_type 1","field_on_site_uuid":"d76e74ca-b7ce-463c-b833-4ba45585d224"},
-                                 } },
-                     }
-                    },
+                                },
+                               }
+                        }
+                  },
                 "2" :{"form_name":"visit",
                       "form_on_site_uuid": "a81c475c-3b9d-40da-839d-56eeee06e85a",
                       "sections": {
