@@ -93,7 +93,7 @@ config = {
                                      "1": { "field_name":"contractor",
                                            "field_label":"Contractor",
                                            "field_type":"list_from_mandatory_lists",
-                                           "field_on_site_uuid":"e28cbc05-2f4b-46f5-acca-c147ae8a1db8",
+                                           "field_on_site_uuid":"e28cbc05-2f4b-46f5-acca-c147ae8a1db7",
                                            "values":["contractor"]
                                     },
                                  
