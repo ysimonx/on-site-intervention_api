@@ -11,7 +11,6 @@ class Config:
     MAIL_PASSWORD             = os.getenv("MAIL_PASSWORD")
     MAIL_FROM                 = os.getenv("MAIL_FROM")
 
-
     @staticmethod
     def init_app(app):
         pass
@@ -60,7 +59,7 @@ config = {
                               "canceled"
                               ]
                         },
-                  "scaff_type":
+                  "scaffold_type":
                         {
                         "type": "fixed",
                         "values": [
@@ -75,15 +74,15 @@ config = {
                         },
                   "contractor": 
                         {
-                        "type": "administrable",
+                        "type": "administrable_by_site",
                         "values":
                               [
                               
                               ]
                         },
             },
-            "updat"
-                "forms": {
+            
+            "forms": {
                 "1" :{"form_name":"initial request",
                       "form_on_site_uuid": "9f1f20e3-d3cd-4a58-97fc-2e42a4d7b736",
                       "sections": {
@@ -133,8 +132,9 @@ config = {
                                  "fields": {
                                     "1": { "field_name":"scaff_type",
                                            "field_label":"Type",
-                                           "field_type":"list",
-                                           "field_on_site_uuid":"e28cbc05-2f4b-46f5-acca-c147ae8a1db8"
+                                           "field_type":"list_from_mandatory_list",
+                                           "field_on_site_uuid":"e28cbc05-2f4b-46f5-acca-c147ae8a1db8",
+                                           "values":["scaffold_type"]
                                     },
                                      "2": { "field_name":"visit_date",
                                            "field_label":"Visit Date",
