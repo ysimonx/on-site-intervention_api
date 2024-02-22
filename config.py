@@ -109,7 +109,7 @@ config = {
                                            "values":[]
                                     },"4": { "field_name":"user_email",
                                            "field_label":"email",
-                                           "field_type":"text",
+                                           "field_type":"email",
                                            "field_on_site_uuid":"fad83ca8-94e3-482f-93a6-aa28e18f0dcd",
                                            "values":[]
                                     }
