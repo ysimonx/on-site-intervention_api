@@ -47,14 +47,46 @@ config = {
         "scaffolding request": {  
             "type_intervention": "scaffolding request",
             "intervention_on_site_uuid": "67ecd9b0-ff04-4eae-80fa-c55c2c3a45bf",
-            "list_statuses" : [
-                  "initiated",
-                  "assigned",
-                  "chrono",
-                  "commissionned",
-                  "canceled"
-            ],
-            "forms": {
+            "mandatory_lists": {
+                  { "status": 
+                        {
+                        "type": "fixed",
+                        "values":
+                              [
+                              "initiated",
+                              "assigned",
+                              "chrono",
+                              "commissionned",
+                              "canceled"
+                              ]
+                        }
+                  },
+                  { "scaff_type":
+                        {
+                        "type": "fixed",
+                        "values": [
+                                    "Fixe",
+                                    "Roulant",
+                                    "Balisage en dur",
+                                    "Protection", 
+                                    "Potence",
+                                    "Escalier",
+                                    "Autre"
+                              ] 
+                        }
+                  },
+                  { "contractor": 
+                        {
+                        "type": "administrable",
+                        "values":
+                              [
+                              
+                              ]
+                        }
+                  },
+            },
+            "updat"
+                "forms": {
                 "1" :{"form_name":"initial request",
                       "form_on_site_uuid": "9f1f20e3-d3cd-4a58-97fc-2e42a4d7b736",
                       "sections": {
@@ -105,16 +137,7 @@ config = {
                                     "1": { "field_name":"scaff_type",
                                            "field_label":"Type",
                                            "field_type":"list",
-                                           "field_on_site_uuid":"e28cbc05-2f4b-46f5-acca-c147ae8a1db8",
-                                           "values": [
-                                               "Fixe",
-                                               "Roulant",
-                                               "Balisage en dur",
-                                               "Protection", 
-                                               "Potence",
-                                               "Escalier",
-                                               "Autre"
-                                            ] 
+                                           "field_on_site_uuid":"e28cbc05-2f4b-46f5-acca-c147ae8a1db8"
                                     },
                                      "2": { "field_name":"visit_date",
                                            "field_label":"Visit Date",
