@@ -132,7 +132,7 @@ config = {
                                  "fields": {
                                     "1": { "field_name":"scaff_type",
                                            "field_label":"Type",
-                                           "field_type":"list_from_mandatory_list",
+                                           "field_type":"list_from_mandatory_lists",
                                            "field_on_site_uuid":"e28cbc05-2f4b-46f5-acca-c147ae8a1db8",
                                            "values":["scaffold_type"]
                                     },
