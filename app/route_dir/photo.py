@@ -173,20 +173,22 @@ def create_photo():
     latitude                    = request.form.get('latitude')
     longitude                   = request.form.get('longitude')
     field_on_site_uuid          = request.form.get('field_on_site_uuid')
-    newfilename                 = photo_on_site_uuid+get_extension(filename)
-    newfilename_resized         = photo_on_site_uuid+"_w"+str(RESIZE_WIDTH)+get_extension(filename)
+    newfilename_fullsize        = photo_on_site_uuid+"_fullsize"+get_extension(filename)
+    newfilename         = photo_on_site_uuid+get_extension(filename)
 
-    file.save(os.path.join(UPLOAD_FOLDER, newfilename))
-    resize_image(os.path.join(UPLOAD_FOLDER, newfilename), os.path.join(UPLOAD_FOLDER, newfilename_resized))
+    # save image as full size
+    file.save(os.path.join(UPLOAD_FOLDER, newfilename_fullsize))
+    # copy image, and resize this copy to small width 
+    resize_image(os.path.join(UPLOAD_FOLDER, newfilename_fullsize), os.path.join(UPLOAD_FOLDER, newfilename))
     
     add_geolocation(os.path.join(UPLOAD_FOLDER, newfilename), float(latitude), float(longitude))
-    add_geolocation(os.path.join(UPLOAD_FOLDER, newfilename_resized), float(latitude), float(longitude))
+    add_geolocation(os.path.join(UPLOAD_FOLDER, newfilename_fullsize), float(latitude), float(longitude))
     
     photo = Photo(  photo_on_site_uuid=photo_on_site_uuid,
                     latitude=latitude, 
                     longitude=longitude, 
                     filename= newfilename, 
-                    filename_lowres=newfilename_resized,
+                    filename_fullsize=newfilename_fullsize,
                     field_on_site_uuid=field_on_site_uuid, 
                     tenant_id = _user.get_internal()["tenant_id"]
                 )
