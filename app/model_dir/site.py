@@ -23,6 +23,7 @@ class Site(db.Model, MyMixin):
     time_updated    = db.Column(db.DateTime(timezone=True), onupdate=db.func.now())
     
     dict_of_lists   =  db.Column(db.Text)
+    dict_of_lists_for_places = db.Column(db.Text)
     
     roles = db.relationship('Role')
      
@@ -33,11 +34,17 @@ class Site(db.Model, MyMixin):
         else:
             dict_of_lists =json.loads(self.dict_of_lists)
             
+        if self.dict_of_lists_for_places is None:
+            dict_of_lists_for_places={}
+        else:
+            dict_of_lists_for_places=json.loads(self.dict_of_lists_for_places)
+            
         return {
             'id':               self.id,
             '_internal' :       self.get_internal(),
             'name':             self.name,
             'dict_of_lists':    dict_of_lists,
+            'dict_of_lists_for_places': dict_of_lists_for_places,
             'roles'         :  [{item.name: item.to_json_light()} for item in self.roles] 
         }
 

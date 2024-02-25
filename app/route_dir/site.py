@@ -72,6 +72,26 @@ def post_site_lists(site_id):
     return jsonify(_site.to_json()),200
 
 
+@app_file_site.route("/site/<site_id>/lists_for_places", methods=["POST"])
+@jwt_required() 
+def post_site_lists(site_id):
+    
+    _site = Site.query.get(site_id)
+    if _site is None:
+        abort(make_response(jsonify(error="site not found"), 404))
+
+    dict_of_lists_for_places = request.json.get('dict_of_lists_for_places', None)
+    if dict_of_lists_for_places is None:
+        abort(make_response(jsonify(error="missing dict_of_lists_for_places parameter"), 400))
+    
+    print(dict_of_lists_for_places)
+    _site.dict_of_lists_for_places = json.dumps(dict_of_lists_for_places)
+    db.session.commit()
+    
+    return jsonify(_site.to_json()),200
+
+
+
 @app_file_site.route("/site/<site_id>/user", methods=["POST"])
 @jwt_required() 
 def post_site_user(site_id):
