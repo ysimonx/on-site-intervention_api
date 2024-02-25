@@ -74,7 +74,7 @@ def post_site_lists(site_id):
 
 @app_file_site.route("/site/<site_id>/lists_for_places", methods=["POST"])
 @jwt_required() 
-def post_site_lists(site_id):
+def post_site_lists_for_places(site_id):
     
     _site = Site.query.get(site_id)
     if _site is None:
