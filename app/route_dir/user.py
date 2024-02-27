@@ -40,7 +40,7 @@ app_file_user = Blueprint('user',__name__)
 def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-
+    current_app.logger.info("login attempt for %s", email)
     user = getByIdOrEmail(obj=User,  id=email)
     
     if user is None:
@@ -103,7 +103,10 @@ def reset_password():
     if not 'email' in request.json:
         abort(make_response(jsonify(error="missing email parameter"), 400))
   
-    _user = getByIdOrEmail(obj=User, id=request.json.get('email'))
+    attempt_email = request.json.get('email')
+    
+    current_app.logger.info("reset_password attempt for %s", attempt_email)
+    _user = getByIdOrEmail(obj=User, id=attempt_email)
     if _user is None:
           abort(make_response(jsonify(error="error"), 400))
     

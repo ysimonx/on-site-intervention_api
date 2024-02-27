@@ -130,6 +130,15 @@ def before_request():
     g.current_user = None
     g.current_tenant = None
     
+    # 
+    try:
+        xf = request.headers.get('X-Forwarded-For')
+        app.logger.info("before_request X-Forwarded-For : %s", xf)
+    except:
+        app.logger.info("before_request no X-Forwarded-For")
+
+
+
     try:
         tenant_id=request.args.get("tenant_id")
         if tenant_id is not None:
