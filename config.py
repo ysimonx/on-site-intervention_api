@@ -509,7 +509,7 @@ config = {
         
     },
     "roles": [
-          "site adminstrator",
+          "site administrator",
           "coordinator",
           "operator",
           "billing manager",
