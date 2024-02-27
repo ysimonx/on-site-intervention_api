@@ -344,7 +344,7 @@ config = {
                                            "field_label":"Scaffolder",
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"1481ef60-16f5-4090-94a4-daf787ae5926",
-                                           "values": ["scaffolder"]
+                                           "values": ["scaffold builder"]
                                       },
                                        "2": { "field_name":"visit_signature_scaffolder",
                                            "field_label":"Signature",
@@ -366,7 +366,7 @@ config = {
                                            "field_label":"Building coordinator",
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"032dfe04-c8f0-4552-9cd1-248b272c7c15",
-                                           "values": ["building_coordinator"]
+                                           "values": ["building coordinator"]
                                       },
                                        "6": { "field_name":"visit_signature_building_coordinator",
                                            "field_label":"Signature",
@@ -514,9 +514,10 @@ config = {
           "coordinator",
           "operator",
           "billing manager",
-          "scaffolder builder",
-          "building_coordinator",
+          "scaffold builder",
+          "building coordinator",
           "hse engineer",                                     #Health and Safety Project Coordinator
-          "commissioning engineer"
+          "commissioning engineer",
+          "user"
       ]
 }
