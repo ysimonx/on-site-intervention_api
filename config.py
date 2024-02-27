@@ -374,7 +374,7 @@ config = {
                                            "field_on_site_uuid":"47afbe06-57a3-416e-8f39-42a4916bf97e",
                                       },
                                        "7": { "field_name":"visit_user_hse_engineer",
-                                           "field_label":"Building coordinator",
+                                           "field_label":"HSE engineer",
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"5a3f72df-7599-48c4-8f51-8fa6127d3a5d",
                                            "values": ["hse engineer"]
