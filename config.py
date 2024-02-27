@@ -508,5 +508,14 @@ config = {
             }
         
     },
-    "roles": ["admin", "coordinator","billing","commissioning","user","operator","scaffolder","building_coordinator"]
+    "roles": [
+          "site adminstrator",
+          "coordinator",
+          "operator",
+          "billing manager",
+          "scaffolder builder",
+          "building_coordinator",
+          "hse engineer",                                     #Health and Safety Project Coordinator
+          "commissioning engineer"
+      ]
 }
