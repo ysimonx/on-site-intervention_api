@@ -449,6 +449,10 @@ config = {
                                             "field_label": "Hauteur",
                                            "field_type": "integer",
                                            "field_on_site_uuid":"95d01fa7-0358-4a85-9bfd-9a5951f0b966"},
+                                      "4": { "field_name": "commissioning_conformite_notice",
+                                            "field_label": "Conforme notice",
+                                           "field_type": "switch",
+                                           "field_on_site_uuid":"1742f506-42bf-43ef-9df3-34a021f3b26e"},
                               }
                         },
                          "3": { "section_name" : "Medias",
@@ -473,6 +477,46 @@ config = {
                                           "field_on_site_uuid":"ba366f19-e4ca-43a9-858e-2dc6e6d2d87d",
                                           "values":[]
                                  } },
+                        
+                        },
+                         "4": { "section_name" : "signatures",
+                                "section_type" : "section type 1",
+                                "section_on_site_uuid": "a8432ea0-d164-47f9-a0a2-877f60078380",
+                                 "fields": {
+                                      "1": { "field_name":"commissioning_user_commissioning_engineer",
+                                           "field_label":"commussioning engineer",
+                                           "field_type":"user_from_role",
+                                           "field_on_site_uuid":"dd18e0d5-8d3a-477e-ab3d-09d5736b7ffa",
+                                           "values": ["commissioning engineer"]
+                                      },
+                                       "2": { "field_name":"commissioning_signature_commissioning_engineer",
+                                           "field_label":"Signature",
+                                           "field_type":"signature",
+                                           "field_on_site_uuid":"e319c8dc-73b6-4b42-8e2f-fec5a627e14d",
+                                      },
+                                        "3": { "field_name":"commissioning_user_scaffolder",
+                                           "field_label":"Scaffolder",
+                                           "field_type":"user_from_role",
+                                           "field_on_site_uuid":"6f212152-0b03-4bec-89a1-bedddb42a59b",
+                                           "values": ["scaffold builder"]
+                                      },
+                                       "4": { "field_name":"commissioning_signature_scaffolder",
+                                           "field_label":"Signature",
+                                           "field_type":"signature",
+                                           "field_on_site_uuid":"8510e1e8-ac1a-470e-a040-7640a8d237c1",
+                                      },
+                                        "5": { "field_name":"commissioning_user_email",
+                                           "field_label":"user e-mail",
+                                           "field_type":"email",
+                                           "field_on_site_uuid":"d0316f25-508b-4817-b0c6-e42771bab6d0",
+                                           "values": []
+                                      },
+                                       "6": { "field_name":"commissioning_signature_user",
+                                           "field_label":"Signature User",
+                                           "field_type":"signature",
+                                           "field_on_site_uuid":"dd0dc969-5daf-4dd3-8877-d1406b02b5f8",
+                                      },
+                                 },
                         
                         }
                   
