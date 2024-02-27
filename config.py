@@ -251,7 +251,40 @@ config = {
                               }
                               }
                               },
-                        "2": { "section_name" : "Dimensions",
+                        "2": { "section_name" : "Security",
+                                "section_type" : "section type 1",
+                                "section_on_site_uuid": "a706e588-b8f5-4b11-a711-ee1e7612bb6a",
+                                 "fields": {
+                                      
+                                      "1": { "field_name":"visit_obstruct_access",
+                                           "field_label":"obstructs access or emergency device",
+                                           "field_type":"switch",
+                                           "field_on_site_uuid":"3ab35154-c63a-4bf4-b085-8d6a8aa74cbe",
+                                           "value_on": "oui",
+                                           "value_off": "non"
+                                      },
+                                      
+                                      "2": { "field_name":"visit_in_mobile_equipements_movement_area",
+                                           "field_label":"in mobile equipements movement area",
+                                           "field_type":"switch",
+                                           "field_on_site_uuid":"a5f14187-3704-47b2-b667-5000c37de47e",
+                                           "value_on": "oui",
+                                           "value_off": "non"
+                                      },
+                                      
+                                      "3": { "field_name":"visit_nearby_live_electric_network",
+                                           "field_label":"nearby live electric network",
+                                           "field_type":"switch",
+                                           "field_on_site_uuid":"ac96883f-6e96-4dd9-99cc-0669022b43aa",
+                                           "value_on": "oui",
+                                           "value_off": "non"
+                                      },
+                                      
+                                      
+                                      
+                                 }
+                                },
+                        "3": { "section_name" : "Dimensions",
                                 "section_type" : "section type 1",
                                 "section_on_site_uuid": "de3b8182-df35-4c6a-9aea-8d652efd8142",
                                  "fields": {
@@ -303,7 +336,7 @@ config = {
                                     },
                                  }
                                 },
-                        "3": { "section_name" : "Intervenants",
+                        "4": { "section_name" : "Intervenants",
                                 "section_type" : "section type 3",
                                 "section_on_site_uuid": "b72ec40c-0194-47a0-9744-35137dde1e9d",
                                  "fields": {
@@ -320,7 +353,7 @@ config = {
                                       },
                                  }
                          },
-                        "4": { "section_name" : "Medias",
+                        "5": { "section_name" : "Medias",
                                 "section_type" : "section type 4",
                                 "section_on_site_uuid": "c4e6b4b9-4b87-4e75-b873-8376acb6fb71",
                                  "fields": {
@@ -331,7 +364,19 @@ config = {
                                            "values": []
                                       },
                                  }
-                         }
+                         },
+                        "6": { "section_name" : "Commentaires",
+                              "section_type" : "section type 5",
+                              "section_on_site_uuid": "10523e6f-da11-406e-a39d-4b7e00e1e125",
+                              "fields": {
+                                    "1": { "field_name":"visit_comments",
+                                          "field_label":"comments",
+                                          "field_type":"paragraph",
+                                          "field_on_site_uuid":"25cd9145-cd6f-422d-aab7-a25f7ba23fd4",
+                                          "values":[]
+                              },
+                              }
+                        },
                         }
                     },
                 "3" :{"form_name":"commissioning",
@@ -440,5 +485,5 @@ config = {
             }
         
     },
-    "roles": ["admin", "coordinator","billing","commissioning","user","operator","scaffolder"]
+    "roles": ["admin", "coordinator","billing","commissioning","user","operator","scaffolder","building_coordinator"]
 }
