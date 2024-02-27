@@ -317,12 +317,7 @@ def create_site():
             update_sites_interventions_templates(_site, _type_intervention, item);
             
                 
-            
-                
     db.session.commit()
-    #
-    
-    
     
     
     # j'ajoute tous les roles par defaut    
