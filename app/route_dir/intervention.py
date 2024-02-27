@@ -19,7 +19,7 @@ from .. import db, getByIdOrByName
 app_file_intervention= Blueprint('intervention',__name__)
 
 import json
-from sqlalchemy import func
+from sqlalchemy import func, desc
 
 @app_file_intervention.route("/intervention", methods=["GET"])
 def get_interventions():
@@ -215,9 +215,16 @@ def post_intervention_values():
     interventionValues= InterventionValues.query.filter(InterventionValues.intervention_values_on_site_uuid == intervention_values_on_site_uuid).first()
     if interventionValues is None:
         
-        max_id = db.session.query(func.max(InterventionValues.hashtag)).scalar()
-        if max_id is None:
-            max_id = 1
+        
+        # je vais chercher le max hashtag des interventionValues pour un site donné (ainsi, ce compteur sera effectué par Site ...)
+        _interventionValueMax = db.session.query(InterventionValues).filter(InterventionValues.site_id==_site.id).order_by(desc(InterventionValues.hashtag)).first()
+        if _interventionValueMax is None:
+             max_id=0
+        else:
+            max_id=_interventionValueMax.hashtag  
+        
+            
+        
             
         interventionValues = InterventionValues(
                         intervention_values_on_site_uuid = intervention_values_on_site_uuid,
@@ -282,3 +289,13 @@ def delete_intervention(id):
     db.session.delete(intervention)
     db.session.commit()
     return jsonify({'result': True, 'id': id})
+
+@app_file_intervention.route("/intervention_values/hashtag/<site_id>")
+@jwt_required()
+def get_interventionvalues_siteid(site_id):
+    _interventionValueMax = db.session.query(InterventionValues).filter(InterventionValues.site_id==site_id).order_by(desc(InterventionValues.hashtag)).first()
+    if _interventionValueMax is None:
+         max_id=0
+    else:
+        max_id=_interventionValueMax.hashtag  
+    return jsonify({'max_id': max_id, 'site_id': site_id})
