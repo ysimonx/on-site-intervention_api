@@ -407,13 +407,13 @@ def update_sites_interventions_templates( _site,  _type_intervention, template )
                 db.session.add(_form)
                 # db.session.commit()
             
-            print("------------------")
-            print(form_values)
+            current_app.logger.info("------------------")
             
             sections=form_values["sections"]
             if sections is not None:
                 for key_sections in sections.keys():
-                    print("Section #", key_sections)
+                    current_app.logger.info("Section #%s", key_sections)
+                    
                     section_values=sections[key_sections]
                     section_on_site_uuid = section_values['section_on_site_uuid']
                     section_name=section_values['section_name']
@@ -439,11 +439,10 @@ def update_sites_interventions_templates( _site,  _type_intervention, template )
                     fields=section_values["fields"]
                     if fields is not None:
                         for key_field in fields.keys():
-                            print("Field #", key_field)
-                            
+                            current_app.logger.info("Field #%s", key_field)
                             field_attributes=fields[key_field]
-                            print(field_attributes)
                             
+                            current_app.logger.info(field_attributes)
                             field_on_site_uuid = field_attributes['field_on_site_uuid']
                             field_name         = field_attributes['field_name']
                             field_type         = field_attributes['field_type']
@@ -461,7 +460,7 @@ def update_sites_interventions_templates( _site,  _type_intervention, template )
                                 )
                                 db.session.add(_field)
                             else:
-                                print("UPDATE !")
+                                current_app.logger.info("update !")
                                 _field.field_type=field_type
                                 _field.field_name=field_name
                                 db.session.add(_field)
