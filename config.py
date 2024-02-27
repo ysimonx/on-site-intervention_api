@@ -59,6 +59,46 @@ config = {
                               "canceled"
                               ]
                         },
+                  "actions":
+                        {
+                        "type": "fixed",
+                        "values":
+                              [
+                                    "Montage échafaudage",
+                                    "Modification échafaudage",
+                                    "Montage échafaudage roulant",
+                                    "Modification échafaudage roulant",
+                                    "Montage protection collective",
+                                    "Modification protection collective",
+                                    "Autres structures"
+                              ]
+                        },
+                  "utilisations":
+                        {
+                        "type": "fixed",
+                        "values":
+                              [
+                                    "Acces sécurisé",
+                                    "Travaux de peinture",
+                                    "Travaux de métallurgie",
+                                    "Travaux de montage tuyauterie",
+                                    "Travaux d'isolation",
+                                    "Travaux électrique",
+                                    "Travaux de génie civil",
+                                    "Travaux d'inspection",
+                                    "Travaux d'instrumentation"
+                              ]
+                        },
+                   "pmat":
+                        {
+                        "type": "fixed",
+                        "values":
+                              [
+                                    "< 100 kg",
+                                    "> 100 kg (notifie in description the load)",
+                                    "Not concerned"
+                              ]
+                        },
                   "scaffold_type":
                         {
                         "type": "fixed",
@@ -90,33 +130,92 @@ config = {
                                  "section_type" : "section type 1",
                                  "section_on_site_uuid": "ef637435-30fe-4a3f-941f-f29a8df8f865",
                                  "fields": {
-                                     "1": { "field_name":"contractor",
+                                    "1": { "field_name":"contractor",
                                            "field_label":"Contractor",
                                            "field_type":"list_from_mandatory_lists",
                                            "field_on_site_uuid":"36448a1b-3f11-463a-bf60-7668f32da094",
                                            "values":["contractor"]
                                     },
-                                      "2": { "field_name":"user_name",
+                                    "2": { "field_name":"user_name",
                                            "field_label":"name",
                                            "field_type":"text",
                                            "field_on_site_uuid":"9303ae9d-ac90-4a1c-bd11-123a8e94b462",
                                            "values":[]
                                     },
-                                       "3": { "field_name":"user_phone",
+                                    "3": { "field_name":"user_phone",
                                            "field_label":"telephone",
                                            "field_type":"text",
                                            "field_on_site_uuid":"6ab0e41c-7283-451f-a34c-a01f92ce3e61",
                                            "values":[]
-                                    },"4": { "field_name":"user_email",
+                                    },
+                                    "4": { "field_name":"user_email",
                                            "field_label":"email",
                                            "field_type":"email",
                                            "field_on_site_uuid":"fad83ca8-94e3-482f-93a6-aa28e18f0dcd",
                                            "values":[]
                                     }
-                                 
                                 },
-                               }
-                        }
+                              },
+                          "2": { "section_name" : "Specifications",
+                                 "section_type" : "section type 2",
+                                 "section_on_site_uuid": "68bb7af3-d341-4a74-baa6-2b9a699404cc",
+                                 "fields": {
+                                    "1": { "field_name":"feb",
+                                           "field_label":"feb",
+                                           "field_type":"text",
+                                           "field_on_site_uuid":"66ddbbdf-414b-4d53-acbc-392311fcc629",
+                                           "values":[]
+                                    },
+                                    "2": { "field_name":"date1stutil",
+                                           "field_label":"date 1s util",
+                                           "field_type":"date",
+                                           "field_on_site_uuid":"10909dee-86da-459f-8094-ee3d199e1631",
+                                           "values":[]
+                                    },
+                                    "3": { "field_name":"duration_in_days",
+                                           "field_label":"how many days",
+                                           "field_type":"integer",
+                                           "field_on_site_uuid":"34ea515d-0bff-4651-91e7-a7a24b243b6b",
+                                           "values":[]
+                                    },
+                                    "4": { "field_name":"action",
+                                           "field_label":"action",
+                                           "field_type":"list_from_mandatory_lists",
+                                           "field_on_site_uuid":"8dce593a-d863-489f-8249-530a24d10512",
+                                           "values":["actions"]
+                                    },
+                                    "5": { "field_name":"utilisation",
+                                           "field_label":"utilisation",
+                                           "field_type":"list_from_mandatory_lists",
+                                           "field_on_site_uuid":"82ab9a01-4672-4b35-8016-32e58d001b11",
+                                           "values":["utilisations"]
+                                    },
+                                    "6": { "field_name":"pmat",
+                                           "field_label":"pmat",
+                                           "field_type":"list_from_mandatory_lists",
+                                           "field_on_site_uuid":"f5c85e28-57b9-438a-a48c-563e8d0a9905",
+                                           "values":[]
+                                    },
+                                    "7": { "field_name":"numotp",
+                                           "field_label":"numotp",
+                                           "field_type":"list_from_mandatory_lists",
+                                           "field_on_site_uuid":"4c4549c7-a7b7-4491-abfd-0361db531e02",
+                                           "values":[]
+                                    },
+                                 }
+                              },
+                          "3": { "section_name" : "Description",
+                                 "section_type" : "section type 3",
+                                 "section_on_site_uuid": "219fa801-82f3-450b-97f1-9d2db8bf33af",
+                                 "fields": {
+                                       "1": { "field_name":"description",
+                                           "field_label":"description",
+                                           "field_type":"paragraph",
+                                           "field_on_site_uuid":"1e8d26db-3513-4a7d-afc8-9610525b6521",
+                                           "values":[]
+                                    },
+                                 }
+                          }
                   },
                 "2" :{"form_name":"visit",
                       "form_on_site_uuid": "a81c475c-3b9d-40da-839d-56eeee06e85a",
@@ -304,6 +403,7 @@ config = {
                                            "field_type": "field_type 1","field_on_site_uuid":"7a24e3d4-fbf4-40a8-85ae-4dc0be6faf1d"},
                                  } },
                      }}
+            }
             }
         },
         "calorifuge": {  
