@@ -294,8 +294,8 @@ config = {
                                            "field_on_site_uuid":"43f30456-0f0d-4fef-842c-01f869f85cdd",
                                            "values": [
                                                "Classe 3 (répartis 250kg/m2)",
-                                               "Classe 4 et 5 (300kg/m2>répartis<450kg/m2)",
-                                               "Classe 6 (450 Kg/m2>répartis<600kg/m2)",
+                                               "Classe 4 et 5 (300kg\/m2>répartis<450kg\/m2)",
+                                               "Classe 6 (450 Kg\/m2>répartis<600kg\/m2)",
                                                "autre(à renseigner dans commentaire)", 
                                                
                                             ] 
