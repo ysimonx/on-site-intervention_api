@@ -125,12 +125,12 @@ config = {
                 "1" :{"form_name":"initial request",
                       "form_on_site_uuid": "9f1f20e3-d3cd-4a58-97fc-2e42a4d7b736",
                       "sections": {
-                        "1": { "section_name" : "User",
+                        "1": { "section_name" : "user",
                               "section_type" : "section type 1",
                               "section_on_site_uuid": "ef637435-30fe-4a3f-941f-f29a8df8f865",
                               "fields": {
                               "1": { "field_name":"contractor",
-                                          "field_label":"Contractor",
+                                          "field_label":"contractor",
                                           "field_type":"list_from_mandatory_lists",
                                           "field_on_site_uuid":"36448a1b-3f11-463a-bf60-7668f32da094",
                                           "values":["contractor"]
@@ -155,7 +155,7 @@ config = {
                               }
                               },
                         },
-                        "2": { "section_name" : "Specifications",
+                        "2": { "section_name" : "specifications",
                               "section_type" : "section type 2",
                               "section_on_site_uuid": "68bb7af3-d341-4a74-baa6-2b9a699404cc",
                               "fields": {
@@ -203,7 +203,7 @@ config = {
                               },
                               }
                         },
-                        "3": { "section_name" : "Description",
+                        "3": { "section_name" : "description",
                               "section_type" : "section type 3",
                               "section_on_site_uuid": "219fa801-82f3-450b-97f1-9d2db8bf33af",
                               "fields": {
@@ -215,7 +215,7 @@ config = {
                               },
                               }
                         },
-                        "4": { "section_name" : "Medias",
+                        "4": { "section_name" : "medias",
                                 "section_type" : "section type 4",
                                 "section_on_site_uuid": "e6391434-1e0e-48be-8b69-aa603cb99a9e",
                                  "fields": {
@@ -232,18 +232,18 @@ config = {
                 "2" :{"form_name":"visit",
                       "form_on_site_uuid": "a81c475c-3b9d-40da-839d-56eeee06e85a",
                       "sections": {
-                        "1": { "section_name" : "Techniques",
+                        "1": { "section_name" : "techniques",
                               "section_type" : "section type 1",
                               "section_on_site_uuid": "11b19f92-b590-44d5-b29c-4144b709bd9b",
                               "fields": {
                               "1": { "field_name":"scaff_type",
-                                          "field_label":"Type",
+                                          "field_label":"type",
                                           "field_type":"list_from_mandatory_lists",
                                           "field_on_site_uuid":"e28cbc05-2f4b-46f5-acca-c147ae8a1db8",
                                           "values":["scaffold_type"]
                               },
                                     "2": { "field_name":"visit_date",
-                                          "field_label":"Visit Date",
+                                          "field_label":"visit Date",
                                           "field_type":"date",
                                           "field_on_site_uuid":"a1d5131d-d8bc-4783-8c0b-fb81f5e4a459",
                                           "default_value":"now"
@@ -251,7 +251,7 @@ config = {
                               }
                               }
                               },
-                        "2": { "section_name" : "Security",
+                        "2": { "section_name" : "security",
                                 "section_type" : "section type 1",
                                 "section_on_site_uuid": "a706e588-b8f5-4b11-a711-ee1e7612bb6a",
                                  "fields": {
@@ -284,12 +284,12 @@ config = {
                                       
                                  }
                                 },
-                        "3": { "section_name" : "Dimensions",
+                        "3": { "section_name" : "dimensions",
                                 "section_type" : "section type 1",
                                 "section_on_site_uuid": "de3b8182-df35-4c6a-9aea-8d652efd8142",
                                  "fields": {
                                       "1": { "field_name":"scaff_charge_exploitation_prevue",
-                                           "field_label":"Charge Exploit prévue",
+                                           "field_label":"charge Exploit prévue",
                                            "field_type":"list",
                                            "field_on_site_uuid":"43f30456-0f0d-4fef-842c-01f869f85cdd",
                                            "values": [
@@ -300,26 +300,26 @@ config = {
                                                
                                             ] 
                                         },
-                                      "2": { "field_name":"scaff_conforme_notice",
-                                           "field_label":"Conforme Notice",
+                                      "2": { "field_name":"visit_scaff_conforme_notice",
+                                           "field_label":"conforme notice",
                                            "field_type":"switch",
                                            "field_on_site_uuid":"fb737b8d-db58-418f-a69f-b437539cdec6",
                                            "value_on": "oui",
                                            "value_off": "non"
                                       },
                                       "3": { "field_name":"visit_date_reception_prevue",
-                                           "field_label":"Date Réception prévue",
+                                           "field_label":"date réception prévue",
                                            "field_type":"date",
                                            "field_on_site_uuid":"4d83d71d-adfe-45f8-968c-5d9761f4c288",
                                            "default_value":"j+15",
                                       },
                                      "4": { "field_name": "visit_scaff_width",
-                                            "field_label": "Longueur",
+                                            "field_label": "longueur",
                                            "field_type": "integer",
                                            "field_on_site_uuid":"8dd3f411-6f67-43c4-9d9d-1d420cc6bc68"
                                            },
                                      "5": { "field_name": "visit_scaff_depth",
-                                           "field_label": "Largeur",
+                                           "field_label": "largeur",
                                            "field_type": "integer",
                                            "field_on_site_uuid":"0b1a49af-757f-4127-a0fb-f525d2f71f70"},
                                      "6": { "field_name": "visit_scaff_height",
@@ -327,7 +327,7 @@ config = {
                                            "field_type": "integer",
                                            "field_on_site_uuid":"29c05fa8-c1d6-4026-bd4a-356a1e0eca7b"},
                                       "7": { "field_name":"visit_scaff_nb_planchers_travail",
-                                           "field_label":"Nombre de planchers travail",
+                                           "field_label":"nombre de planchers travail",
                                            "field_type":"list",
                                            "field_on_site_uuid":"552460e5-b326-4cba-816c-e84202f1f83c",
                                            "values": [
@@ -336,18 +336,18 @@ config = {
                                     },
                                  }
                                 },
-                        "4": { "section_name" : "Intervenants",
+                        "4": { "section_name" : "intervenants",
                                 "section_type" : "section type 3",
                                 "section_on_site_uuid": "b72ec40c-0194-47a0-9744-35137dde1e9d",
                                  "fields": {
                                        "1": { "field_name":"visit_user_scaffolder",
-                                           "field_label":"Scaffolder",
+                                           "field_label":"scaffolder",
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"1481ef60-16f5-4090-94a4-daf787ae5926",
                                            "values": ["scaffold builder"]
                                       },
                                        "2": { "field_name":"visit_signature_scaffolder",
-                                           "field_label":"Signature",
+                                           "field_label":"signature",
                                            "field_type":"signature",
                                            "field_on_site_uuid":"983287bb-62c3-42cf-86f2-f15d1b9b4204",
                                       },
@@ -358,18 +358,18 @@ config = {
                                            "values": []
                                       },
                                        "4": { "field_name":"visit_signature_user",
-                                           "field_label":"Signature User",
+                                           "field_label":"signature User",
                                            "field_type":"signature",
                                            "field_on_site_uuid":"47afbe06-57a3-416e-8f39-42a4916bf97e",
                                       },
                                         "5": { "field_name":"visit_user_building_coordinator",
-                                           "field_label":"Building coordinator",
+                                           "field_label":"building coordinator",
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"032dfe04-c8f0-4552-9cd1-248b272c7c15",
                                            "values": ["building coordinator"]
                                       },
                                        "6": { "field_name":"visit_signature_building_coordinator",
-                                           "field_label":"Signature",
+                                           "field_label":"signature",
                                            "field_type":"signature",
                                            "field_on_site_uuid":"47afbe06-57a3-416e-8f39-42a4916bf97e",
                                       },
@@ -380,14 +380,14 @@ config = {
                                            "values": ["hse engineer"]
                                       },
                                        "8": { "field_name":"visit_signature_hse_engineer",
-                                           "field_label":"Signature",
+                                           "field_label":"signature",
                                            "field_type":"signature",
                                            "field_on_site_uuid":"a3963ed3-38a8-41da-8a23-01822ecf3311",
                                       },
                                  }
                                  
                          },
-                        "5": { "section_name" : "Medias",
+                        "5": { "section_name" : "medias",
                                 "section_type" : "section type 4",
                                 "section_on_site_uuid": "c4e6b4b9-4b87-4e75-b873-8376acb6fb71",
                                  "fields": {
@@ -399,7 +399,7 @@ config = {
                                       },
                                  }
                          },
-                        "6": { "section_name" : "Commentaires",
+                        "6": { "section_name" : "commentaires",
                               "section_type" : "section type 5",
                               "section_on_site_uuid": "10523e6f-da11-406e-a39d-4b7e00e1e125",
                               "fields": {
@@ -437,25 +437,27 @@ config = {
                               "section_on_site_uuid": "c876534a-d870-43c0-b0ab-a7d53486b9f6",
                               "fields": {
                                    "1": { "field_name": "commissioning_scaff_width",
-                                            "field_label": "Longueur",
+                                            "field_label": "longueur",
                                            "field_type": "integer",
                                            "field_on_site_uuid":"6c3d5abb-484c-4fa2-910e-0fbd182a8b34"
                                            },
                                      "2": { "field_name": "commissioning_scaff_depth",
-                                           "field_label": "Largeur",
+                                           "field_label": "largeur",
                                            "field_type": "integer",
                                            "field_on_site_uuid":"8389bdac-fcd4-4681-ba44-4a2bcbead81d"},
                                      "3": { "field_name": "commissioning_scaff_height",
-                                            "field_label": "Hauteur",
+                                            "field_label": "hauteur",
                                            "field_type": "integer",
                                            "field_on_site_uuid":"95d01fa7-0358-4a85-9bfd-9a5951f0b966"},
                                       "4": { "field_name": "commissioning_conformite_notice",
-                                            "field_label": "Conforme notice",
+                                            "field_label": "conforme notice",
                                            "field_type": "switch",
-                                           "field_on_site_uuid":"1742f506-42bf-43ef-9df3-34a021f3b26e"},
+                                           "field_on_site_uuid":"1742f506-42bf-43ef-9df3-34a021f3b26e",
+                                            "value_on": "oui",
+                                           "value_off": "non"},
                               }
                         },
-                         "3": { "section_name" : "Medias",
+                         "3": { "section_name" : "medias",
                                 "section_type" : "section type 4",
                                 "section_on_site_uuid": "1ac3151a-07ef-4337-b9f8-2ae822f2328b",
                                  "fields": {
@@ -484,24 +486,24 @@ config = {
                                 "section_on_site_uuid": "a8432ea0-d164-47f9-a0a2-877f60078380",
                                  "fields": {
                                       "1": { "field_name":"commissioning_user_commissioning_engineer",
-                                           "field_label":"commussioning engineer",
+                                           "field_label":"commissioning engineer",
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"dd18e0d5-8d3a-477e-ab3d-09d5736b7ffa",
                                            "values": ["commissioning engineer"]
                                       },
                                        "2": { "field_name":"commissioning_signature_commissioning_engineer",
-                                           "field_label":"Signature",
+                                           "field_label":"signature",
                                            "field_type":"signature",
                                            "field_on_site_uuid":"e319c8dc-73b6-4b42-8e2f-fec5a627e14d",
                                       },
                                         "3": { "field_name":"commissioning_user_scaffolder",
-                                           "field_label":"Scaffolder",
+                                           "field_label":"scaffolder",
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"6f212152-0b03-4bec-89a1-bedddb42a59b",
                                            "values": ["scaffold builder"]
                                       },
                                        "4": { "field_name":"commissioning_signature_scaffolder",
-                                           "field_label":"Signature",
+                                           "field_label":"signature",
                                            "field_type":"signature",
                                            "field_on_site_uuid":"8510e1e8-ac1a-470e-a040-7640a8d237c1",
                                       },
@@ -512,7 +514,7 @@ config = {
                                            "values": []
                                       },
                                        "6": { "field_name":"commissioning_signature_user",
-                                           "field_label":"Signature User",
+                                           "field_label":"signature User",
                                            "field_type":"signature",
                                            "field_on_site_uuid":"dd0dc969-5daf-4dd3-8877-d1406b02b5f8",
                                       },
