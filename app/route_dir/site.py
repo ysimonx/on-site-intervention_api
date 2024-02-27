@@ -338,25 +338,27 @@ def create_site():
                             db.session.commit() 
         
         
-    # j'ajoute tous le role "admin" par defaut au _user (moi)
+    # j'ajoute tous les roles "admin" et "site administrator" par defaut au _user (moi)
     
-    _role = getByIdOrByName(
-                            obj=Role, 
-                            id="admin", 
-                            tenant_id=_tenant.id, 
-                            site_id=_site.id
-                        )
-    if _role is None:
-                            _role = Role(
-                                name="admin", 
-                                tenant_id=_tenant.id,
+    roles=["admin", "site administrator"]
+    for rolename in roles:
+        _role = getByIdOrByName(
+                                obj=Role, 
+                                id=rolename, 
+                                tenant_id=_tenant.id, 
                                 site_id=_site.id
                             )
-                            db.session.add(_role)
-                            db.session.commit() 
-                            
-    _user.roles.append(_role)
-    
+        if _role is None:
+                                _role = Role(
+                                    name=rolename, 
+                                    tenant_id=_tenant.id,
+                                    site_id=_site.id
+                                )
+                                db.session.add(_role)
+                                db.session.commit() 
+                                
+        _user.roles.append(_role)
+        
 
     db.session.commit() 
      
