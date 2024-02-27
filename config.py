@@ -216,7 +216,8 @@ config = {
                                     },
                                  }
                           }
-                  },
+                  }
+                },
                 "2" :{"form_name":"visit",
                       "form_on_site_uuid": "a81c475c-3b9d-40da-839d-56eeee06e85a",
                       "sections": {
@@ -430,7 +431,7 @@ config = {
                       "form_on_site_uuid": "47d8d1e6-9273-4286-8de3-ba6d80233b4f",
                        "sections": {}}
             }
-        }
+        
     },
     "roles": ["admin", "coordinator","billing","commissioning","user","operator","scaffolder"]
 }
