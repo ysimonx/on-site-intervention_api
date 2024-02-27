@@ -430,7 +430,8 @@ config = {
                                           "field_on_site_uuid":"8bb52583-ca7b-4645-8841-306e2da1760a",
                                           "value_on": "1st",
                                            "value_off": "2 or more"}
-                              },
+                              }
+                        },
                         "2": { "section_name" : "dimensions",
                               "section_type" : "section type 1",
                               "section_on_site_uuid": "c876534a-d870-43c0-b0ab-a7d53486b9f6",
@@ -448,7 +449,8 @@ config = {
                                             "field_label": "Hauteur",
                                            "field_type": "integer",
                                            "field_on_site_uuid":"95d01fa7-0358-4a85-9bfd-9a5951f0b966"},
-                              } },
+                              }
+                        },
                          "3": { "section_name" : "Medias",
                                 "section_type" : "section type 4",
                                 "section_on_site_uuid": "1ac3151a-07ef-4337-b9f8-2ae822f2328b",
@@ -460,7 +462,7 @@ config = {
                                            "values": []
                                       },
                                  }
-                         },
+                        },
                         "4": { "section_name" : "commentaires",
                                 "section_type" : "section type 1",
                                 "section_on_site_uuid": "aa061771-8fb6-49ce-8863-e405b2d99d7d",
@@ -473,7 +475,9 @@ config = {
                                  } },
                         
                         }
-                      },
+                  
+                      }
+                },
                 "4" :{"form_name":"rapport de vérifications",
                       "form_on_site_uuid": "3e5a68a0-ac2f-4bf0-9f96-e2cf205b658e",
                       "sections": {
@@ -513,7 +517,7 @@ config = {
                               } },
                      }}
             }
-            }
+            
         },
         "calorifuge": {  
             "type_intervention": "calorifuge",
@@ -539,7 +543,7 @@ config = {
                       "form_on_site_uuid": "47d8d1e6-9273-4286-8de3-ba6d80233b4f",
                        "sections": {}}
             }
-        
+        }
     },
     "roles": [
           "admin",
