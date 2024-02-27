@@ -456,32 +456,8 @@ config = {
                                             "value_on": "oui",
                                            "value_off": "non"},
                               }
-                        },
-                         "3": { "section_name" : "medias",
-                                "section_type" : "section type 4",
-                                "section_on_site_uuid": "1ac3151a-07ef-4337-b9f8-2ae822f2328b",
-                                 "fields": {
-                                       "1": { "field_name":"commissioning_pictures",
-                                           "field_label":"pictures",
-                                           "field_type":"gallery",
-                                           "field_on_site_uuid":"4ae6e76d-5cab-4b21-916f-e8d603361354",
-                                           "values": []
-                                      },
-                                 }
-                        },
-                        "4": { "section_name" : "commentaires",
-                                "section_type" : "section type 1",
-                                "section_on_site_uuid": "aa061771-8fb6-49ce-8863-e405b2d99d7d",
-                                 "fields": {
-                                       "1": { "field_name":"commissioning_comments",
-                                          "field_label":"comments",
-                                          "field_type":"paragraph",
-                                          "field_on_site_uuid":"ba366f19-e4ca-43a9-858e-2dc6e6d2d87d",
-                                          "values":[]
-                                 } },
-                        
-                        },
-                         "4": { "section_name" : "signatures",
+                        }, 
+                        "3": { "section_name" : "signatures",
                                 "section_type" : "section type 1",
                                 "section_on_site_uuid": "a8432ea0-d164-47f9-a0a2-877f60078380",
                                  "fields": {
@@ -520,8 +496,33 @@ config = {
                                       },
                                  },
                         
-                        }
+                        },
                   
+                         "4": { "section_name" : "medias",
+                                "section_type" : "section type 4",
+                                "section_on_site_uuid": "1ac3151a-07ef-4337-b9f8-2ae822f2328b",
+                                 "fields": {
+                                       "1": { "field_name":"commissioning_pictures",
+                                           "field_label":"pictures",
+                                           "field_type":"gallery",
+                                           "field_on_site_uuid":"4ae6e76d-5cab-4b21-916f-e8d603361354",
+                                           "values": []
+                                      },
+                                 }
+                        },
+                        "5": { "section_name" : "commentaires",
+                                "section_type" : "section type 1",
+                                "section_on_site_uuid": "aa061771-8fb6-49ce-8863-e405b2d99d7d",
+                                 "fields": {
+                                       "1": { "field_name":"commissioning_comments",
+                                          "field_label":"comments",
+                                          "field_type":"paragraph",
+                                          "field_on_site_uuid":"ba366f19-e4ca-43a9-858e-2dc6e6d2d87d",
+                                          "values":[]
+                                 } },
+                        
+                        },
+                        
                       }
                 },
                 "4" :{"form_name":"rapport de vérifications",
