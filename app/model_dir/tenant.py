@@ -66,7 +66,6 @@ class Tenant(db.Model):
                 abort(make_response(jsonify(error="missing tenant_id parameter"), 400))   
             tenant_id                   = request.form.get('tenant_id')  
               
-        print("tenant_id =", tenant_id)     
             
         tenant=getByIdOrByName(Tenant, tenant_id)
         if tenant is None:

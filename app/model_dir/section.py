@@ -23,11 +23,9 @@ class Section(db.Model, MyMixin):
    
     
     def to_json(self):
-        # print(self.forms)
         dict_fields={}
         for field in self.fields:
             dict_fields[field.field_order_in_section]= field.to_json_light()
-        print(dict_fields)
         return {
             'id':                           self.id,
             'section_name':                 self.section_name,

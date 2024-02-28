@@ -15,11 +15,9 @@ class Intervention(db.Model, MyMixin):
     
     
     def to_json(self):
-        # print(self.forms)
         dict_forms={}
         for form in self.forms:
             dict_forms[form.form_order]= form.to_json_light()
-        print(dict_forms)
         return {
             'id':                           self.id,
             'intervention_name':            self.name,

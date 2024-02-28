@@ -27,7 +27,6 @@ app_file_site = Blueprint('site',__name__)
 @jwt_required() 
 def get_site_list():
     
-    print(g.current_user)
     # TO DO
     # je dois trouver les sites pour lesquels j'ai des roles ...
     items = Site.query.all()
@@ -38,7 +37,6 @@ def get_site_list():
 @jwt_required() 
 def get_site(id):
     
-    print(g.current_user)
     _site = Site.query.get(id)
     if _site is None:
         abort(make_response(jsonify(error="site not found"), 404))
@@ -65,7 +63,6 @@ def post_site_lists(site_id):
     if dict_of_lists is None:
         abort(make_response(jsonify(error="missing dict_of_lists parameter"), 400))
     
-    print(dict_of_lists)
     _site.dict_of_lists = json.dumps(dict_of_lists)
     db.session.commit()
     
@@ -84,7 +81,6 @@ def post_site_lists_for_places(site_id):
     if dict_of_lists_for_places is None:
         abort(make_response(jsonify(error="missing dict_of_lists_for_places parameter"), 400))
     
-    print(dict_of_lists_for_places)
     _site.dict_of_lists_for_places = json.dumps(dict_of_lists_for_places)
     db.session.commit()
     
@@ -96,7 +92,6 @@ def post_site_lists_for_places(site_id):
 @jwt_required() 
 def post_site_user(site_id):
     
-    print(g.current_user)
     _site = Site.query.get(site_id)
     if _site is None:
         abort(make_response(jsonify(error="site not found"), 404))
@@ -217,7 +212,6 @@ def rm_site_user(site_id):
 @jwt_required() 
 def del_site(site_id):
     
-    print(g.current_user)
     # TO DO
     # je dois trouver les sites pour lesquels j'ai des roles ...
     _site = Site.query.get(site_id)
@@ -225,12 +219,12 @@ def del_site(site_id):
         abort(make_response(jsonify(error="site not found"), 404))
 
     types_interventions_site = TypeInterventionSite.query.filter(TypeInterventionSite.site_id == _site.id).all()
-    print(types_interventions_site)
+    current_app.logger.info(types_interventions_site)
     for _type_intervention_site in types_interventions_site:
         db.session.delete(_type_intervention_site)
     
     roles = Role.query.filter(Role.site_id == _site.id).all()
-    print(roles)
+    current_app.logger.info(roles)
     for _role in roles:
         # do : delete from users_roles where role_id=_role.id
         result = db.session.execute('delete from users_roles where role_id= :val', {'val': _role.id})
@@ -294,10 +288,10 @@ def create_site():
     
     _types_intervention = config["types_interventions"]
     for type_intervention_name, item in _types_intervention.items():
-        print(type_intervention_name)
+        current_app.logger.info(type_intervention_name)
         _type_intervention=getByIdOrByName(obj=TypeIntervention, id=type_intervention_name)
         if _type_intervention is not None:
-            print(_type_intervention.to_json())
+            current_app.logger.info(_type_intervention.to_json())
         
             _type_intervention_site = TypeInterventionSite.query.get((_type_intervention.id,_site.id))
             if _type_intervention_site is None:

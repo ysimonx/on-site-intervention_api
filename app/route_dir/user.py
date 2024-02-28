@@ -147,7 +147,6 @@ def get_user_config():
          
          
     me = g.current_user.to_json()
-    print(me["sites_roles"])
     #
     my_tenants=g.current_user.tenants_administrator
     

@@ -17,7 +17,6 @@ app_file_field= Blueprint('field',__name__)
 @jwt_required()
 def get_fields():
     fields = Field.query.all()
-    print(fields)
     return jsonify([item.to_json() for item in fields])
 
 
@@ -25,7 +24,6 @@ def get_fields():
 @jwt_required()
 def get_field(id):
     field = Field.query.get(id)
-    print(field.forms)
     if field is None:
         abort(make_response(jsonify(error="field is not found"), 404))
     return jsonify(field.to_json())

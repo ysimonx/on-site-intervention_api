@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, make_response
+from flask import Blueprint, abort, make_response, current_app
 
 import os
 from config import config
@@ -61,7 +61,7 @@ def create_file():
     file_on_site_uuid = request.form.get('file_on_site_uuid')
     file = File.query.filter(File.file_on_site_uuid == file_on_site_uuid).first()
     if file is not None:
-        print("file already uploaded")
+        current_app.logger.info("file already uploaded")
         abort(make_response(jsonify(error="file already uploaded"), 400))
     
     file        = request.files['file']

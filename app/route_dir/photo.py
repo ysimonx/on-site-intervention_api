@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, make_response
+from flask import Blueprint, abort, make_response, current_app
 from PIL import Image, ImageOps
 from resizeimage import resizeimage
 
@@ -161,7 +161,7 @@ def create_photo():
     photo_on_site_uuid = request.form.get('photo_on_site_uuid')
     photo = Photo.query.filter(Photo.photo_on_site_uuid == photo_on_site_uuid).first()
     if photo is not None:
-        print("photo already uploaded")
+        current_app.logger.infos("photo already uploaded")
         abort(make_response(jsonify(error="photo already uploaded"), 400))
     
     

@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, make_response
+from flask import Blueprint, abort, make_response, current_app
 
 import os
 from config import config
@@ -36,7 +36,7 @@ def create_event():
     event_on_site_uuid = request.form.get('event_on_site_uuid')
     event = Event.query.filter(Event.event_on_site_uuid == event_on_site_uuid).first()
     if event is not None:
-        print("event already uploaded")
+        current_app.logger.info("event already uploaded")
         abort(make_response(jsonify(error="event already uploaded"), 400))
     
     event        = request.events['event']

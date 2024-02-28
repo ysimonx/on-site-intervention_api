@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, make_response
+from flask import Blueprint, abort, make_response, current_app
 
 import hashlib
 
@@ -196,7 +196,7 @@ def post_intervention_values():
       
 
     if place_on_site_uuid is not None:
-            place = Place.query.filter(Place.place_on_site_uuid == place_on_site_uuid).first()
+        place = Place.query.filter(Place.place_on_site_uuid == place_on_site_uuid).first()
     
     # je n'ai trouvé ni avec place_id, ni avec place_on_site_uuid, je dois en creer une 
     
@@ -250,7 +250,7 @@ def post_intervention_values():
     db.session.commit()  
 
     for k, v in field_on_site_uuid_values.items():
-        print(k, v)
+        current_app.logger.info("%s - %s", k, v)
     
         _fieldValue = FieldValue.query.filter(FieldValue.intervention_values_id==interventionValues.id).filter(FieldValue.field_on_site_uuid==k).first()
         
