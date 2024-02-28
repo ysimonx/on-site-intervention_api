@@ -45,18 +45,17 @@ class InterventionValues(db.Model, MyMixin):
     intervention_values_on_site_uuid = db.Column(db.String(36), index=True)
     place_id                    = db.Column(db.String(36), db.ForeignKey("places.id"));
     version                     = db.Column(db.Integer, default=1)
-    
     site_id                     = db.Column(db.String(36), db.ForeignKey("sites.id"))
     type_intervention_id        = db.Column(db.String(36), db.ForeignKey("types_interventions.id"));
-    assignee_user_id          = db.Column(db.String(36), db.ForeignKey("users.id"))
+    assignee_user_id            = db.Column(db.String(36), db.ForeignKey("users.id"))
     hashtag                     = db.Column(db.Integer, default=1, index=True)
+    template_text               = db.Column(db.Text)
+    status                      = db.Column(db.String(50), index=True, nullable=True)
     
     place                       = db.relationship("Place", viewonly=True)
     type_intervention           = db.relationship("TypeIntervention", viewonly=True)
     site                        = db.relationship("Site", viewonly=True)
-    assignee_user                = db.relationship("User", viewonly=True)
-    
-    template_text               = db.Column(db.Text)
+    assignee_user               = db.relationship("User", viewonly=True)
     fields_values               = db.relationship("FieldValue", viewonly=True)
     
     def to_json(self):
@@ -77,7 +76,8 @@ class InterventionValues(db.Model, MyMixin):
             'assignee_user_id':             self.assignee_user_id,
             'assignee_user':                None if self.assignee_user is None else self.assignee_user.to_json_ultra_light(),
             'template_text':                  self.template_text,
-            'field_on_site_uuid_values':      dict_field_values
+            'field_on_site_uuid_values':      dict_field_values,
+            'status':                         self.status
         }
     
     def photos_to_json(self):
@@ -119,7 +119,8 @@ class InterventionValues(db.Model, MyMixin):
             'assignee_user_id':             self.assignee_user_id,
             'assignee_user':                None if self.assignee_user is None else self.assignee_user.to_json_ultra_light(),
             'template_text':                  self.template_text,
-            'field_on_site_uuid_values':      dict_field_values
+            'field_on_site_uuid_values':      dict_field_values,
+            'status':                         self.status
         }
        
 
