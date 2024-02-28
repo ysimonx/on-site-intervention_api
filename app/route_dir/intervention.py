@@ -189,6 +189,8 @@ def post_intervention_values():
     place_name                  = request.json.get('place_name')
     template_text               = request.json.get('template_text')
     field_on_site_uuid_values   = request.json.get('field_on_site_uuid_values')
+    status                      = request.json.get('status')
+    
     
     _site=getByIdOrByName(obj=Site, id=site_id, tenant_id=None )
     
@@ -234,7 +236,8 @@ def post_intervention_values():
                         site_id = _site.id,
                         type_intervention_id = _type_intervention.id,
                         hashtag = max_id + 1,
-                        template_text= template_text        
+                        template_text= template_text        ,
+                        status=status
         )
         
         db.session.add(interventionValues)
@@ -243,9 +246,10 @@ def post_intervention_values():
         interventionValues.name = intervention_name
         interventionValues.place_id = place.id
         interventionValues.version = interventionValues.version + 1
-        interventionValues.site_id = _site.id,
-        interventionValues.type_intervention_id = _type_intervention.id,
+        interventionValues.site_id = _site.id
+        interventionValues.type_intervention_id = _type_intervention.id
         interventionValues.template_text= template_text
+        interventionValues.status = status
         
     db.session.commit()  
 
