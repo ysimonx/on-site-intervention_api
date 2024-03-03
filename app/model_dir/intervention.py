@@ -40,14 +40,33 @@ class Intervention(db.Model, MyMixin):
 class InterventionValues(db.Model, MyMixin):
     __tablename__ = 'interventions_values'
     
-    intervention_values_on_site_uuid = db.Column(db.String(36), index=True)
+    # id : identifiant qui provient de la classe MyMixin
+    
+    # identifiant "local" au device dans lequel l'intervention est créée 
+    intervention_values_on_site_uuid = db.Column(db.String(36), index=True, unique=True)
+    
+    # identifiant de l'emplacement de l'intervention
     place_id                    = db.Column(db.String(36), db.ForeignKey("places.id"));
+    
+    # version des données enregistrées pour cette invention
     version                     = db.Column(db.Integer, default=1)
+    
+    # site industriel auquel l'intervention est rattachée
     site_id                     = db.Column(db.String(36), db.ForeignKey("sites.id"))
+    
+    # type de l'intervention (scaffolding request, calo, etc ...)
     type_intervention_id        = db.Column(db.String(36), db.ForeignKey("types_interventions.id"));
+    
+    # a qui est assignée l'intervention (parmi les coordinateurs)
     assignee_user_id            = db.Column(db.String(36), db.ForeignKey("users.id"))
+    
+    # compteur de creation de l'intervention (#1, #2, #3, etc ... par site industriel)
     hashtag                     = db.Column(db.Integer, default=1, index=True)
-    template_text               = db.Column(db.Text)
+    
+    # 
+    # template_text             = db.Column(db.Text)
+    
+    # status (workflow) de l'intervention
     status                      = db.Column(db.String(50), index=True, nullable=True)
     
     place                       = db.relationship("Place", viewonly=True)
@@ -73,7 +92,7 @@ class InterventionValues(db.Model, MyMixin):
             'hashtag':                        self.hashtag,
             'assignee_user_id':             self.assignee_user_id,
             'assignee_user':                None if self.assignee_user is None else self.assignee_user.to_json_ultra_light(),
-            'template_text':                  self.template_text,
+            # 'template_text':                  self.template_text,
             'field_on_site_uuid_values':      dict_field_values,
             'status':                         self.status
         }
@@ -116,7 +135,6 @@ class InterventionValues(db.Model, MyMixin):
             'hashtag':                        self.hashtag,
             'assignee_user_id':             self.assignee_user_id,
             'assignee_user':                None if self.assignee_user is None else self.assignee_user.to_json_ultra_light(),
-            'template_text':                  self.template_text,
             'field_on_site_uuid_values':      dict_field_values,
             'status':                         self.status
         }
