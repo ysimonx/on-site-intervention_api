@@ -113,7 +113,7 @@ def add_geolocation(image_path, latitude, longitude):
         # Dump the updated EXIF data and insert it into the image
         exif_bytes = piexif.dump(exif_data)
         piexif.insert(exif_bytes, image_path)
-        print(f"EXIF data updated successfully for the image {image_path}.")
+        current_app.logger.info(f"EXIF data updated successfully for the image {image_path}.")
     except Exception as e:
         print(f"Error: {str(e)}")
 
