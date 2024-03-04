@@ -189,6 +189,8 @@ def post_intervention_values():
     template_text               = request.json.get('template_text')
     field_on_site_uuid_values   = request.json.get('field_on_site_uuid_values')
     status                      = request.json.get('status')
+    num_chrono                  = request.json.get('num_chrono')
+    indice                      = request.json.get('indice')
     
     
     _site=getByIdOrByName(obj=Site, id=site_id, tenant_id=None )
@@ -226,8 +228,8 @@ def post_intervention_values():
     if interventionValues is None:
         
         
-        # je vais chercher le max hashtag des interventionValues pour un site donné (ainsi, ce compteur sera effectué par Site ...)
-        _interventionValueMax = db.session.query(InterventionValues).filter(InterventionValues.site_id==_site.id).order_by(desc(InterventionValues.hashtag)).first()
+        # je vais chercher le max hashtag des interventionValues pour type d'intervention et pour un site donné (ainsi, ce compteur sera effectué par Site ...)
+        _interventionValueMax = db.session.query(InterventionValues).filter(InterventionValues.site_id==_site.id).filter(InterventionValues.type_intervention_id==_type_intervention.id).order_by(desc(InterventionValues.hashtag)).first()
         if _interventionValueMax is None:
              max_id=0
         else:
@@ -245,7 +247,9 @@ def post_intervention_values():
                         type_intervention_id = _type_intervention.id,
                         hashtag = max_id + 1,
                         template_text= template_text        ,
-                        status=status
+                        status=status,
+                        num_chrono=num_chrono,
+                        indice=indice
         )
         
         db.session.add(interventionValues)
@@ -258,6 +262,8 @@ def post_intervention_values():
         interventionValues.type_intervention_id = _type_intervention.id
         interventionValues.template_text= template_text
         interventionValues.status = status
+        interventionValues.num_chrono=num_chrono,
+        interventionValues.indice=indice
         
     db.session.commit()  
 
