@@ -199,6 +199,8 @@ def post_intervention_values():
         _place = Place.query.filter(Place.place_on_site_uuid == place["place_on_site_uuid"]).first()
     
     # je n'ai trouvé ni avec place_id, ni avec place_on_site_uuid, je dois en creer une 
+    current_app.logger.info("place en input")
+    current_app.logger.info(place)
     
     if _place is None:
         _place = Place(
@@ -208,10 +210,14 @@ def post_intervention_values():
             place_json = place["place_json"]
         )
         db.session.add(place)
+        current_app.logger.info("create place")
+        current_app.logger.info(_place)
     else:
         _place.site_id = _site.id
         _place.name = place["name"]
         _place.place_json = place["place_json"]
+        current_app.logger.info("update place")
+        current_app.logger.info(_place)
     
     db.session.commit()  
     
