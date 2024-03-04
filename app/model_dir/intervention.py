@@ -63,6 +63,18 @@ class InterventionValues(db.Model, MyMixin):
     # compteur de creation de l'intervention (#1, #2, #3, etc ... par site industriel)
     hashtag                     = db.Column(db.Integer, default=1, index=True)
     
+    # numero de chrono de ce type d'intervention et pour ce site
+    # note : toutes les interventions qui ont le meme numero de chrono regroupent
+    # la meme intervention, qui evolue au fil de l'eau et dont l'évolution est suivie
+    # par l'indice 
+    num_chrono                  = db.Column(db.Integer, default=1, index=True)
+    
+    # indice de cette intervention (en cas de reprise/continuité d'une intervention qui aurait le meme numero de chrono)
+    # limitée à 2 lettres a-b-c-d-e ... z ... -aa-ab-ac-ad ....
+    indice                      = db.Column(db.String(2), default='A')
+    
+    
+    
     # 
     # template_text             = db.Column(db.Text)
     
@@ -85,16 +97,18 @@ class InterventionValues(db.Model, MyMixin):
             'intervention_name':              self.name,
             '_internal' :                     self.get_internal(),
             'intervention_values_on_site_uuid':                self.intervention_values_on_site_uuid,
-            'site':                           self.site.to_json(),
+            'site':                           self.site.to_json_light(),
             'type_intervention':              self.type_intervention.to_json(),
             'place':                          self.place.to_json(),
             'version':                        self.version, 
             'hashtag':                        self.hashtag,
-            'assignee_user_id':             self.assignee_user_id,
+        'assignee_user_id':                 self.assignee_user_id,
             'assignee_user':                None if self.assignee_user is None else self.assignee_user.to_json_ultra_light(),
             # 'template_text':                  self.template_text,
             'field_on_site_uuid_values':      dict_field_values,
-            'status':                         self.status
+            'status':                         self.status,
+            'num_chrono':                       self.num_chrono,
+            'indice':                           self.indice
         }
     
     def photos_to_json(self):
@@ -110,7 +124,7 @@ class InterventionValues(db.Model, MyMixin):
                              photos_total.append(photo);
                             
         return {
-            'site_id':                        self.site.id,
+            'site_id':       self.site.id,
             'photos':        photos_total
         }
     
@@ -136,7 +150,9 @@ class InterventionValues(db.Model, MyMixin):
             'assignee_user_id':             self.assignee_user_id,
             'assignee_user':                None if self.assignee_user is None else self.assignee_user.to_json_ultra_light(),
             'field_on_site_uuid_values':      dict_field_values,
-            'status':                         self.status
+            'status':                         self.status,
+            'num_chrono':                       self.num_chrono,
+            'indice':                           self.indice
         }
        
 
