@@ -195,22 +195,23 @@ def post_intervention_values():
     
     _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
     
-    if place.place_on_site_uuid is not None:
-        _place = Place.query.filter(Place.place_on_site_uuid == place.place_on_site_uuid).first()
+    if place is not None:
+        _place = Place.query.filter(Place.place_on_site_uuid == place["place_on_site_uuid"]).first()
     
     # je n'ai trouvé ni avec place_id, ni avec place_on_site_uuid, je dois en creer une 
     
     if _place is None:
         _place = Place(
-            place_on_site_uuid = place.place_on_site_uuid,
-            name = place.place_name,
+            place_on_site_uuid = place["place_on_site_uuid"],
+            name = place["place_name"],
             site_id = _site.id,
-            place_json = place.place_json)
+            place_json = place["place_json"]
+        )
         db.session.add(place)
     else:
         _place.site_id = _site.id
-        _place.name = place.name
-        _place.place_json = place.place_json
+        _place.name = place["name"]
+        _place.place_json = place["place_json"]
     
     db.session.commit()  
     
