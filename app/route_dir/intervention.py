@@ -185,9 +185,7 @@ def post_intervention_values():
     site_id                     = request.json.get('site_id')
     type_intervention_id        = request.json.get('type_intervention_id')
     intervention_name           = request.json.get('intervention_name')
-    place_on_site_uuid          = request.json.get('place_on_site_uuid')
-    place_name                  = request.json.get('place_name')
-    place_json                  = request.json.get('place_json')
+    place                       = request.json.get('place')
     template_text               = request.json.get('template_text')
     field_on_site_uuid_values   = request.json.get('field_on_site_uuid_values')
     status                      = request.json.get('status')
@@ -196,23 +194,23 @@ def post_intervention_values():
     _site=getByIdOrByName(obj=Site, id=site_id, tenant_id=None )
     
     _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
-      
-
-    if place_on_site_uuid is not None:
-        place = Place.query.filter(Place.place_on_site_uuid == place_on_site_uuid).first()
+    
+    if place.place_on_site_uuid is not None:
+        _place = Place.query.filter(Place.place_on_site_uuid == place.place_on_site_uuid).first()
     
     # je n'ai trouvé ni avec place_id, ni avec place_on_site_uuid, je dois en creer une 
     
-    if place is None:
-        place = Place(
-            place_on_site_uuid = place_on_site_uuid,
-            name = place_name,
+    if _place is None:
+        _place = Place(
+            place_on_site_uuid = place.place_on_site_uuid,
+            name = place.place_name,
             site_id = _site.id,
-            place_json = place_json)
+            place_json = place.place_json)
         db.session.add(place)
     else:
-        place.site_id = _site.id
-        place.place_json = place_json
+        _place.site_id = _site.id
+        _place.name = place.name
+        _place.place_json = place.place_json
     
     db.session.commit()  
     
@@ -234,7 +232,7 @@ def post_intervention_values():
         interventionValues = InterventionValues(
                         intervention_values_on_site_uuid = intervention_values_on_site_uuid,
                         name = intervention_name, 
-                        place_id = place.id,
+                        place_id = _place.id,
                         version=1,
                         site_id = _site.id,
                         type_intervention_id = _type_intervention.id,
@@ -247,7 +245,7 @@ def post_intervention_values():
     else:
         # print(intervention.to_json())
         interventionValues.name = intervention_name
-        interventionValues.place_id = place.id
+        interventionValues.place_id = _place.id
         interventionValues.version = interventionValues.version + 1
         interventionValues.site_id = _site.id
         interventionValues.type_intervention_id = _type_intervention.id
