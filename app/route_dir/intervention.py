@@ -246,7 +246,7 @@ def post_intervention_values():
                         site_id = _site.id,
                         type_intervention_id = _type_intervention.id,
                         hashtag = max_id + 1,
-                        template_text= template_text        ,
+                        # template_text= template_text        ,
                         status=status,
                         num_chrono=num_chrono,
                         indice=indice
