@@ -205,7 +205,7 @@ def post_intervention_values():
     if _place is None:
         _place = Place(
             place_on_site_uuid = place["place_on_site_uuid"],
-            name = place["place_name"],
+            name = place["name"],
             site_id = _site.id,
             place_json = place["place_json"]
         )
