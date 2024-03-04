@@ -56,7 +56,7 @@ config = {
                               "assigned",
                               "chrono",
                               "commissionned",
-                              "canceled"
+                              "cancelled"
                               ]
                         },
                   "actions":
@@ -574,7 +574,7 @@ config = {
                   "assigned",
                   "chrono",
                   "commissionned",
-                  "canceled"
+                  "cancelled"
             ],
             "forms": {
                 "1" :{"form_name":"initial request 2",
