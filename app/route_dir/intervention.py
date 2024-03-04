@@ -187,6 +187,7 @@ def post_intervention_values():
     intervention_name           = request.json.get('intervention_name')
     place_on_site_uuid          = request.json.get('place_on_site_uuid')
     place_name                  = request.json.get('place_name')
+    place_json                  = request.json.get('place_json')
     template_text               = request.json.get('template_text')
     field_on_site_uuid_values   = request.json.get('field_on_site_uuid_values')
     status                      = request.json.get('status')
@@ -206,10 +207,12 @@ def post_intervention_values():
         place = Place(
             place_on_site_uuid = place_on_site_uuid,
             name = place_name,
-            site_id = _site.id)
+            site_id = _site.id,
+            place_json = place_json)
         db.session.add(place)
     else:
         place.site_id = _site.id
+        place.place_json = place_json
     
     db.session.commit()  
     
