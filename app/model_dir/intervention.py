@@ -67,11 +67,11 @@ class InterventionValues(db.Model, MyMixin):
     # note : toutes les interventions qui ont le meme numero de chrono regroupent
     # la meme intervention, qui evolue au fil de l'eau et dont l'évolution est suivie
     # par l'indice 
-    num_chrono                  = db.Column(db.Integer, default=1, index=True)
+    num_chrono                  = db.Column(db.Integer, index=True)
     
     # indice de cette intervention (en cas de reprise/continuité d'une intervention qui aurait le meme numero de chrono)
     # limitée à 2 lettres a-b-c-d-e ... z ... -aa-ab-ac-ad ....
-    indice                      = db.Column(db.String(2), default='A')
+    indice                      = db.Column(db.String(2))
     
     
     
