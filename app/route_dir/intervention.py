@@ -209,7 +209,7 @@ def post_intervention_values():
             site_id = _site.id,
             place_json = place["place_json"]
         )
-        db.session.add(place)
+        db.session.add(_place)
         current_app.logger.info("create place")
         current_app.logger.info(_place)
     else:
