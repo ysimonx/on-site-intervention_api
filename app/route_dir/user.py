@@ -114,6 +114,7 @@ def reset_password():
     characters = string.ascii_letters + string.digits + string.punctuation
     password = ''.join(random.choice(characters) for i in range(20))
 
+    current_app.logger.info("password is >%s<", password)
     _user.new_password=password
     _user.hash_new_password()
     db.session.add(_user)  
