@@ -134,7 +134,7 @@ def reset_password():
     msg.body = text.encode('utf-8')
     with current_app.app_context():
         mail = Mail()
-        mail.send(msg.encode('utf8'))
+        mail.send(msg)
     
     return jsonify({"message":"password changed and email sent"}),200
     
