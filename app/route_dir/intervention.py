@@ -191,6 +191,7 @@ def post_intervention_values():
     status                      = request.json.get('status')
     num_chrono                  = request.json.get('num_chrono')
     indice                      = request.json.get('indice')
+    assignee_user_id            = request.json.get('assignee_user_id')
     
     
     _site=getByIdOrByName(obj=Site, id=site_id, tenant_id=None )
@@ -249,7 +250,8 @@ def post_intervention_values():
                         # template_text= template_text        ,
                         status=status,
                         num_chrono=num_chrono,
-                        indice=indice
+                        indice=indice,
+                        assignee_user_id=assignee_user_id
         )
         
         db.session.add(interventionValues)
@@ -263,7 +265,8 @@ def post_intervention_values():
         interventionValues.template_text= template_text
         interventionValues.status = status
         interventionValues.num_chrono=num_chrono,
-        interventionValues.indice=indice
+        interventionValues.indice=indice,
+        interventionValues.assignee_user_id = assignee_user_id
         
     db.session.commit()  
 
