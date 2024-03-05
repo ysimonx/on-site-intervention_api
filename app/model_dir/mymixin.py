@@ -218,7 +218,7 @@ class User(db.Model, MyMixin):
             'phone':        self.phone,
             'firstname':    self.firstname,
             'lastname':     self.lastname,
-            'company':      self.company_name,
+            'company':      company_name,
             'active':       self.active,
         }
         
