@@ -123,7 +123,7 @@ def reset_password():
     
     msg = Message(subject='Password reset required for FIDWORK',
                   sender= Config.MAIL_FROM,
-                   recipients=[_user.email])
+                   recipients=[_user.email], charset='utf-8')
     #msg = Message(subject='Password reset required for FIDWORK',
     #              sender= Config.MAIL_FROM,
     #               recipients=["yannick.simon@gmail.com"])
