@@ -123,14 +123,15 @@ def reset_password():
     
     msg = Message(subject='Password reset required for FIDWORK',
                   sender= Config.MAIL_FROM,
-                   recipients=[_user.email], charset='utf-8')
+                  recipients=[_user.email],
+                  charset='utf-8')
     #msg = Message(subject='Password reset required for FIDWORK',
     #              sender= Config.MAIL_FROM,
     #               recipients=["yannick.simon@gmail.com"])
     
     
-    msg.body = "here is your new password : %s" % password
-    
+    text = "here is your new password : %s" % password
+    msg.body = text.encode('utf-8')
     with current_app.app_context():
         mail = Mail()
         mail.send(msg.encode('utf8'))
