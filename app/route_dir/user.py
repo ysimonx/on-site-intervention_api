@@ -129,7 +129,7 @@ def reset_password():
     #               recipients=["yannick.simon@gmail.com"])
     
     
-    msg.body = "here is your new password : "+password
+    msg.body = "here is your new password : " + password.encode('utf8') 
     
     with current_app.app_context():
         mail = Mail()
