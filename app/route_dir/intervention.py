@@ -10,6 +10,7 @@ from ..model_dir.form import Form
 from ..model_dir.place import Place
 from ..model_dir.site import Site
 from ..model_dir.form import Form
+from ..model_dir.mymixin import User
 from ..model_dir.field import Field, FieldValue
 from ..model_dir.field_histo import FieldHisto
 from flask import jsonify, request, abort
@@ -287,7 +288,10 @@ def post_intervention_values():
         interventionValues.indice=indice
         current_app.logger.info("assignee_user_id = %s", assignee_user_id)
         if assignee_user_id is not None:
-            interventionValues.assignee_user_id = assignee_user_id
+                _assignee=getByIdOrByName(obj= User, id=assignee_user_id)
+                if _assignee is not None:
+                    interventionValues.assignee_user_id = _assignee.id
+                
         
     db.session.commit()  
 
