@@ -224,11 +224,21 @@ def post_intervention_values():
     
     db.session.commit()  
     
+    
+    if num_chrono=="[NNNNN]":         
+        # je vais chercher le max hashtag des interventionValues pour type d'intervention et pour un site donné (ainsi, ce compteur sera effectué par Site ...)
+        _interventionValueMax = db.session.query(InterventionValues).filter(InterventionValues.site_id==_site.id).filter(InterventionValues.type_intervention_id==_type_intervention.id).order_by(desc(InterventionValues.num_chrono)).first()
+        if _interventionValueMax is None:
+            num_chrono=0
+        else:
+            num_chrono=_interventionValueMax.num_chrono+1
+        indice="A"
+    else:
+        num_chrono = None
+        
    
     interventionValues= InterventionValues.query.filter(InterventionValues.intervention_values_on_site_uuid == intervention_values_on_site_uuid).first()
     if interventionValues is None:
-        
-        
         # je vais chercher le max hashtag des interventionValues pour type d'intervention et pour un site donné (ainsi, ce compteur sera effectué par Site ...)
         _interventionValueMax = db.session.query(InterventionValues).filter(InterventionValues.site_id==_site.id).filter(InterventionValues.type_intervention_id==_type_intervention.id).order_by(desc(InterventionValues.hashtag)).first()
         if _interventionValueMax is None:
@@ -236,9 +246,7 @@ def post_intervention_values():
         else:
             max_id=_interventionValueMax.hashtag  
         
-            
-        
-            
+  
         interventionValues = InterventionValues(
                         intervention_values_on_site_uuid = intervention_values_on_site_uuid,
                         name = intervention_name, 
@@ -262,10 +270,11 @@ def post_intervention_values():
         interventionValues.version = interventionValues.version + 1
         interventionValues.site_id = _site.id
         interventionValues.type_intervention_id = _type_intervention.id
-        interventionValues.template_text= template_text
+        # interventionValues.template_text= template_text
         interventionValues.status = status
-        interventionValues.num_chrono=num_chrono,
-        interventionValues.indice=indice,
+        if num_chrono is not None:
+            interventionValues.num_chrono=num_chrono
+        interventionValues.indice=indice
         interventionValues.assignee_user_id = assignee_user_id
         
     db.session.commit()  
