@@ -229,9 +229,13 @@ def post_intervention_values():
         # je vais chercher le max hashtag des interventionValues pour type d'intervention et pour un site donné (ainsi, ce compteur sera effectué par Site ...)
         _interventionValueMax = db.session.query(InterventionValues).filter(InterventionValues.site_id==_site.id).filter(InterventionValues.type_intervention_id==_type_intervention.id).order_by(desc(InterventionValues.num_chrono)).first()
         if _interventionValueMax is None:
-            num_chrono=0
+            num_chrono=1
         else:
-            num_chrono=_interventionValueMax.num_chrono+1
+            num_chrono=_interventionValueMax.num_chrono
+            if num_chrono is None:
+                num_chrono=1
+            else:
+                num_chrono = num_chrono+1
         indice="A"
     else:
         num_chrono = None
