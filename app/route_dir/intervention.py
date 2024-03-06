@@ -238,8 +238,8 @@ def post_intervention_values():
             else:
                 num_chrono = num_chrono+1
         indice="A"
-    else:
-        num_chrono = None
+    #else:
+    #    num_chrono = None
         
    
     interventionValues= InterventionValues.query.filter(InterventionValues.intervention_values_on_site_uuid == intervention_values_on_site_uuid).first()
@@ -279,7 +279,8 @@ def post_intervention_values():
         interventionValues.status = status
         
         if num_chrono is not None:
-            interventionValues.num_chrono=num_chrono
+            if interventionValues.num_chrono is None:
+                interventionValues.num_chrono=num_chrono
             
         if interventionValues.num_chrono is not None: 
             intervention_name=_place.name+"-"+str(interventionValues.num_chrono).zfill(5)+"-"+indice
