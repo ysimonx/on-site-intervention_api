@@ -281,7 +281,7 @@ def post_intervention_values():
             interventionValues.num_chrono=num_chrono
             
         if interventionValues.num_chrono is not None: 
-            intervention_name=_place.name+"-"+interventionValues.num_chrono.zfill(5)+"-"+indice
+            intervention_name=_place.name+"-"+interventionValues.str(num_chrono).zfill(5)+"-"+indice
         
         interventionValues.name = intervention_name
         interventionValues.indice=indice
