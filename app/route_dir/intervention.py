@@ -269,15 +269,21 @@ def post_intervention_values():
         db.session.add(interventionValues)
     else:
         # print(intervention.to_json())
-        interventionValues.name = intervention_name
+        
         interventionValues.place_id = _place.id
         interventionValues.version = interventionValues.version + 1
         interventionValues.site_id = _site.id
         interventionValues.type_intervention_id = _type_intervention.id
         # interventionValues.template_text= template_text
         interventionValues.status = status
+        
         if num_chrono is not None:
             interventionValues.num_chrono=num_chrono
+            
+        if interventionValues.num_chrono is not None: 
+            intervention_name=place.name+"-"+interventionValues.num_chrono.zfill(5)+"-"+indice
+        
+        interventionValues.name = intervention_name
         interventionValues.indice=indice
         interventionValues.assignee_user_id = assignee_user_id
         
