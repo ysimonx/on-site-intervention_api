@@ -285,6 +285,7 @@ def post_intervention_values():
         
         interventionValues.name = intervention_name
         interventionValues.indice=indice
+        current_app.logger.info("assignee_user_id = %s", assignee_user_id)
         if assignee_user_id is not None:
             interventionValues.assignee_user_id = assignee_user_id
         
