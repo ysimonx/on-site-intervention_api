@@ -16,7 +16,7 @@ from ..model_dir.field_histo import FieldHisto
 from flask import jsonify, request, abort
 from flask_jwt_extended import jwt_required
 
-from .. import db, getByIdOrByName
+from .. import db, getByIdOrByName, getLastModified
 app_file_intervention= Blueprint('intervention',__name__)
 
 import json
@@ -130,32 +130,14 @@ def get_intervention_values():
             abort(make_response(jsonify(error="_type_intervention is not found"), 400))
         query_interventionValues = query_interventionValues.filter(InterventionValues.type_intervention_id == _type_intervention.id)
 
-
     interventionValues = query_interventionValues.all()
     
-    tcutc = None
-    tuutc = None
-    maxutc = None
-    for item in interventionValues:
-        internal = item.get_internal()
-        
-        if tcutc is None:
-            tcutc = internal["time_created_utc"]
-            tuutc = internal["time_updated_utc"]
-        else:
-            if internal["time_created_utc"] > tcutc:
-                tcutc = internal["time_created_utc"]
-            if internal["time_updated_utc"] > tuutc:
-                tuutc = internal["time_updated_utc"]
-                
-    if tcutc is not None:
-        maxutc = tcutc
-        if tuutc is not None:
-            if tuutc > tcutc :
-                maxutc = tuutc
-        
-    current_app.logger.info("maxutc %s", str(maxutc))  
     resp=make_response(jsonify([item.to_json() for item in interventionValues]))
+    
+    maxutc = getLastModified(interventionValues)
+    if maxutc is not None:
+        resp.headers['X-LastModified'] = maxutc
+        
     return resp
 
 
@@ -181,21 +163,16 @@ def get_intervention_values_photos():
         if _type_intervention is None:
             abort(make_response(jsonify(error="_type_intervention is not found"), 400))
         query_interventionValues = query_interventionValues.filter(InterventionValues.type_intervention_id == _type_intervention.id)
-
-    
-
+  
     interventionValues = query_interventionValues.all()
 
+    resp=make_response(jsonify([item.photos_to_json() for item in interventionValues]))
     
-    
-    # else:
-        # _site=getByIdOrByName(Site, request.args.get("site_id"))
-        # if _site is None:
-        #     abort(make_response(jsonify(error="site is not found"), 404))
-        # 
-        # interventions = Intervention.query.filter(Intervention.site_id==_site.id).all()
-        
-    return jsonify([item.photos_to_json() for item in interventionValues])
+    maxutc = getLastModified(interventionValues)
+    if maxutc is not None:
+        resp.headers['X-LastModified'] = maxutc
+
+    return resp
 
 
 @app_file_intervention.route('/intervention_values', methods=['POST'])

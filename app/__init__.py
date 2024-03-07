@@ -22,6 +22,30 @@ def create_app(config_name):
     db.init_app(app)
     return app
 
+def getLastModified(values):
+    
+    tcutc = None
+    tuutc = None
+    maxutc = None
+    for item in values:
+        internal = item.get_internal()
+        
+        if tcutc is None:
+            tcutc = internal["time_created_utc"]
+            tuutc = internal["time_updated_utc"]
+        else:
+            if internal["time_created_utc"] > tcutc:
+                tcutc = internal["time_created_utc"]
+            if internal["time_updated_utc"] > tuutc:
+                tuutc = internal["time_updated_utc"]
+                
+    if tcutc is not None:
+        maxutc = tcutc
+        if tuutc is not None:
+            if tuutc > tcutc :
+                maxutc = tuutc
+    return maxutc
+       
 def getByIdOrByName(obj, id, tenant_id=None, site_id=None):
     result = None
     try:
