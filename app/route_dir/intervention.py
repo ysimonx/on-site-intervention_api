@@ -132,7 +132,23 @@ def get_intervention_values():
 
 
     interventionValues = query_interventionValues.all()
-
+    
+    tcutc = None
+    tuutc = None
+    for item in interventionValues:
+        if tcutc is None:
+            tcutc = item._internal.time_created_utc
+            tuutc = item._internal.time_updated_utc
+        else:
+            if item._internal.time_created_utc > tcutc:
+                tcutc = item._internal.time_created_utc
+            if item._internal.time_updated_utc > tuutc:
+                tuutc = item._internal.time_updated_utc
+    
+    current_app.logger.info("max created")
+    current_app.logger.info(tcutc)
+    current_app.logger.info("max updated")
+    current_app.logger.info(tuutc)    
     return jsonify([item.to_json() for item in interventionValues])
 
 
