@@ -155,7 +155,8 @@ def get_intervention_values():
                 maxutc = tuutc
         
     current_app.logger.info("maxutc %s", str(maxutc))  
-    return jsonify([item.to_json() for item in interventionValues])
+    resp=make_response(jsonify([item.to_json() for item in interventionValues]))
+    return resp
 
 
 @app_file_intervention.route("/intervention_values/photos", methods=["GET"])
