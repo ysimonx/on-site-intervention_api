@@ -143,7 +143,7 @@ def get_intervention_values():
             tuutc = internal["time_updated_utc"]
         else:
             if internal["time_created_utc"] > tcutc:
-                tcutc = internal.time_created_utc"]
+                tcutc = internal["time_created_utc"]
             if internal["time_updated_utc"] > tuutc:
                 tuutc = internal["time_updated_utc"]
     
