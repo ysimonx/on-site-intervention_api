@@ -136,14 +136,16 @@ def get_intervention_values():
     tcutc = None
     tuutc = None
     for item in interventionValues:
+        internal = item.get_internal()
+        
         if tcutc is None:
-            tcutc = item._internal.time_created_utc
-            tuutc = item._internal.time_updated_utc
+            tcutc = internal.time_created_utc
+            tuutc = internal.time_updated_utc
         else:
-            if item._internal.time_created_utc > tcutc:
-                tcutc = item._internal.time_created_utc
-            if item._internal.time_updated_utc > tuutc:
-                tuutc = item._internal.time_updated_utc
+            if internal.time_created_utc > tcutc:
+                tcutc = internal.time_created_utc
+            if internal.time_updated_utc > tuutc:
+                tuutc = internal.time_updated_utc
     
     current_app.logger.info("max created")
     current_app.logger.info(tcutc)
