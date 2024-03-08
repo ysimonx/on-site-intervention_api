@@ -124,7 +124,7 @@ def get_intervention_values():
         if 'max_utc' in request.args:
             max_utc=request.args.get("max_utc")
             if max_utc is not None:
-                if _site.max_utc is not None:
+                # if _site.max_utc is not None:
                     current_app.logger.info("max_utc %s vs %s", max_utc, _site.max_utc )
                     if str(max_utc)==str(_site.max_utc):
                         current_app.logger.info("can return 304")
