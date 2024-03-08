@@ -129,6 +129,7 @@ def get_intervention_values():
                     current_app.logger.info("maxutc %s vs %s", maxutc, str(_site.maxutc))
                     if str(maxutc)==str(_site.maxutc):
                         current_app.logger.info("max utc can return 304")
+                        return jsonify({"message":"not modified"}), 304
                         # TODO
         query_interventionValues = query_interventionValues.filter(InterventionValues.site_id == _site.id)
 
