@@ -123,11 +123,10 @@ def get_intervention_values():
             
         if 'maxutc' in request.args:
             maxutc=request.args.get("maxutc")
+            maxutc=maxutc.replace("T", " ", 1)
             if maxutc is not None:
                 # if _site.maxutc is not None:
-                    current_app.logger.info("maxutc")
-                    current_app.logger.info(maxutc)
-                    current_app.logger.info(_site.maxutc)
+                    current_app.logger.info("maxutc %s vs %s", maxutc, str(_site.maxutc))
                     if str(maxutc)==str(_site.maxutc):
                         current_app.logger.info("max utc can return 304")
                         # TODO
