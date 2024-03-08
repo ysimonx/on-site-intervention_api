@@ -27,6 +27,7 @@ class Site(db.Model, MyMixin):
     
     roles = db.relationship('Role')
      
+    maxutc = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
         
     def to_json(self):
         if self.dict_of_lists is None:
@@ -45,6 +46,7 @@ class Site(db.Model, MyMixin):
             'name':             self.name,
             'dict_of_lists':    dict_of_lists,
             'dict_of_lists_for_places': dict_of_lists_for_places,
+            'maxutc':           self.maxutc,
             'roles'         :  [{item.name: item.to_json_light()} for item in self.roles] 
         }
 

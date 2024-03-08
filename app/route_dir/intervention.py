@@ -113,6 +113,7 @@ def get_intervention_values():
     
     query_interventionValues = InterventionValues.query
     
+    _site=None
     if  'site_id' in request.args:
         
         site_id=request.args.get("site_id")
@@ -134,9 +135,14 @@ def get_intervention_values():
     
     resp=make_response(jsonify([item.to_json() for item in interventionValues]))
     
-    maxutc = getLastModified(interventionValues)
-    if maxutc is not None:
-        resp.headers['X-LastModified'] = maxutc
+      
+    if _site is not None:
+        maxutc = getLastModified(interventionValues)
+        if maxutc is not None:
+            resp.headers['X-LastModified'] = maxutc
+        if _site.maxutc != maxutc:
+            _site.maxutc = maxutc;
+            db.session.commit()
         
     return resp
 
