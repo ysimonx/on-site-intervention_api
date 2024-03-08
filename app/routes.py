@@ -131,13 +131,16 @@ def before_request():
     g.current_tenant = None
     
     # 
-    try:
+    xf=""
+    xu=""
+    tn=""
+    em=""
+    
+    if "X-Forwarded-For" in request.headers:
         xf = request.headers.get('X-Forwarded-For')
-        app.logger.info("before_request X-Forwarded-For : %s", xf)
-    except:
-        app.logger.info("before_request no X-Forwarded-For")
 
-
+    if "User-Agent" in request.headers:
+        xu = request.headers.get('User-Agent')
 
     try:
         tenant_id=request.args.get("tenant_id")
@@ -145,6 +148,7 @@ def before_request():
             g.current_tenant = getByIdOrByName(obj=Tenant, id=tenant_id)
         else:
             g.current_tenant = getByIdOrByName(obj=Tenant, id=config["default_tenant_config"])
+        tn=g.current_tenant.name
     except:
         g.current_tenant = None
     
@@ -152,23 +156,24 @@ def before_request():
     try:
         res = verify_jwt_in_request(optional=True)
         if res is not None:
-            app.logger.info("before request access token ok")
             current_user_id = get_jwt_identity()
             g.current_user = getByIdOrEmail(obj=User,  id=current_user_id)
-            app.logger.info("before request access token email = %s" % g.current_user.email)
+            if g.current_user is not None:
+                em=g.current_user.email
     except:
         app.logger.info("before_request except on access token")
         g.current_user = None
 
+    app.logger.info("before_request X-Forwarded-For : >%s< - User-Agent : >%s< - Tenant : >%s< - Email user : >%s<", xf, xu, tn, em)
     
         
       
 @app.after_request
 def after_request(response):
-    if g.current_user is not None:
-        app.logger.info("user_id is "+ g.current_user.id)
-    else:
-       app.logger.info("no user")  
+    #if g.current_user is not None:
+    #    app.logger.info("user_id is "+ g.current_user.id)
+    #else:
+    #   app.logger.info("no user")  
     return response
 
 
