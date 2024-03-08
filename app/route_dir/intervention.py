@@ -121,14 +121,14 @@ def get_intervention_values():
         if _site is None:
             abort(make_response(jsonify(error="site is not found"), 400))
             
-        if 'max_utc' in request.args:
-            max_utc=request.args.get("max_utc")
-            if max_utc is not None:
-                # if _site.max_utc is not None:
-                    current_app.logger.info("max_utc")
-                    current_app.logger.info(max_utc)
-                    current_app.logger.info(_site.max_utc)
-                    if str(max_utc)==str(_site.max_utc):
+        if 'maxutc' in request.args:
+            maxutc=request.args.get("maxutc")
+            if maxutc is not None:
+                # if _site.maxutc is not None:
+                    current_app.logger.info("maxutc")
+                    current_app.logger.info(maxutc)
+                    current_app.logger.info(_site.maxutc)
+                    if str(maxutc)==str(_site.maxutc):
                         current_app.logger.info("max utc can return 304")
                         # TODO
         query_interventionValues = query_interventionValues.filter(InterventionValues.site_id == _site.id)
