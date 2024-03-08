@@ -173,6 +173,7 @@ def create_photo():
     latitude                    = request.form.get('latitude')
     longitude                   = request.form.get('longitude')
     field_on_site_uuid          = request.form.get('field_on_site_uuid')
+    intervention_on_site_uuid   = request.form.get('intervention_on_site_uuid')
     newfilename_fullsize        = photo_on_site_uuid+"_fullsize"+get_extension(filename)
     newfilename         = photo_on_site_uuid+get_extension(filename)
 
@@ -190,6 +191,7 @@ def create_photo():
                     filename= newfilename, 
                     filename_fullsize=newfilename_fullsize,
                     field_on_site_uuid=field_on_site_uuid, 
+                    intervention_on_site_uuid = intervention_on_site_uuid,
                     tenant_id = _user.get_internal()["tenant_id"]
                 )
     
