@@ -10,27 +10,28 @@ root = ET.fromstring(svg)
 ET.register_namespace("", "http://www.w3.org/2001")
 ET.register_namespace("","http://www.w3.org/2000/svg")
 
-newx_prec=-1
-newy_prec=-1
+x_prec=-1
+y_prec=-1
+
+precision=1;
 
 for child in root.iter():
     if (child.tag.endswith("polyline")):
         tabPointsDest=[]
-        child.set("toto","tata")
         sPoints=child.get("points")
         tabPoints=sPoints.split(" ")
         for point in tabPoints:
             x,y=point.split(",")
-            newx= str(round(float(x)*10)/10)
-            newy = str(round(float(y)*10)/10)
-            # print(newx, newy)
-            if (newx != newx_prec):
-                if (newy != newy_prec):
-                    s=newx+","+newy
+            new_x=  float(x)
+            new_y = float(y)
+            d=(new_x-x_prec)*(new_x-x_prec)+(new_y-y_prec)*(new_y-y_prec)
+            if d>40:
+                    # print(d)
+                    s=str(round(new_x))+","+str(round(new_y))
                     tabPointsDest.append(s)
-                
-                    newx_prec=newx
-                    newy_prec=newy
+                    x_prec = new_x
+                    y_prec = new_y 
+                    
         # print(tabPoints)
         
         new_attrib=" ".join(tabPointsDest)

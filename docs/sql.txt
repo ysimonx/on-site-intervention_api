@@ -1,0 +1,6 @@
+
+# avoir les champs de types "gallery" par intervention_values
+
+select iv.intervention_values_on_site_uuid , fv.value from intervention_on_site_dev.interventions_values iv inner join intervention_on_site_dev.field_values fv on fv.intervention_values_id = iv.id and length(fv.value) > 0 
+inner join intervention_on_site_dev.fields f on fv.field_id = f.id and f.field_type ='gallery';
+
