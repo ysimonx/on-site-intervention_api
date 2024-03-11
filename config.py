@@ -371,7 +371,7 @@ config = {
                                        "6": { "field_name":"visit_signature_building_coordinator",
                                            "field_label":"signature",
                                            "field_type":"signature",
-                                           "field_on_site_uuid":"47afbe06-57a3-416e-8f39-42a4916bf97e",
+                                           "field_on_site_uuid":"853a16f2-7327-4317-aed4-ea8782556eb4",
                                       },
                                        "7": { "field_name":"visit_user_hse_engineer",
                                            "field_label":"HSE engineer",
