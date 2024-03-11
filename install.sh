@@ -14,7 +14,8 @@ pip install requests
 pip install Flask-Migrate
 pip install Pillow
 pip install python-resize-image
-
+pip install csv
+pip install pandas
 
 
 pip install -r requirements.txt --upgrade

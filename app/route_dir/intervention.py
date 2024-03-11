@@ -1,6 +1,9 @@
 from flask import Blueprint, abort, make_response, current_app
 
 import hashlib
+import pandas as pd
+import csv
+from unidecode import unidecode
 
 from ..model_dir.intervention import Intervention, InterventionValues
 from ..model_dir.type_intervention import TypeIntervention, TypeInterventionSite
@@ -22,7 +25,7 @@ app_file_intervention= Blueprint('intervention',__name__)
 import json
 from sqlalchemy import func, desc
 
-@app_file_intervention.route("/intervention", methods=["GET"])
+@app_file_intervention.route("/intervention_old", methods=["GET"])
 def get_interventions():
     if not 'site_id' in request.args:
         interventions = Intervention.query.all()
@@ -104,57 +107,138 @@ def create_intervention():
     return jsonify(intervention.to_json()), 201
 
 
+@app_file_intervention.route("/intervention_values/csv", methods=["GET"])
+def get_intervention_values_csv():
+    
+    interventionValues = filterInterventionValues()
+    
+    # feed an dataFrame with headers and values
+    # import pandas as pd
+    #
+    # data = [['Alice', 30, 'New York'], ['Bob', 25, 'Los Angeles']]  # Example 2D array
+    # columns = ['Name', 'Age', 'City']  # Header
+    # df = pd.DataFrame(data, columns=columns)
+    #
+    # ou mieux
+    # resp = make_response(df.to_csv())
+    # resp.headers["Content-Disposition"] = "attachment; filename=export.csv"
+    # resp.headers["Content-Type"] = "text/csv"
+    # return resp
+    # 
+    
+    site_id=request.args.get("site_id")
+    _site=getByIdOrByName(Site, site_id)
+    
+    type_intervention_id=request.args.get("type_intervention_id")
+    _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
+
+    _type_intervention_site = TypeInterventionSite.query.get((_type_intervention.id,_site.id))
+    if _type_intervention_site is None:
+        abort(make_response(jsonify(error="_type_intervention_site is not found"), 404))
+
+    dictTemplate=json.loads(_type_intervention_site.template_text)
+    # return jsonify(json.loads(_type_intervention_site.template_text)),200 
+    
+    
+    data=[]
+    columns=[]
+    for interventionValue in interventionValues:
+        record=[]
+        columns=[]
+        inits=[ {
+            
+            
+            "label":"hashtag",
+                                "value": interventionValue.hashtag},
+            {"label":"type_intervention", 
+                                "value": interventionValue.type_intervention.name},
+            {"label":"id", 
+                                "value": interventionValue.id},
+            {"label":"status", 
+                                "value": interventionValue.status},
+            {"label":"assignee_email", 
+                                 "value": interventionValue.assignee_user.email if interventionValue.assignee_user is not None else ""},
+            {"label":"registre", 
+                                "value": interventionValue.name},
+            {"label":"place", 
+                                "value": interventionValue.place.name},
+
+            {"label":"num_chrono", 
+                                "value": interventionValue.num_chrono},
+            {"label":"indice", 
+                                "value": interventionValue.indice}
+            
+        ]
+        
+        # http://127.0.0.1:4998/api/v1/intervention_values/csv?site_id=5dc837b9-9678-494c-9b1a-78ff1bf4a17b&type_intervention_id=scaffolding%20request
+        for item in inits:
+            columns.append(item["label"])
+            try :
+                value = item["value"] if item["value"] is not None else ""
+            except :
+                value=""
+            record.append(unidecode(str(value)))
+            
+        dict_field_values={}
+        for item in interventionValue.fields_values:
+            dict_field_values[item.field_on_site_uuid]=item.value;
+            
+        for form, form_values in dictTemplate["forms"].items():
+            columns.append("formulaire_{}".format(form))    
+            record.append(unidecode(form_values["form_name"]))
+            for section, section_values in form_values["sections"].items():
+                #columns.append("section_{}".format(section))    
+                #record.append(section_values["section_name"])
+                for field, fields_values in section_values["fields"].items():
+                    field_name=fields_values["field_name"]
+                    field_on_site_uuid=fields_values["field_on_site_uuid"]
+                    columns.append(field_name)
+                    if field_on_site_uuid in dict_field_values.keys():
+                        value  = dict_field_values[field_on_site_uuid]
+                        if len(value) < 200:
+                            record.append(unidecode(value))
+                        else:
+                            record.append("yes")
+                    else:
+                        record.append("")
+            
+        
+        data.append(record)
+        
+    df = pd.DataFrame(data, columns=columns)
+    S=df.to_csv(index=True, na_rep="", index_label="n", quoting=csv.QUOTE_ALL, sep=";") 
+    resp = make_response(S)
+    
+    resp.headers["Content-Disposition"] = "attachment; filename=export_{}.csv".format(_site.get_urlName())
+    resp.headers["Content-Type"] = "text/csv"
+    # resp.charset="iso-8859-1"
+    
+    return resp 
+    
+
+
 
 
 
 @app_file_intervention.route("/intervention_values", methods=["GET"])
 @jwt_required()
 def get_intervention_values():
-    
-    query_interventionValues = InterventionValues.query
-    
-    _site=None
-    if  'site_id' in request.args:
-        
-        site_id=request.args.get("site_id")
-        _site=getByIdOrByName(Site, site_id)
-        if _site is None:
-            abort(make_response(jsonify(error="site is not found"), 400))
-            
-        if 'maxutc' in request.args:
-            maxutc=request.args.get("maxutc")
-            maxutc=maxutc.replace("T", " ", 1)
-            if maxutc is not None:
-                # if _site.maxutc is not None:
-                    current_app.logger.info("maxutc %s vs %s", maxutc, str(_site.maxutc))
-                    if str(maxutc)==str(_site.maxutc):
-                        current_app.logger.info("max utc can return 304")
-                        return jsonify({"message":"not modified"}), 304
-                        # TODO
-        query_interventionValues = query_interventionValues.filter(InterventionValues.site_id == _site.id)
 
-    if  'type_intervention_id' in request.args:
-        
-        type_intervention_id=request.args.get("type_intervention_id")
-        _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
-        
-        if _type_intervention is None:
-            abort(make_response(jsonify(error="_type_intervention is not found"), 400))
-        query_interventionValues = query_interventionValues.filter(InterventionValues.type_intervention_id == _type_intervention.id)
-
-    interventionValues = query_interventionValues.all()
+    interventionValues = filterInterventionValues()
     
     resp=make_response(jsonify([item.to_json() for item in interventionValues]))
     
-      
-    if _site is not None:
-        maxutc = getLastModified(interventionValues)
-        if maxutc is not None:
-            resp.headers['X-LastModified'] = maxutc
-        if _site.maxutc != maxutc:
-            _site.maxutc = maxutc;
-            db.session.commit()
-        
+    site_id=request.args.get("site_id")
+    if site_id is not None:
+        _site=getByIdOrByName(Site, site_id)
+        if _site is not None:
+            maxutc = getLastModified(interventionValues)
+            if maxutc is not None:
+                resp.headers['X-LastModified'] = maxutc
+            if _site.maxutc != maxutc:
+                _site.maxutc = maxutc;
+                db.session.commit()
+            
     return resp
 
 
@@ -162,26 +246,7 @@ def get_intervention_values():
 @jwt_required()
 def get_intervention_values_photos():
     
-    query_interventionValues = InterventionValues.query
-    
-    if  'site_id' in request.args:
-        
-        site_id=request.args.get("site_id")
-        _site=getByIdOrByName(Site, site_id)
-        if _site is None:
-            abort(make_response(jsonify(error="site is not found"), 400))
-        query_interventionValues = query_interventionValues.filter(InterventionValues.site_id == _site.id)
-
-    if  'type_intervention_id' in request.args:
-        
-        type_intervention_id=request.args.get("type_intervention_id")
-        _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
-        
-        if _type_intervention is None:
-            abort(make_response(jsonify(error="_type_intervention is not found"), 400))
-        query_interventionValues = query_interventionValues.filter(InterventionValues.type_intervention_id == _type_intervention.id)
-  
-    interventionValues = query_interventionValues.all()
+    interventionValues = filterInterventionValues()
 
     resp=make_response(jsonify([item.photos_to_json() for item in interventionValues]))
     
@@ -363,3 +428,30 @@ def get_interventionvalues_siteid(site_id):
     else:
         max_id=_interventionValueMax.hashtag  
     return jsonify({'max_id': max_id, 'site_id': site_id})
+
+
+def filterInterventionValues():
+    
+    query_interventionValues = InterventionValues.query
+    
+    
+    site_id=request.args.get("site_id")
+    _site=getByIdOrByName(Site, site_id)
+    if _site is None:
+        abort(make_response(jsonify(error="site is not found"), 404))
+    
+    query_interventionValues = query_interventionValues.filter(InterventionValues.site_id == _site.id)
+    
+    type_intervention_id=request.args.get("type_intervention_id")
+    if type_intervention_id is not None:
+        _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
+        if _type_intervention is None:
+            abort(make_response(jsonify(error="_type_intervention is not found"), 404))
+
+
+        query_interventionValues = query_interventionValues.filter(InterventionValues.type_intervention_id == _type_intervention.id)
+    
+    
+    interventionValues = query_interventionValues.all()
+    
+    return interventionValues

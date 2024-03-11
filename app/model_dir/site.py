@@ -61,7 +61,10 @@ class Site(db.Model, MyMixin):
             'id':               self.id,
         }
 
-
+    def get_urlName(self):
+        
+        return self.name.replace(" ","-").lower()
+    
     def getRequestSite():
     
         #
