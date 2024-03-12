@@ -525,44 +525,7 @@ config = {
                         
                       }
                 },
-                "4" :{"form_name":"rapport de vérifications",
-                      "form_on_site_uuid": "3e5a68a0-ac2f-4bf0-9f96-e2cf205b658e",
-                      "sections": {
-                        "1": { "section_name" : "rapport de vérifications rub a",
-                              "section_type" : "section type 1",
-                              "section_on_site_uuid": "0d19ba0a-1af3-4f7d-9243-b7ae04634c39",
-                              "fields": {
-                                    "1": { "field_name": "field aa",
-                                          "field_type": "field_type 1","field_on_site_uuid":"11aa7a09-14ff-4766-b1ba-e541a25ed9e5"},
-                                    "2": { "field_name": "field ab",
-                                          "field_type": "field_type 1","field_on_site_uuid":"398e5a3c-d583-4265-ba40-e01dd2a1c28a"},
-                                    "3": { "field_name": "field ac",
-                                          "field_type": "field_type 1","field_on_site_uuid":"042089d1-6b32-49cf-b3a7-1e86e68e26e4"},
-                              }
-                              },
-                        "2": { "section_name" : "rapport de vérifications rub b",
-                              "section_type" : "section type 1",
-                              "section_on_site_uuid": "8f21a7d9-854e-4faf-8f26-180b7b5cc6c3",
-                              "fields": {
-                                    "1": { "field_name": "field ba",
-                                          "field_type": "field_type 1","field_on_site_uuid":"6312e0e9-2210-4487-8c7c-8e210448b6f3"},
-                                    "2": { "field_name": "field bb",
-                                          "field_type": "field_type 1","field_on_site_uuid":"8940a306-5532-440e-b43b-cce0538b8820"},
-                                    "3": { "field_name": "field bc",
-                                          "field_type": "field_type 1","field_on_site_uuid":"eafc1f34-c858-441c-b061-86d799547651"},
-                              } },
-                        "3": { "section_name" : "rapport de vérifications rub c",
-                              "section_type" : "section type 1",
-                              "section_on_site_uuid": "026d86e1-7256-4fb9-a306-e413fbd925cc",
-                              "fields": {
-                                    "1": { "field_name": "field ca",
-                                          "field_type": "field_type 1","field_on_site_uuid":"bdc1b557-039c-42db-9f59-adcaf25435f0"},
-                                    "2": { "field_name": "field cb",
-                                          "field_type": "field_type 1","field_on_site_uuid":"7a24e3d4-fbf4-40a8-85ae-4dc0be6faf1d"},
-                                    "3": { "field_name": "field cc",
-                                          "field_type": "field_type 1","field_on_site_uuid":"7a24e3d4-fbf4-40a8-85ae-4dc0be6faf1d"},
-                              } },
-                     }}
+                
             }
             
         },
