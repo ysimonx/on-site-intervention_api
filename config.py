@@ -226,6 +226,18 @@ config = {
                                            "values": []
                                       },
                                  }
+                         },
+                         "5": { "section_name" : "Schema",
+                                "section_type" : "section type 5",
+                                "section_on_site_uuid": "32251e12-ab48-4477-871e-5c67352effaf",
+                                 "fields": {
+                                       "1": { "field_name":"schema",
+                                           "field_label":"schema",
+                                           "field_type":"schema",
+                                           "field_on_site_uuid":"84d763eb-e368-452e-8038-2ead384cb492",
+                                           "values": []
+                                      },
+                                 }
                          }
                   }
                 },
