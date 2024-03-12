@@ -122,7 +122,7 @@ config = {
                         },
             },
             "forms": {
-                "1" :{"form_name":"initial request",
+                "1" :{"form_name":"besoin",
                       "form_on_site_uuid": "9f1f20e3-d3cd-4a58-97fc-2e42a4d7b736",
                       "sections": {
                         "1": { "section_name" : "user",
@@ -229,7 +229,7 @@ config = {
                          }
                   }
                 },
-                "2" :{"form_name":"visit",
+                "2" :{"form_name":"visite",
                       "form_on_site_uuid": "a81c475c-3b9d-40da-839d-56eeee06e85a",
                       "sections": {
                         "1": { "section_name" : "techniques",
@@ -413,7 +413,7 @@ config = {
                         },
                         }
                     },
-                "3" :{"form_name":"commissioning",
+                "3" :{"form_name":"mise en service",
                       "form_on_site_uuid": "e773e72b-e00e-4fcc-b6be-fbfb70307351",
                       "sections": {
                         "1": { "section_name" : "summary",
