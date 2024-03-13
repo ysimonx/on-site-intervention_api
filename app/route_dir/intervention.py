@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, make_response, current_app
+from flask import Blueprint, abort, make_response, current_app, url_for
 
 import hashlib
 import pandas as pd
@@ -175,8 +175,10 @@ def get_intervention_values_csv():
             {"label":"num_chrono", 
                                 "value": interventionValue.num_chrono},
             {"label":"indice", 
-                                "value": interventionValue.indice}
-            
+                                "value": interventionValue.indice},
+            {"label":"feb",
+             "value": "{}{}".format(request.headers.get('host'), url_for('backoffice.get_interventions_values_id', id=interventionValue.id))
+             }
         ]
         
         # http://127.0.0.1:4998/api/v1/intervention_values/csv?site_id=5dc837b9-9678-494c-9b1a-78ff1bf4a17b&type_intervention_id=scaffolding%20request
