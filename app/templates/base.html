@@ -6,7 +6,7 @@
     <link rel='stylesheet' id='google-fonts-1-css' href='https://fonts.googleapis.com/css?family=Roboto%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto+Slab%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRaleway%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic&#038;display=auto&#038;ver=6.2.2' media='all' />
 
     <meta charset="UTF-8">
-    <title>{% block title %} {% endblock %} - Renovadmin</title>
+    <title>{% block title %} {% endblock %} - Fidwork</title>
     <style>
       body
         {
@@ -98,9 +98,9 @@
 
 </head>
 <body>
-  <img style="width:20%; height:20%" src="https://renovadmin.fr/wp-content/uploads/2022/05/Logo-2023.png" class="attachment-full size-full wp-image-440" alt="Logo renovadmin" loading="lazy" srcset="https://renovadmin.fr/wp-content/uploads/2022/05/Logo-2023.png 800w, https://renovadmin.fr/wp-content/uploads/2022/05/Logo-2023-300x64.png 300w, https://renovadmin.fr/wp-content/uploads/2022/05/Logo-2023-768x164.png 768w" sizes="(max-width: 800px) 100vw, 800px" width="800" height="171">
+  <img style="width:20%; height:20%" src='data:image/svg+xml;charset=utf-8,{% include 'fidwork.svg' %}' >
     <nav>
-      {% include 'nav.html' %}
+      {% include '_nav.html' %}
     </nav>
     <div class="content">
         {% block content %} {% endblock %}

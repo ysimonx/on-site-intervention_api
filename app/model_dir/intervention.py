@@ -73,6 +73,8 @@ class InterventionValues(db.Model, MyMixin):
     # limitée à 2 lettres a-b-c-d-e ... z ... -aa-ab-ac-ad ....
     indice                      = db.Column(db.String(2))
     
+    average_latitude            = db.Column(db.Float);
+    average_longitude           = db.Column(db.Float);
     
     
     # 
@@ -108,7 +110,9 @@ class InterventionValues(db.Model, MyMixin):
             'field_on_site_uuid_values':      dict_field_values,
             'status':                         self.status,
             'num_chrono':                       self.num_chrono,
-            'indice':                           self.indice
+            'indice':                           self.indice,
+            'average_latitude' :                self.average_latitude,
+            'average_longitude' :               self.average_longitude
         }
     
     def photos_to_json(self):

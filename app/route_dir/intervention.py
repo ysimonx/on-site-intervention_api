@@ -107,6 +107,15 @@ def create_intervention():
     return jsonify(intervention.to_json()), 201
 
 
+@app_file_intervention.route("/intervention_values/<id>", methods=["GET"])
+@jwt_required()
+def get_intervention_values_id(id):
+    intervention_values = InterventionValues.query.get(id)
+    if intervention_values is None:
+        abort(make_response(jsonify(error="intervention_values is not found"), 404))
+    return jsonify(intervention_values.to_json())
+
+
 @app_file_intervention.route("/intervention_values/csv", methods=["GET"])
 def get_intervention_values_csv():
     
