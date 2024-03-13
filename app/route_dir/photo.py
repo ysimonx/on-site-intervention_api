@@ -8,6 +8,7 @@ from config import config
 from ..model_dir.photo import Photo
 from ..model_dir.tenant import Tenant
 from ..model_dir.mymixin import User
+from ..model_dir.event import Event
 from flask import jsonify, request, abort
 from flask_jwt_extended import jwt_required
 from werkzeug.utils import secure_filename
@@ -196,6 +197,12 @@ def create_photo():
                 )
     
     db.session.add(photo)
+    
+    
+    event=Event(object=photo.__class__.__name__, object_id=photo.id, action="upload",  description="")
+    db.session.add(event)
+       
+       
     db.session.commit() 
 
     # tb=ThingsboardConnector()
