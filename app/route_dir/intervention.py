@@ -177,7 +177,7 @@ def get_intervention_values_csv():
             {"label":"indice", 
                                 "value": interventionValue.indice},
             {"label":"feb",
-             "value": "{}{}".format(request.headers.get('host'), url_for('backoffice.get_interventions_values_id', id=interventionValue.id))
+             "value": "{}{}".format(request.headers.get('X-Forwarded-Host'), url_for('backoffice.get_interventions_values_id', id=interventionValue.id))
              }
         ]
         
