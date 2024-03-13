@@ -328,7 +328,7 @@ def post_intervention_values():
         event=Event(object=interventionValues.__class__.__name__, object_id=interventionValues.id, action="update",  description="update {}".format(intervention_name))
         db.session.add(event)
         if old_status != status:
-            event=Event(object=interventionValues.__class__.__name__, object_id=interventionValues.id, action="status changed", value_before=old_status, value_after=status, description="update status {}.intervention_name".format(intervention_name))
+            event=Event(object=interventionValues.__class__.__name__, object_id=interventionValues.id, action="status changed", value_before=old_status, value_after=status, description="update status {}".format(intervention_name))
             db.session.add(event)
             
         
