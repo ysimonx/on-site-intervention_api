@@ -197,7 +197,7 @@ def create_photo():
                 )
     
     db.session.add(photo)
-    
+    db.session.commit() 
     
     event=Event(object=photo.__class__.__name__, object_id=photo.id, action="upload",  description="")
     db.session.add(event)
