@@ -8,6 +8,7 @@ import os
 import datetime
 from config import config
 
+
 from ..model_dir.intervention import Intervention, InterventionValues
 from ..model_dir.type_intervention import TypeIntervention, TypeInterventionSite
 
@@ -75,8 +76,11 @@ def get_interventions_values_id(id):
     wb = load_workbook(filename_input)
     xlw = XLWrap(wb, filename_output)
     xlw["num_registre"] = _intervention_values.name
-  
-    return send_file(filename_output, download_name="feb_{}.xlsx".format(_intervention_values.name))
+
+    date = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S.%f")
+
+    download_name="feb_{}_{}.xlsx".format(_intervention_values.name, date)
+    return send_file(filename_output, download_name=download_name)
 	
     # return render_template('feb.html', intervention_values=_intervention_values, type_intervention_site=_type_intervention_site)
    
