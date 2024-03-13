@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, session,abort, current_app, make_response
+from flask import Blueprint, render_template, redirect, session,abort, current_app, make_response, send_file
 from openpyxl import load_workbook
 from reportlab.pdfgen import canvas
 import uuid
@@ -57,7 +57,7 @@ class XLWrap:
         self.wb.save(self.filename)
         
 
-@app_file_backoffice.route("/intervention_values/feb/<id>", methods=["GET"])
+@app_file_backoffice.route("/intervention_values/feb/xlsx/<id>", methods=["GET"])
 def get_interventions_values_id(id):
     _intervention_values = InterventionValues.query.get(id)
     if _intervention_values is None:
@@ -67,18 +67,18 @@ def get_interventions_values_id(id):
     if _type_intervention_site is None:
         abort(make_response(jsonify(error="_type_intervention_site is not found"), 404))
 
-    filename_input='/Users/ysimonx/Developpement/on_site_intervention_api/app/static/assets/scaffolding_request_sandbox.xlsx'
-    filename_output = '/Users/ysimonx/Developpement/on_site_intervention_api/app/static/assets/scaffolding_request_sandbox_output.xlsx'
-    filename_output_pdf = '/Users/ysimonx/Developpement/on_site_intervention_api/app/static/assets/scaffolding_request_sandbox_output.pdf'
-    
+    # filename_input='/Users/ysimonx/Developpement/on_site_intervention_api/app/static/assets/scaffolding_request_sandbox.xlsx'
+    filename_input=os.path.join(current_app.root_path, 'static/assets/scaffolding_request_sandbox.xlsx')
+    print(filename_input)
+    filename_output = '/tmp/scaffolding_request_sandbox_output_{}.xlsx'.format(_intervention_values.name)
+
     wb = load_workbook(filename_input)
     xlw = XLWrap(wb, filename_output)
     xlw["num_registre"] = _intervention_values.name
   
-    c = canvas.Canvas(filename_output_pdf)
-    c.save()
-
-    return render_template('feb.html', intervention_values=_intervention_values, type_intervention_site=_type_intervention_site)
+    return send_file(filename_output, download_name="feb_{}.xlsx".format(_intervention_values.name))
+	
+    # return render_template('feb.html', intervention_values=_intervention_values, type_intervention_site=_type_intervention_site)
    
 
 
