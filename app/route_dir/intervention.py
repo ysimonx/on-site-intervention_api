@@ -15,6 +15,7 @@ from ..model_dir.site import Site
 from ..model_dir.form import Form
 from ..model_dir.mymixin import User
 from ..model_dir.field import Field, FieldValue
+from ..model_dir.event import Event
 from ..model_dir.field_histo import FieldHisto
 from flask import jsonify, request, abort
 from flask_jwt_extended import jwt_required
@@ -37,75 +38,6 @@ def get_interventions():
         interventions = Intervention.query.filter(Intervention.site_id==_site.id).all()
         
     return jsonify([item.to_json() for item in interventions])
-
-
-@app_file_intervention.route('/intervention_old', methods=['POST'])
-@jwt_required()
-def create_intervention():
-    
-    if not request.json:
-        abort(make_response(jsonify(error="no json provided in request"), 400))
-
-
-    intervention_on_site_uuid   = request.json.get('intervention_on_site_uuid')
-    intervention_name           = request.json.get('intervention_name')
-    place_on_site_uuid          = request.json.get('place_on_site_uuid')
-    place_name                  = request.json.get('place_name')
-    site_id             = request.json.get('site_id')
-    type_intervention           = request.json.get('type_intervention')
-    forms                       = request.json.get('forms')
-   
-    if site_id is None:
-        abort(make_response(jsonify(error="site_id must be provided"), 400))
-      
-
-    _type_intervention=getByIdOrByName(TypeIntervention, type_intervention)
-    if _type_intervention is None:
-        _type_intervention = TypeIntervention(name=type_intervention)
-        db.session.add(_type_intervention)
-        db.session.commit() 
-        
-    place = Place.query.filter(Place.place_on_site_uuid == place_on_site_uuid).first()
-    if place is None:
-        place = Place(place_on_site_uuid = place_on_site_uuid, name = place_name )
-        db.session.add(place)
-        db.session.commit()  
-        
-    _site=getByIdOrByName(Site, site_id)
-    if _site is None:
-        abort(make_response(jsonify(error="site is not found"), 400))
-        
-   
-        
-    intervention= Intervention.query.filter(Intervention.intervention_on_site_uuid == intervention_on_site_uuid).first()
-    if intervention is None:
-        intervention = Intervention(
-                        intervention_on_site_uuid = intervention_on_site_uuid,
-                        name = intervention_name, 
-                        site_id = _site.id, 
-                        place_id = place.id,
-                        version=1,
-                        type_intervention_id = _type_intervention.id)
-        
-        db.session.add(intervention)
-    else:
-        # print(intervention.to_json())
-        intervention.name = intervention_name
-        intervention.place_id = place.id
-        intervention.version = intervention.version + 1
-        intervention.type_intervention_id = _type_intervention.id
-        
-        
-    db.session.commit()  
-    
-                            
-    
-     
-    # re read intervention, for forms 
-    intervention= Intervention.query.filter(Intervention.intervention_on_site_uuid == intervention_on_site_uuid).first()
-            
-    return jsonify(intervention.to_json()), 201
-
 
 @app_file_intervention.route("/intervention_values/<id>", methods=["GET"])
 @jwt_required()
@@ -177,7 +109,7 @@ def get_intervention_values_csv():
             {"label":"indice", 
                                 "value": interventionValue.indice},
             {"label":"feb",
-             "value": "{}{}".format(request.headers.get('X-Forwarded-Host'), url_for('backoffice.get_interventions_values_id', id=interventionValue.id))
+             "value": "https://{}{}".format(request.headers.get('X-Forwarded-Host'), url_for('backoffice.get_interventions_values_id', id=interventionValue.id))
              }
         ]
         
@@ -364,6 +296,9 @@ def post_intervention_values():
         )
         
         db.session.add(interventionValues)
+        event=Event(object=interventionValues.__class__.__name__, object_id=interventionValues.id, action="create",  description="")
+        db.session.add(event)
+        
     else:
         # print(intervention.to_json())
         
@@ -372,6 +307,7 @@ def post_intervention_values():
         interventionValues.site_id = _site.id
         interventionValues.type_intervention_id = _type_intervention.id
         # interventionValues.template_text= template_text
+        old_status =  interventionValues.status
         interventionValues.status = status
         
         if num_chrono is not None:
@@ -389,7 +325,14 @@ def post_intervention_values():
                 if _assignee is not None:
                     interventionValues.assignee_user_id = _assignee.id
                 
+        event=Event(object=interventionValues.__class__.__name__, object_id=interventionValues.id, action="update",  description="update {}".format(intervention_name))
+        db.session.add(event)
+        if old_status != status:
+            event=Event(object=interventionValues.__class__.__name__, object_id=interventionValues.id, action="status changed", before_value=old_status, after_value=status, description="update status {}.intervention_name".format(intervention_name))
+            db.session.add(event)
+            
         
+         
     db.session.commit()  
 
     for k, v in field_on_site_uuid_values.items():

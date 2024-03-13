@@ -5,13 +5,26 @@ from .mymixin import MyMixin
 class Event(db.Model, MyMixin):
     __tablename__ = 'events'
 
-    event_on_site_uuid          = db.Column(db.String(36), unique=True)
-    
+    object                      = db.Column(db.String(255), index=True, nullable=False)
+    object_id                   = db.Column(db.String(36),  index=True, nullable=False)
+    action                      = db.Column(db.String(255), index=True, nullable=False)
+    value_before                = db.Column(db.String(255), nullable=True)
+    value_after                 = db.Column(db.String(255), nullable=True)
+    description                 = db.Column(db.String(255), index=True, nullable=True)
+    datetime_notification_sent  = db.Column(db.DateTime(timezone=True), nullable=True)
+    datetime_notification_read  = db.Column(db.DateTime(timezone=True), nullable=True)
+   
     def to_json(self):
         return {
             'id':                           self.id,
             '_internal' :                   self.get_internal(),
-            'event_on_site_uuid':           self.event_on_site_uuid,
+            'object':                       self.object,
+            'object_id':                    self.object_id,
+            'action':                       self.action,   
+            'value_before':                       self.value_before,
+            'value_after':                       self.value_after,
+            'description':                       self.description
+            
         }
         
     def to_json_light(self):
