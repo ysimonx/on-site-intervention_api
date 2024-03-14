@@ -107,9 +107,9 @@ def post_site_user(site_id):
     if user_email is None:
         abort(make_response(jsonify(error="missing user_email parameter"), 400))
 
-    user_firstname = user_email = request.json.get('user_firstname', None)
-    user_lastname = user_email = request.json.get('user_lastname', None)
-    user_phone = user_email = request.json.get('user_phone', None)
+    user_firstname = request.json.get('user_firstname', None)
+    user_lastname = request.json.get('user_lastname', None)
+    user_phone =  request.json.get('user_phone', None)
     
     roles = request.json.get('roles', None)
     if roles is None:
