@@ -107,7 +107,10 @@ def post_site_user(site_id):
     if user_email is None:
         abort(make_response(jsonify(error="missing user_email parameter"), 400))
 
-
+    user_firstname = user_email = request.json.get('user_firstname', None)
+    user_lastname = user_email = request.json.get('user_lastname', None)
+    user_phone = user_email = request.json.get('user_phone', None)
+    
     roles = request.json.get('roles', None)
     if roles is None:
                 abort(make_response(jsonify(error="missing roles parameter"), 400))
@@ -117,6 +120,9 @@ def post_site_user(site_id):
     if _user is None:
         _user = User(
                     email= user_email,
+                    firstname=user_firstname,
+                    lastname=user_lastname,
+                    phone=user_phone,
                     password= "12345678",
                     tenant_id = None
                 )
@@ -124,7 +130,15 @@ def post_site_user(site_id):
         db.session.add(_user)  
         db.session.commit()
         current_app.logger.info("user added %s", _user.email)
-    
+    else:
+        if user_firstname is not None:
+            _user.firstname = user_firstname
+        if user_lastname is not None:
+            _user.lasttname  = user_lastname
+        if user_phone is not None:
+            _user.phone  = user_phone
+        db.session.commit()
+        
     # je créé tous les roles nécessaires et supprime tous les roles attribués à ce user pour ce site 
     for role in _site.roles:
         current_app.logger.info("role %s",role.name)
