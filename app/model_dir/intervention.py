@@ -98,6 +98,7 @@ class InterventionValues(db.Model, MyMixin):
         current_app.logger.info(request.headers.get('X-Forwarded-Host'))
         data={
             "id":self.id,
+            "feb_url":"https://{}{}".format(request.headers.get('X-Forwarded-Host'), url_for('backoffice.get_interventions_values_id', id=self.id)),
             "site":self.site.name, 
             "type_intervention":self.type_intervention.name,
             "status":self.status,
@@ -106,9 +107,9 @@ class InterventionValues(db.Model, MyMixin):
             "place": self.place.name,
             "num_chrono":self.num_chrono,
             "indice":self.indice,
-            "feb":"https://{}{}".format(request.headers.get('X-Forwarded-Host'), url_for('backoffice.get_interventions_values_id', id=self.id))
+           
         }
-        columns=["id","site","type_intervention", "assignee_email", "registre", "place", "num_chrono", "indice", "feb"] 
+        columns=["id","feb_url", "site","type_intervention", "assignee_email", "registre", "place", "num_chrono", "indice", ] 
          
         dict_field_values={}
         for item in self.fields_values:
@@ -134,10 +135,6 @@ class InterventionValues(db.Model, MyMixin):
                     if field_on_site_uuid in dict_field_values.keys():
                         value  = dict_field_values[field_on_site_uuid]
                         data[field_name] = value
-                        #if len(value) < 200:
-                            # record.append(unidecode(value))
-                        #else:
-                            # record.append("yes")
                     else:
                         data[field_name] = None
         result={
