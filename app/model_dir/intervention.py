@@ -5,7 +5,7 @@ from .mymixin import MyMixin
 import json
 from sqlalchemy.orm import declarative_base, relationship, backref
 import uuid
-from flask import request, url_for
+from flask import request, url_for, current_app
 
 class Intervention(db.Model, MyMixin):
     
@@ -93,7 +93,9 @@ class InterventionValues(db.Model, MyMixin):
     fields_values               = db.relationship("FieldValue", viewonly=True)
     
     def to_dict(self):
-        
+        current_app.logger.info(" - - - - - - - - - - - -")
+        current_app.logger.info(request.headers)
+        current_app.logger.info(request.headers.get('X-Forwarded-Host'))
         data={
             "id":self.id,
             "site":self.site.name, 
