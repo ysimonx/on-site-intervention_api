@@ -77,7 +77,7 @@ def get_intervention_values_csv():
         dict_converted={}
         
         for key, value in donnees.items():
-            if value is not None and len(str(value)) > 400:
+            if value is not None and str(value).startswith("<svg"):
                 value="yes"
             if value is None:
                 value=""
