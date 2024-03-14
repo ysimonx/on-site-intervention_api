@@ -94,19 +94,18 @@ class InterventionValues(db.Model, MyMixin):
     
     def to_dict(self):
         
-        dictx={
+        data={
             "id":self.id,
             "site":self.site.name, 
             "type_intervention":self.type_intervention.name,
             "status":self.status,
-            "assignee_email": self.assignee_email if self.assignee_user is not None else None,
+            "assignee_email": self.assignee_user.email if self.assignee_user is not None else None,
             "registre" :self.name,
             "place": self.place.name,
             "num_chrono":self.num_chrono,
             "indice":self.indice,
             "feb":"https://{}{}".format(request.headers.get('X-Forwarded-Host'), url_for('backoffice.get_interventions_values_id', id=self.id))
         }
-        
         columns=["id","site","type_intervention", "assignee_email", "registre", "place", "num_chrono", "indice", "feb"] 
          
         dict_field_values={}
@@ -132,17 +131,19 @@ class InterventionValues(db.Model, MyMixin):
                     field_on_site_uuid=fields_values["field_on_site_uuid"]
                     if field_on_site_uuid in dict_field_values.keys():
                         value  = dict_field_values[field_on_site_uuid]
-                        dictx[field_name] = value
+                        data[field_name] = value
                         #if len(value) < 200:
                             # record.append(unidecode(value))
                         #else:
                             # record.append("yes")
                     else:
-                        dictx[field_name] = None
-           
-        dictx["_columns"]=columns             
-        print(dictx)
-        return dictx       
+                        data[field_name] = None
+        result={
+            "columns": columns,
+            "data": data
+        }
+        
+        return result       
         
         
     def to_json(self):

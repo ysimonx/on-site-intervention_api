@@ -58,9 +58,45 @@ def get_intervention_values_dict_id(id):
     return intervention_values.to_dict()
 
 
-
 @app_file_intervention.route("/intervention_values/csv", methods=["GET"])
 def get_intervention_values_csv():
+    
+    site_id=request.args.get("site_id")
+    _site=getByIdOrByName(Site, site_id)
+    if _site is None:
+         abort(make_response(jsonify(error="site is not found"), 404))
+    
+    interventionValues = filterInterventionValues()
+    
+    columns=[]
+    data=[]
+    for interventionValue in interventionValues:
+        dict_columns_data =interventionValue.to_dict()
+        columns=dict_columns_data["columns"]
+        donnees=dict_columns_data["data"]
+        dict_converted={}
+        
+        for key, value in donnees.items():
+            if value is not None and len(str(value)) > 400:
+                value="yes"
+            if value is None:
+                value=""
+            dict_converted[key]=unidecode(str(value))
+            
+            
+        data.append(dict_converted)
+
+    df = pd.DataFrame(data, columns=columns)
+    S=df.to_csv(index=True, na_rep="", index_label="n", quoting=csv.QUOTE_ALL, sep=";") 
+    resp = make_response(S)
+    
+    resp.headers["Content-Disposition"] = "attachment; filename=export_{}.csv".format(_site.get_urlName())
+    resp.headers["Content-Type"] = "text/csv"
+    # resp.charset="iso-8859-1"
+    return resp 
+
+@app_file_intervention.route("/intervention_values/csv_old", methods=["GET"])
+def get_intervention_values_csv_old():
     
     interventionValues = filterInterventionValues()
     
