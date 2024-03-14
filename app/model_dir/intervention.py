@@ -1,8 +1,11 @@
-from .. import db
+from .. import db, getByIdOrByName
+from ..model_dir.site import Site
+from ..model_dir.type_intervention import TypeIntervention, TypeInterventionSite
 from .mymixin import MyMixin
 import json
 from sqlalchemy.orm import declarative_base, relationship, backref
 import uuid
+from flask import request, url_for
 
 class Intervention(db.Model, MyMixin):
     
@@ -89,6 +92,59 @@ class InterventionValues(db.Model, MyMixin):
     assignee_user               = db.relationship("User", viewonly=True)
     fields_values               = db.relationship("FieldValue", viewonly=True)
     
+    def to_dict(self):
+        
+        dictx={
+            "id":self.id,
+            "site":self.site.name, 
+            "type_intervention":self.type_intervention.name,
+            "status":self.status,
+            "assignee_email": self.assignee_email if self.assignee_user is not None else None,
+            "registre" :self.name,
+            "place": self.place.name,
+            "num_chrono":self.num_chrono,
+            "indice":self.indice,
+            "feb":"https://{}{}".format(request.headers.get('X-Forwarded-Host'), url_for('backoffice.get_interventions_values_id', id=self.id))
+        }
+        
+        columns=["id","site","type_intervention", "assignee_email", "registre", "place", "num_chrono", "indice", "feb"] 
+         
+        dict_field_values={}
+        for item in self.fields_values:
+            dict_field_values[item.field_on_site_uuid]=item.value;
+            
+        site_id=self.site_id
+        _site=getByIdOrByName(Site, site_id)
+        
+        type_intervention_id=site_id=self.type_intervention_id
+        _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
+
+        _type_intervention_site = TypeInterventionSite.query.get((_type_intervention.id,_site.id))
+        
+        
+        dictTemplate=json.loads(_type_intervention_site.template_text)
+        for form, form_values in dictTemplate["forms"].items():
+            for section, section_values in form_values["sections"].items():
+                for field, fields_values in section_values["fields"].items():
+                    field_name=fields_values["field_name"]
+                    columns.append(field_name)
+        
+                    field_on_site_uuid=fields_values["field_on_site_uuid"]
+                    if field_on_site_uuid in dict_field_values.keys():
+                        value  = dict_field_values[field_on_site_uuid]
+                        dictx[field_name] = value
+                        #if len(value) < 200:
+                            # record.append(unidecode(value))
+                        #else:
+                            # record.append("yes")
+                    else:
+                        dictx[field_name] = None
+           
+        dictx["_columns"]=columns             
+        print(dictx)
+        return dictx       
+        
+        
     def to_json(self):
         dict_field_values={}
         for item in self.fields_values:
@@ -104,7 +160,7 @@ class InterventionValues(db.Model, MyMixin):
             'place':                          self.place.to_json(),
             'version':                        self.version, 
             'hashtag':                        self.hashtag,
-        'assignee_user_id':                 self.assignee_user_id,
+            'assignee_user_id':                 self.assignee_user_id,
             'assignee_user':                None if self.assignee_user is None else self.assignee_user.to_json_ultra_light(),
             # 'template_text':                  self.template_text,
             'field_on_site_uuid_values':      dict_field_values,

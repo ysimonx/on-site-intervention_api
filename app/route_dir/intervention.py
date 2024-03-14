@@ -48,25 +48,23 @@ def get_intervention_values_id(id):
     return jsonify(intervention_values.to_json())
 
 
+@app_file_intervention.route("/intervention_values/dict/<id>", methods=["GET"])
+@jwt_required()
+def get_intervention_values_dict_id(id):
+    intervention_values = InterventionValues.query.get(id)
+    if intervention_values is None:
+        abort(make_response(jsonify(error="intervention_values is not found"), 404))
+        
+    return intervention_values.to_dict()
+
+
+
 @app_file_intervention.route("/intervention_values/csv", methods=["GET"])
 def get_intervention_values_csv():
     
     interventionValues = filterInterventionValues()
     
-    # feed an dataFrame with headers and values
-    # import pandas as pd
-    #
-    # data = [['Alice', 30, 'New York'], ['Bob', 25, 'Los Angeles']]  # Example 2D array
-    # columns = ['Name', 'Age', 'City']  # Header
-    # df = pd.DataFrame(data, columns=columns)
-    #
-    # ou mieux
-    # resp = make_response(df.to_csv())
-    # resp.headers["Content-Disposition"] = "attachment; filename=export.csv"
-    # resp.headers["Content-Type"] = "text/csv"
-    # return resp
-    # 
-    
+ 
     site_id=request.args.get("site_id")
     _site=getByIdOrByName(Site, site_id)
     
@@ -127,8 +125,8 @@ def get_intervention_values_csv():
             dict_field_values[item.field_on_site_uuid]=item.value;
             
         for form, form_values in dictTemplate["forms"].items():
-            columns.append("formulaire_{}".format(form))    
-            record.append(unidecode(form_values["form_name"]))
+            # columns.append("formulaire_{}".format(form))    
+            # record.append(unidecode(form_values["form_name"]))
             for section, section_values in form_values["sections"].items():
                 #columns.append("section_{}".format(section))    
                 #record.append(section_values["section_name"])
@@ -412,3 +410,4 @@ def filterInterventionValues():
     interventionValues = query_interventionValues.all()
     
     return interventionValues
+
