@@ -122,7 +122,9 @@ def post_site_user(site_id):
                 
     _company=None
     if user_company is not None:
+        current_app.logger.info("user company given %s", user_company)
         _company=getByIdOrByName(obj=Company, id=user_company, tenant_id=None)
+        current_app.logger.info(_company)
         if _company is None:
             _company=Company(
                 name=user_company,
