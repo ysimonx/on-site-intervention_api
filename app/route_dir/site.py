@@ -151,13 +151,14 @@ def post_site_user(site_id):
         db.session.commit()
         current_app.logger.info("user added %s", _user.email)
     else:
-        if user_firstname is not None:
+        if user_firstname is not None and user_firstname != "":
+            
             _user.firstname = user_firstname
-        if user_lastname is not None:
+        if user_lastname is not None  and user_lastname != "":
             _user.lastname  = user_lastname
-        if user_phone is not None:
+        if user_phone is not None  and user_phone != "":
             _user.phone  = user_phone
-        if user_company is not None:
+        if user_company is not None  and user_company != "":
             _user.company_id = _company.id
         db.session.commit()
         
