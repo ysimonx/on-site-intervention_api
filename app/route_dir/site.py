@@ -129,7 +129,8 @@ def post_site_user(site_id):
             _company=Company(
                 name=user_company,
                 tenant_id=None)
-            
+            db.session.add(_company)
+            db.session.commit()
         
     _user = getByIdOrEmail(obj=User, id=user_email)
     if _user is None:
@@ -139,9 +140,12 @@ def post_site_user(site_id):
                     lastname=user_lastname,
                     phone=user_phone,
                     password= "12345678",
-                    tenant_id = None,
-                    company_id=_company.id
+                    tenant_id = None
+                    
                 )
+        if _company is not None:
+            _user.company_id = _company.id
+            
         _user.hash_password()
         db.session.add(_user)  
         db.session.commit()
