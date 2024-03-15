@@ -4,6 +4,8 @@ from ..model_dir.mymixin         import User, Role
 from ..model_dir.tenant import Tenant
 from ..model_dir.intervention import InterventionValues, Intervention
 from ..model_dir.place import Place
+from ..model_dir.company import Company
+
 
 from ..model_dir.field import FieldValue, Field
 from ..model_dir.form import Form
@@ -110,12 +112,23 @@ def post_site_user(site_id):
     user_firstname = request.json.get('user_firstname', None)
     user_lastname = request.json.get('user_lastname', None)
     user_phone =  request.json.get('user_phone', None)
+    user_company = request.json.get('user_company', None)
     
+            
+        
     roles = request.json.get('roles', None)
     if roles is None:
                 abort(make_response(jsonify(error="missing roles parameter"), 400))
                 
-     
+    _company=None
+    if user_company is not None:
+        _company=getByIdOrByName(obj=Company, id=user_company, tenant_id=None)
+        if _company is None:
+            _company=Company(
+                name=user_company,
+                tenant_id=None)
+            
+        
     _user = getByIdOrEmail(obj=User, id=user_email)
     if _user is None:
         _user = User(
@@ -124,7 +137,8 @@ def post_site_user(site_id):
                     lastname=user_lastname,
                     phone=user_phone,
                     password= "12345678",
-                    tenant_id = None
+                    tenant_id = None,
+                    company_id=_company.id
                 )
         _user.hash_password()
         db.session.add(_user)  
@@ -137,6 +151,8 @@ def post_site_user(site_id):
             _user.lastname  = user_lastname
         if user_phone is not None:
             _user.phone  = user_phone
+        if user_company is not None:
+            _user.company_id = _company.id
         db.session.commit()
         
     # je créé tous les roles nécessaires et supprime tous les roles attribués à ce user pour ce site 
