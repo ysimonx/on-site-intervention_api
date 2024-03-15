@@ -134,7 +134,7 @@ def post_site_user(site_id):
         if user_firstname is not None:
             _user.firstname = user_firstname
         if user_lastname is not None:
-            _user.lasttname  = user_lastname
+            _user.lastname  = user_lastname
         if user_phone is not None:
             _user.phone  = user_phone
         db.session.commit()
