@@ -31,8 +31,8 @@ def get_site_list():
     
     # TO DO
     # je dois trouver les sites pour lesquels j'ai des roles ...
-    items = Site.query.all()
-    return jsonify([item.to_json() for item in items])
+    sites = Site.query.all()
+    return jsonify([item.to_json() for item in sites])
 
 
 @app_file_site.route("/site/<id>", methods=["GET"])
@@ -286,8 +286,16 @@ def del_site(site_id):
     return jsonify({"result": "ok", "id":site_id}),200
 
 
+@app_file_site.route('/site/templates/update', methods=['POST'])
+@jwt_required()
+def update_all_sites_templates():
 
-
+    sites = Site.query.all()
+    for _site in sites:
+         process_sites_interventions_templates(_site)
+    return jsonify({"result": "ok"}),200    
+         
+    
 @app_file_site.route('/site', methods=['POST'])
 @jwt_required()
 def create_site():
@@ -323,30 +331,7 @@ def create_site():
         db.session.add(_site)
         db.session.commit()
     
-    _types_intervention = config["types_interventions"]
-    for type_intervention_name, item in _types_intervention.items():
-        current_app.logger.info(type_intervention_name)
-        _type_intervention=getByIdOrByName(obj=TypeIntervention, id=type_intervention_name)
-        if _type_intervention is not None:
-            current_app.logger.info(_type_intervention.to_json())
-        
-            _type_intervention_site = TypeInterventionSite.query.get((_type_intervention.id,_site.id))
-            if _type_intervention_site is None:
-                
-                _type_intervention_site = TypeInterventionSite(
-                    type_intervention_id=_type_intervention.id,
-                    site_id=_site.id,
-                    template_text=json.dumps(item)
-                )
-                db.session.add(_type_intervention_site)
-            else:
-                _type_intervention_site.template_text=json.dumps(item)
-                db.session.commit()
-    
-    
-
-            update_sites_interventions_templates(_site, _type_intervention, item);
-            
+    process_sites_interventions_templates(_site)
                 
     db.session.commit()
     
@@ -398,7 +383,31 @@ def create_site():
     
     
     
+def process_sites_interventions_templates(_site):
     
+    _types_intervention = config["types_interventions"]
+    for type_intervention_name, item in _types_intervention.items():
+        current_app.logger.info(type_intervention_name)
+        _type_intervention=getByIdOrByName(obj=TypeIntervention, id=type_intervention_name)
+        if _type_intervention is not None:
+            current_app.logger.info(_type_intervention.to_json())
+        
+            _type_intervention_site = TypeInterventionSite.query.get((_type_intervention.id,_site.id))
+            if _type_intervention_site is None:
+                
+                _type_intervention_site = TypeInterventionSite(
+                    type_intervention_id=_type_intervention.id,
+                    site_id=_site.id,
+                    template_text=json.dumps(item)
+                )
+                db.session.add(_type_intervention_site)
+            else:
+                _type_intervention_site.template_text=json.dumps(item)
+                db.session.commit()
+
+            update_sites_interventions_templates(_site, _type_intervention, item);
+            
+                    
     
 def update_sites_interventions_templates( _site,  _type_intervention, template ):
       
