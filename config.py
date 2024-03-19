@@ -353,10 +353,10 @@ config = {
                                 "section_on_site_uuid": "b72ec40c-0194-47a0-9744-35137dde1e9d",
                                  "fields": {
                                        "1": { "field_name":"visit_user_scaffolder",
-                                           "field_label":"scaffolder",
+                                           "field_label":"échafaudeur",
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"1481ef60-16f5-4090-94a4-daf787ae5926",
-                                           "values": ["scaffold builder"]
+                                           "values": ["échafaudeur"]
                                       },
                                        "2": { "field_name":"visit_signature_scaffolder",
                                            "field_label":"signature",
@@ -375,10 +375,10 @@ config = {
                                            "field_on_site_uuid":"47afbe06-57a3-416e-8f39-42a4916bf97e",
                                       },
                                         "5": { "field_name":"visit_user_building_coordinator",
-                                           "field_label":"building coordinator",
+                                           "field_label":"Responsable unité fabrication",
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"032dfe04-c8f0-4552-9cd1-248b272c7c15",
-                                           "values": ["building coordinator"]
+                                           "values": ["responsable unité fabrication"]
                                       },
                                        "6": { "field_name":"visit_signature_building_coordinator",
                                            "field_label":"signature",
@@ -386,10 +386,10 @@ config = {
                                            "field_on_site_uuid":"853a16f2-7327-4317-aed4-ea8782556eb4",
                                       },
                                        "7": { "field_name":"visit_user_hse_engineer",
-                                           "field_label":"HSE engineer",
+                                           "field_label":"service sécurité",
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"5a3f72df-7599-48c4-8f51-8fa6127d3a5d",
-                                           "values": ["hse engineer"]
+                                           "values": ["service sécurité"]
                                       },
                                        "8": { "field_name":"visit_signature_hse_engineer",
                                            "field_label":"signature",
@@ -474,10 +474,10 @@ config = {
                                 "section_on_site_uuid": "a8432ea0-d164-47f9-a0a2-877f60078380",
                                  "fields": {
                                       "1": { "field_name":"commissioning_user_commissioning_engineer",
-                                           "field_label":"commissioning engineer",
+                                           "field_label":"inspecteur échafaudage",
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"dd18e0d5-8d3a-477e-ab3d-09d5736b7ffa",
-                                           "values": ["commissioning engineer"]
+                                           "values": ["inspecteur échafaudage"]
                                       },
                                        "2": { "field_name":"commissioning_signature_commissioning_engineer",
                                            "field_label":"signature",
@@ -569,14 +569,16 @@ config = {
     },
     "roles": [
           "admin",
+          "admin site",
           "site administrator",
-          "coordinator",
+          "coordinateur échafaudage",
           "operator",
-          "billing manager",
-          "scaffold builder",
-          "building coordinator",
-          "hse engineer",                                     #Health and Safety Project Coordinator
-          "commissioning engineer",
-          "user"
+          "cost contrôleur",
+          "échafaudeur",
+          "responsable unité fabrication",
+          "service sécurité",                                     #Health and Safety Project Coordinator
+          "Inspecteur échafaudage",
+          "demandeur",
+          "utilisateur"
       ]
 }
