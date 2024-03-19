@@ -55,7 +55,7 @@ config = {
                               "initiated",
                               "assigned",
                               "chrono",
-                              "commissionned",
+                              "commissioned",
                               "cancelled"
                               ]
                         },
@@ -488,7 +488,7 @@ config = {
                                            "field_label":"scaffolder",
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"6f212152-0b03-4bec-89a1-bedddb42a59b",
-                                           "values": ["scaffold builder"]
+                                           "values": ["échafaudeur"]
                                       },
                                        "4": { "field_name":"commissioning_signature_scaffolder",
                                            "field_label":"signature",
@@ -548,7 +548,7 @@ config = {
                   "initiated",
                   "assigned",
                   "chrono",
-                  "commissionned",
+                  "commissioned",
                   "cancelled"
             ],
             "forms": {
@@ -577,7 +577,7 @@ config = {
           "échafaudeur",
           "responsable unité fabrication",
           "service sécurité",                                     #Health and Safety Project Coordinator
-          "Inspecteur échafaudage",
+          "inspecteur échafaudage",
           "demandeur",
           "utilisateur"
       ]
