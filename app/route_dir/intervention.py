@@ -136,6 +136,21 @@ def get_intervention_values():
 @jwt_required()
 def get_intervention_values_photos():
     
+    site_id=request.args.get("site_id")
+    _site=getByIdOrByName(Site, site_id)
+    
+    if "maxutc" in request.args:
+        _maxutc=request.args.get("maxutc")
+        if _site is not None:
+            if _site.maxutc is not None:
+                current_app.logger.info("avant maxutc {} vs {}".format(_maxutc, _site.maxutc))
+                _maxutc = _maxutc.replace("T"," ")
+                current_app.logger.info("apres maxutc {} vs {}".format(_maxutc, _site.maxutc))
+                if str(_maxutc) == str(_site.maxutc):
+                    current_app.logger.info("maxutc should 304 !!!!")
+                    return jsonify({"message":"not modified"}), 304
+                
+                
     interventionValues = filterInterventionValues()
 
     resp=make_response(jsonify([item.photos_to_json() for item in interventionValues]))
@@ -144,6 +159,7 @@ def get_intervention_values_photos():
     if maxutc is not None:
         resp.headers['X-LastModified'] = maxutc
 
+            
     return resp
 
 
