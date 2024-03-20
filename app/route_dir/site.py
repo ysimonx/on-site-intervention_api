@@ -71,6 +71,39 @@ def post_site_lists(site_id):
     return jsonify(_site.to_json()),200
 
 
+@app_file_site.route("/site/<site_id>/custom_fields", methods=["POST"])
+@jwt_required() 
+def post_site_custom_fields(site_id):
+    
+    _site = Site.query.get(site_id)
+    if _site is None:
+        abort(make_response(jsonify(error="site not found"), 404))
+
+    dict_of_custom_fields = request.json.get('dict_of_custom_fields', None)
+    if dict_of_custom_fields is None:
+        abort(make_response(jsonify(error="missing dict_of_custom_fields parameter"), 400))
+    
+    type_intervention = request.json.get('type_intervention', None)
+    if type_intervention is None:
+        abort(make_response(jsonify(error="missing type_intervention parameter"), 400))
+    
+    _type_intervention=getByIdOrByName(obj=TypeIntervention, id=type_intervention)
+    if _type_intervention is None:
+        abort(make_response(jsonify(error="type_intervention not found"), 400))
+        
+    
+    _type_intervention_site = TypeInterventionSite.query.get((_type_intervention.id,_site.id))
+    if _type_intervention_site is None:
+        abort(make_response(jsonify(error="_type_intervention_site not found"), 400)) 
+        
+    _type_intervention_site.dict_of_custom_fields=json.dumps(dict_of_custom_fields)
+    db.session.commit()
+    current_app.logger.info("_type_intervention_site updated")
+       
+    return jsonify(_type_intervention_site.to_json()),201
+
+
+
 @app_file_site.route("/site/<site_id>/lists_for_places", methods=["POST"])
 @jwt_required() 
 def post_site_lists_for_places(site_id):
@@ -86,7 +119,8 @@ def post_site_lists_for_places(site_id):
     _site.dict_of_lists_for_places = json.dumps(dict_of_lists_for_places)
     db.session.commit()
     
-    return jsonify(_site.to_json()),200
+    
+    return jsonify(_site.to_json()),201
 
 
 
@@ -199,7 +233,7 @@ def post_site_user(site_id):
         db.session.commit()
         
     db.session.commit()
-    return jsonify(_site.to_json()),200
+    return jsonify(_site.to_json()),201
 
 
 @app_file_site.route("/site/<site_id>/user", methods=["DELETE"])
