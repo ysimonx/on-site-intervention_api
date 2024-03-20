@@ -115,8 +115,8 @@ def get_intervention_values():
                 current_app.logger.info("apres maxutc {} vs {}".format(_maxutc, _site.maxutc))
                 if str(_maxutc) == str(_site.maxutc):
                     current_app.logger.info("maxutc should 304 !!!!")
+                    return jsonify({"message":"not modified"}), 304
                 
-        
     interventionValues = filterInterventionValues()
     
     resp=make_response(jsonify([item.to_json() for item in interventionValues]))
