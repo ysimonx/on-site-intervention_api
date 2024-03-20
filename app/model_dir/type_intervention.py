@@ -12,16 +12,16 @@ class TypeInterventionSite(db.Model):
     template_text=db.Column(db.Text)
     dict_of_custom_fields=db.Column(db.Text)
     
-    type_intervention   = relationship("TypeIntervention")
-    site        = relationship("Site")
+    type_intervention   = relationship("TypeIntervention", viewonly=True )
+    site        = relationship("Site", viewonly=True )
    
    
     def to_json(self):
         return {
-            'type_intervention':            self.type_intervention.name,
-            'site':                 self.site.name,
-            'template_text':                     self.template_text,
-            'dict_of_custom_fields':        self.dict_of_custom_fields
+            'type_intervention':                 self.type_intervention.name,
+            'site':                              self.site.name,
+            # 'template_text':                     self.template_text,
+            'dict_of_custom_fields':             self.dict_of_custom_fields
         }
     
   

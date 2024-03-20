@@ -26,10 +26,21 @@ class Site(db.Model, MyMixin):
     dict_of_lists_for_places = db.Column(db.Text)
     
     roles = db.relationship('Role')
-     
+    types_interventions = db.relationship('TypeInterventionSite')
+    
     maxutc = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
         
     def to_json(self):
+        
+        res_dict_of_custom_fields={}
+        for item in self.types_interventions:
+            if item.dict_of_custom_fields is not None:
+                res_dict_of_custom_fields[item.type_intervention.name] = json.loads(item.dict_of_custom_fields)
+            else:
+                res_dict_of_custom_fields[item.type_intervention.name] = {}
+         
+        print(res_dict_of_custom_fields)
+        
         if self.dict_of_lists is None:
             dict_of_lists={}
         else:
@@ -47,7 +58,8 @@ class Site(db.Model, MyMixin):
             'dict_of_lists':    dict_of_lists,
             'dict_of_lists_for_places': dict_of_lists_for_places,
             'maxutc':           self.maxutc,
-            'roles'         :  [{item.name: item.to_json_light()} for item in self.roles] 
+            'roles'         :   [{item.name: item.to_json_light()} for item in self.roles] ,
+            'types_interventions_dict_of_custom_fields':   res_dict_of_custom_fields
         }
 
     def to_json_light(self):
