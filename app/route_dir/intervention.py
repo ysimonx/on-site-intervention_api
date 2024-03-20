@@ -112,7 +112,7 @@ def get_intervention_values():
             if _site.maxutc is not None:
                 current_app.logger.info("maxutc {} vs {}".format(_maxutc, _site.maxutc))
                 _maxutc = _maxutc.replace("T"," ")
-                if maxutc == _site.maxutc:
+                if _maxutc == _site.maxutc:
                     current_app.logger.info("maxutc should 304 !!!!")
                 
         
