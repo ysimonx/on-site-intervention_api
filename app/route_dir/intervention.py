@@ -103,21 +103,27 @@ def get_intervention_values_csv():
 @jwt_required()
 def get_intervention_values():
 
+    site_id=request.args.get("site_id")
+    _site=getByIdOrByName(Site, site_id)
+    
+    if "maxutc" in request.args:
+        _maxutc=request.args.get("maxutc")
+        if _site is not None:
+            if _site.maxutc is not None:
+                current_app.logger.info("maxutc {} vs {}".format(_maxutc, _site.maxutc))
+        
     interventionValues = filterInterventionValues()
     
     resp=make_response(jsonify([item.to_json() for item in interventionValues]))
     
-    site_id=request.args.get("site_id")
-    if site_id is not None:
-        _site=getByIdOrByName(Site, site_id)
-        if _site is not None:
-            maxutc = getLastModified(interventionValues)
-            if maxutc is not None:
-                resp.headers['X-LastModified'] = maxutc
-            # if _site.maxutc != maxutc:
-            #     _site.maxutc = maxutc;
-            #     db.session.commit()
-            
+    if _site is not None:
+        maxutc = getLastModified(interventionValues)
+        if maxutc is not None:
+            resp.headers['X-LastModified'] = maxutc
+        # if _site.maxutc != maxutc:
+        #     _site.maxutc = maxutc;
+        #     db.session.commit()
+        
     return resp
 
 
