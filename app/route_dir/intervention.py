@@ -114,9 +114,9 @@ def get_intervention_values():
             maxutc = getLastModified(interventionValues)
             if maxutc is not None:
                 resp.headers['X-LastModified'] = maxutc
-            if _site.maxutc != maxutc:
-                _site.maxutc = maxutc;
-                db.session.commit()
+            # if _site.maxutc != maxutc:
+            #     _site.maxutc = maxutc;
+            #     db.session.commit()
             
     return resp
 
@@ -263,8 +263,8 @@ def post_intervention_values():
         if old_status != status:
             event=Event(object=interventionValues.__class__.__name__, object_id=interventionValues.id, action="status changed", value_before=old_status, value_after=status, description="update status {}".format(intervention_name))
             db.session.add(event)
-            
-        
+
+                
          
     db.session.commit()  
 
@@ -286,7 +286,11 @@ def post_intervention_values():
             _fieldValue.value = v
         db.session.commit()                
     
-            
+    # update du timestamp au niveau du "site" (pour reactualisation via 304)
+    maxutc = getLastModified([interventionValues])
+    if maxutc is not None:
+        _site.maxutc = maxutc;
+        db.session.commit()
                 
     return jsonify(interventionValues.to_json()), 201
 
