@@ -180,20 +180,6 @@ def get_user_config():
                     json_user_sites.append(json_site)
                     dict_my_sites[site.id]=json_site
     
-    # dict_types_interventions_sites={}
-    #
-    # _types_interventions_sites = TypeInterventionSite.query.all()
-    # for _type_intervention_site in _types_interventions_sites:
-    #     if _type_intervention_site.site.id in dict_my_sites.keys():
-    #         if _type_intervention_site.site.name in dict_types_interventions_sites.keys():
-    #             content = dict_types_interventions_sites[_type_intervention_site.site.name]
-    #         else:
-    #             content={}
-    #         content[_type_intervention_site.type_intervention.name]=json.loads(_type_intervention_site.template_text)
-    #         dict_types_interventions_sites[_type_intervention_site.site.name]=content
-    #         # current_app.logger.info(_type_intervention_site.site.name)
-    #         # current_app.logger.info(_type_intervention_site.type_intervention.name)
-    
     _types_intervention = config["types_interventions"]
        
       

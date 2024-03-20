@@ -95,104 +95,6 @@ def get_intervention_values_csv():
     # resp.charset="iso-8859-1"
     return resp 
 
-@app_file_intervention.route("/intervention_values/csv_old", methods=["GET"])
-def get_intervention_values_csv_old():
-    
-    interventionValues = filterInterventionValues()
-    
- 
-    site_id=request.args.get("site_id")
-    _site=getByIdOrByName(Site, site_id)
-    
-    type_intervention_id=request.args.get("type_intervention_id")
-    _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
-
-    _type_intervention_site = TypeInterventionSite.query.get((_type_intervention.id,_site.id))
-    if _type_intervention_site is None:
-        abort(make_response(jsonify(error="_type_intervention_site is not found"), 404))
-
-    dictTemplate=json.loads(_type_intervention_site.template_text)
-    # return jsonify(json.loads(_type_intervention_site.template_text)),200 
-    
-    
-    data=[]
-    columns=[]
-    for interventionValue in interventionValues:
-        record=[]
-        columns=[]
-        inits=[ {
-            
-            
-            "label":"hashtag",
-                                "value": interventionValue.hashtag},
-            {"label":"type_intervention", 
-                                "value": interventionValue.type_intervention.name},
-            {"label":"id", 
-                                "value": interventionValue.id},
-            {"label":"status", 
-                                "value": interventionValue.status},
-            {"label":"assignee_email", 
-                                 "value": interventionValue.assignee_user.email if interventionValue.assignee_user is not None else ""},
-            {"label":"registre", 
-                                "value": interventionValue.name},
-            {"label":"place", 
-                                "value": interventionValue.place.name},
-
-            {"label":"num_chrono", 
-                                "value": interventionValue.num_chrono},
-            {"label":"indice", 
-                                "value": interventionValue.indice},
-            {"label":"feb",
-             "value": "https://{}{}".format(request.headers.get('X-Forwarded-Host'), url_for('backoffice.get_interventions_values_id', id=interventionValue.id))
-             }
-        ]
-        
-        # http://127.0.0.1:4998/api/v1/intervention_values/csv?site_id=5dc837b9-9678-494c-9b1a-78ff1bf4a17b&type_intervention_id=scaffolding%20request
-        for item in inits:
-            columns.append(item["label"])
-            try :
-                value = item["value"] if item["value"] is not None else ""
-            except :
-                value=""
-            record.append(unidecode(str(value)))
-            
-        dict_field_values={}
-        for item in interventionValue.fields_values:
-            dict_field_values[item.field_on_site_uuid]=item.value;
-            
-        for form, form_values in dictTemplate["forms"].items():
-            # columns.append("formulaire_{}".format(form))    
-            # record.append(unidecode(form_values["form_name"]))
-            for section, section_values in form_values["sections"].items():
-                #columns.append("section_{}".format(section))    
-                #record.append(section_values["section_name"])
-                for field, fields_values in section_values["fields"].items():
-                    field_name=fields_values["field_name"]
-                    field_on_site_uuid=fields_values["field_on_site_uuid"]
-                    columns.append(field_name)
-                    if field_on_site_uuid in dict_field_values.keys():
-                        value  = dict_field_values[field_on_site_uuid]
-                        if len(value) < 200:
-                            record.append(unidecode(value))
-                        else:
-                            record.append("yes")
-                    else:
-                        record.append("")
-            
-        
-        data.append(record)
-        
-    df = pd.DataFrame(data, columns=columns)
-    S=df.to_csv(index=True, na_rep="", index_label="n", quoting=csv.QUOTE_ALL, sep=";") 
-    resp = make_response(S)
-    
-    resp.headers["Content-Disposition"] = "attachment; filename=export_{}.csv".format(_site.get_urlName())
-    resp.headers["Content-Type"] = "text/csv"
-    # resp.charset="iso-8859-1"
-    
-    return resp 
-    
-
 
 
 
@@ -246,7 +148,6 @@ def post_intervention_values():
     type_intervention_id        = request.json.get('type_intervention_id')
     intervention_name           = request.json.get('intervention_name')
     place                       = request.json.get('place')
-    template_text               = request.json.get('template_text')
     field_on_site_uuid_values   = request.json.get('field_on_site_uuid_values')
     status                      = request.json.get('status')
     num_chrono                  = request.json.get('num_chrono')
@@ -322,7 +223,6 @@ def post_intervention_values():
                         site_id = _site.id,
                         type_intervention_id = _type_intervention.id,
                         hashtag = max_id + 1,
-                        # template_text= template_text        ,
                         status=status,
                         num_chrono=num_chrono,
                         indice=indice,
@@ -340,7 +240,6 @@ def post_intervention_values():
         interventionValues.version = interventionValues.version + 1
         interventionValues.site_id = _site.id
         interventionValues.type_intervention_id = _type_intervention.id
-        # interventionValues.template_text= template_text
         old_status =  interventionValues.status
         interventionValues.status = status
         

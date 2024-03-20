@@ -10,6 +10,7 @@ class TypeInterventionSite(db.Model):
     type_intervention_id = db.Column(db.String(36), db.ForeignKey('types_interventions.id'), primary_key=True)
     site_id = db.Column(db.String(36), db.ForeignKey('sites.id'), primary_key=True)
     template_text=db.Column(db.Text)
+    dict_of_custom_fields=db.Column(db.Text)
     
     type_intervention   = relationship("TypeIntervention")
     site        = relationship("Site")
@@ -20,14 +21,10 @@ class TypeInterventionSite(db.Model):
             'type_intervention':            self.type_intervention.name,
             'site':                 self.site.name,
             'template_text':                     self.template_text,
+            'dict_of_custom_fields':        self.dict_of_custom_fields
         }
     
-    def to_json_config(self):
-        return {
-            self.site.name: {
-                self.type_intervention.name: self.template_text
-            }
-        }
+  
         
     
 class TypeIntervention(db.Model, MyMixin):

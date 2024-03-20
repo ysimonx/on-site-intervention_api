@@ -81,7 +81,6 @@ class InterventionValues(db.Model, MyMixin):
     
     
     # 
-    # template_text             = db.Column(db.Text)
     
     # status (workflow) de l'intervention
     status                      = db.Column(db.String(50), index=True, nullable=True)
@@ -162,7 +161,6 @@ class InterventionValues(db.Model, MyMixin):
             'hashtag':                        self.hashtag,
             'assignee_user_id':                 self.assignee_user_id,
             'assignee_user':                None if self.assignee_user is None else self.assignee_user.to_json_ultra_light(),
-            # 'template_text':                  self.template_text,
             'field_on_site_uuid_values':      dict_field_values,
             'status':                         self.status,
             'num_chrono':                       self.num_chrono,
