@@ -105,18 +105,18 @@ def post_site_custom_fields(site_id):
     if _type_intervention_site is None:
         abort(make_response(jsonify(error="_type_intervention_site not found"), 400)) 
         
-    result={}
+    result={ "forms":{ } }
     if _type_intervention_site.dict_of_custom_fields is not None:
         try:
             result=json.loads(_type_intervention_site.dict_of_custom_fields)
         except:
             current_app.logger.info("_type_intervention_site.dict_of_custom_fields FAILS !")
-            result={}
+            # result={}
     else:
-        current_app.logger.info("_type_intervention_site.dict_of_custom_fields is not None")
-        result={}
+        current_app.logger.info("_type_intervention_site.dict_of_custom_fields is None")
+        
     
-    result[_form.form_on_site_uuid]=dict_of_custom_fields
+    result["forms"][_form.form_on_site_uuid]={ "form_name": _form.form_name, "custom_fields" : dict_of_custom_fields }
     
     _type_intervention_site.dict_of_custom_fields=json.dumps(result)
     db.session.commit()
