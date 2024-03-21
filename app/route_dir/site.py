@@ -114,9 +114,13 @@ def post_site_custom_fields(site_id):
             # result={}
     else:
         current_app.logger.info("_type_intervention_site.dict_of_custom_fields is None")
-        
     
-    result["forms"][_form.form_on_site_uuid]={ "form_name": _form.form_name, "custom_fields" : dict_of_custom_fields }
+    jsonforms=result["forms"]
+    
+    jsonCustomFields={ "form_name": _form.form_name, "custom_fields" : dict_of_custom_fields }
+    current_app.logger.info(jsonCustomFields)
+    jsonforms[_form.form_on_site_uuid]=jsonCustomFields
+    result["forms"]=jsonforms
     
     _type_intervention_site.dict_of_custom_fields=json.dumps(result)
     db.session.commit()
