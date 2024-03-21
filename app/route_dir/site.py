@@ -115,7 +115,10 @@ def post_site_custom_fields(site_id):
     else:
         current_app.logger.info("_type_intervention_site.dict_of_custom_fields is None")
     
-    jsonforms=result["forms"]
+    if "forms" in result:
+        jsonforms=result["forms"]
+    else:
+        jsonforms={}
     
     jsonCustomFields={ "form_name": _form.form_name, "custom_fields" : dict_of_custom_fields }
     current_app.logger.info(jsonCustomFields)
