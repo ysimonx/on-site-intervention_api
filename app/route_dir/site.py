@@ -107,10 +107,11 @@ def post_site_custom_fields(site_id):
         
     result={}
     if _type_intervention_site.dict_of_custom_fields is not None:
-            current_app.logger.info("_type_intervention_site.dict_of_custom_fields is not None")
-            result=json.loads(_type_intervention.dict_of_custom_fields)
-        #except:
-        #    result={}
+        try:
+            result=json.loads(_type_intervention_site.dict_of_custom_fields)
+        except:
+            current_app.logger.info("_type_intervention_site.dict_of_custom_fields FAILS !")
+            result={}
     else:
         current_app.logger.info("_type_intervention_site.dict_of_custom_fields is not None")
         result={}
