@@ -87,6 +87,15 @@ def post_site_custom_fields(site_id):
     if type_intervention is None:
         abort(make_response(jsonify(error="missing type_intervention parameter"), 400))
     
+    formulaire_json = request.json.get('formulaire', None)
+    if formulaire_json is None:
+        abort(make_response(jsonify(error="missing formulaire parameter"), 400))
+    
+    _form = Form.query.filter(Form.form_on_site_uuid == formulaire_json["form_on_site_uuid"]).first()
+    if _form is None:
+        abort(make_response(jsonify(error="formulaire not found"), 400))
+    
+    
     _type_intervention=getByIdOrByName(obj=TypeIntervention, id=type_intervention)
     if _type_intervention is None:
         abort(make_response(jsonify(error="type_intervention not found"), 400))
@@ -96,7 +105,10 @@ def post_site_custom_fields(site_id):
     if _type_intervention_site is None:
         abort(make_response(jsonify(error="_type_intervention_site not found"), 400)) 
         
-    _type_intervention_site.dict_of_custom_fields=json.dumps(dict_of_custom_fields)
+    result={}
+    result[_form.form_on_site_uuid]=dict_of_custom_fields
+    
+    _type_intervention_site.dict_of_custom_fields=json.dumps(result)
     db.session.commit()
     current_app.logger.info("_type_intervention_site updated")
        
