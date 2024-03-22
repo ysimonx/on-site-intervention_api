@@ -151,6 +151,12 @@ class InterventionValues(db.Model, MyMixin):
         for item in self.fields_values:
             dict_field_values[item.field_on_site_uuid]=item.value;
         
+        json_custom_fields_values = self.dict_of_custom_fields_values
+        if json_custom_fields_values is None:
+            json_custom_fields_values = {}
+        else:
+            json_custom_fields_values= json.loads(self.dict_of_custom_fields_values)
+            
         return {
             'id':                             self.id,
             'intervention_name':              self.name,
@@ -169,7 +175,7 @@ class InterventionValues(db.Model, MyMixin):
             'indice':                           self.indice,
             'average_latitude' :                self.average_latitude,
             'average_longitude' :               self.average_longitude,
-            'custom_fields_values':             json.loads(self.dict_of_custom_fields_values)
+            'custom_fields_values':             json_custom_fields_values
         }
     
     def photos_to_json(self):
