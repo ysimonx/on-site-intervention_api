@@ -79,12 +79,14 @@ class InterventionValues(db.Model, MyMixin):
     average_latitude            = db.Column(db.Float);
     average_longitude           = db.Column(db.Float);
     
-    
+   
     # 
     
     # status (workflow) de l'intervention
     status                      = db.Column(db.String(50), index=True, nullable=True)
     
+    dict_of_custom_fields_values  = db.Column(db.Text)
+     
     place                       = db.relationship("Place", viewonly=True)
     type_intervention           = db.relationship("TypeIntervention", viewonly=True)
     site                        = db.relationship("Site", viewonly=True)
@@ -166,7 +168,8 @@ class InterventionValues(db.Model, MyMixin):
             'num_chrono':                       self.num_chrono,
             'indice':                           self.indice,
             'average_latitude' :                self.average_latitude,
-            'average_longitude' :               self.average_longitude
+            'average_longitude' :               self.average_longitude,
+            'custom_fields_values':             json.loads(self.dict_of_custom_fields_values)
         }
     
     def photos_to_json(self):
@@ -210,7 +213,8 @@ class InterventionValues(db.Model, MyMixin):
             'field_on_site_uuid_values':      dict_field_values,
             'status':                         self.status,
             'num_chrono':                       self.num_chrono,
-            'indice':                           self.indice
+            'indice':                           self.indice,
+            'custom_fields_values':             json.loads(self.dict_of_custom_fields_values)
         }
        
 

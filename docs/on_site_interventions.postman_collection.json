@@ -10,26 +10,7 @@
 			"name": "interventions",
 			"item": [
 				{
-					"name": "interventions list",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url_base}}/api/v1/intervention",
-							"host": [
-								"{{url_base}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"intervention"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "interventions list values",
+					"name": "interventions list values  pour site",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -44,66 +25,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url_base}}/api/v1/intervention_values",
-							"host": [
-								"{{url_base}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"intervention_values"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "interventions list values photos",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{access_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url_base}}/api/v1/intervention_values/photos",
-							"host": [
-								"{{url_base}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"intervention_values",
-								"photos"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "interventions list values iter scaffolding request",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{access_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url_base}}/api/v1/intervention_values?organization_id=iter&type_intervention_id=scaffolding request",
+							"raw": "{{url_base}}/api/v1/intervention_values?site_id=5dc837b9-9678-494c-9b1a-78ff1bf4a17b",
 							"host": [
 								"{{url_base}}"
 							],
@@ -114,13 +36,208 @@
 							],
 							"query": [
 								{
-									"key": "organization_id",
-									"value": "iter"
+									"key": "site_id",
+									"value": "5dc837b9-9678-494c-9b1a-78ff1bf4a17b"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "intervention_values by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/intervention_values/2ed443aa-e8e8-479b-bb7b-96b34f848f6d",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"intervention_values",
+								"2ed443aa-e8e8-479b-bb7b-96b34f848f6d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "intervention_values by ID Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/intervention_values/dict/0fb0a68d-b306-4c26-b420-bc77c4cc0061",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"intervention_values",
+								"dict",
+								"0fb0a68d-b306-4c26-b420-bc77c4cc0061"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BO : intervention_values by ID Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/backoffice/v1/intervention_values/feb/0fb0a68d-b306-4c26-b420-bc77c4cc0061",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"backoffice",
+								"v1",
+								"intervention_values",
+								"feb",
+								"0fb0a68d-b306-4c26-b420-bc77c4cc0061"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "interventions list values photo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/intervention_values/photos?site_id=5dc837b9-9678-494c-9b1a-78ff1bf4a17b",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"intervention_values",
+								"photos"
+							],
+							"query": [
+								{
+									"key": "site_id",
+									"value": "5dc837b9-9678-494c-9b1a-78ff1bf4a17b"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "interventions list values csv",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/intervention_values/csv?site_id=5dc837b9-9678-494c-9b1a-78ff1bf4a17b&type_intervention_id=scaffolding request",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"intervention_values",
+								"csv"
+							],
+							"query": [
+								{
+									"key": "site_id",
+									"value": "5dc837b9-9678-494c-9b1a-78ff1bf4a17b"
 								},
 								{
 									"key": "type_intervention_id",
 									"value": "scaffolding request"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "interventions list values hashtag for site",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}/api/v1/intervention_values/hashtag/8abf0be4-e217-4678-9644-ed68e7b8b158",
+							"host": [
+								"{{url_base}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"intervention_values",
+								"hashtag",
+								"8abf0be4-e217-4678-9644-ed68e7b8b158"
 							]
 						}
 					},
@@ -1603,7 +1720,7 @@
 					"response": []
 				},
 				{
-					"name": "add or update site (create roles and update templates)",
+					"name": "update sites templates",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1619,7 +1736,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"site_name\":\"sandbox\",\n    \"tenant_id\":\"ctei_tenant\"\n}",
+							"raw": "{\n    \n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1627,14 +1744,16 @@
 							}
 						},
 						"url": {
-							"raw": "{{url_base}}/api/v1/site",
+							"raw": "{{url_base}}/api/v1/site/templates/update",
 							"host": [
 								"{{url_base}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"site"
+								"site",
+								"templates",
+								"update"
 							]
 						}
 					},
@@ -1665,7 +1784,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{url_base}}/api/v1/site/5a592592-c591-41e6-b0cc-9576d2c3a3c9",
+							"raw": "{{url_base}}/api/v1/site/115da5fb-f0af-438a-a70e-3dae8cc5926c",
 							"host": [
 								"{{url_base}}"
 							],
@@ -1673,7 +1792,7 @@
 								"api",
 								"v1",
 								"site",
-								"5a592592-c591-41e6-b0cc-9576d2c3a3c9"
+								"115da5fb-f0af-438a-a70e-3dae8cc5926c"
 							]
 						}
 					},
@@ -1707,7 +1826,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{url_base}}/api/v1/site/52e45cd6-06b0-4ff5-9d6e-b83e47ddf196",
+							"raw": "{{url_base}}/api/v1/site/5dc837b9-9678-494c-9b1a-78ff1bf4a17b",
 							"host": [
 								"{{url_base}}"
 							],
@@ -1715,7 +1834,7 @@
 								"api",
 								"v1",
 								"site",
-								"52e45cd6-06b0-4ff5-9d6e-b83e47ddf196"
+								"5dc837b9-9678-494c-9b1a-78ff1bf4a17b"
 							]
 						}
 					},
@@ -1946,6 +2065,54 @@
 		},
 		{
 			"name": "login yannick",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res=pm.response.json();",
+							"pm.environment.set('access_token', res.access_token);",
+							"pm.environment.set('refresh_token', res.refresh_token);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-ty",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"yannick.simon@gmail.com\",\n    \"password\":\"12345678\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/api/v1/login",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login yannick Copy",
 			"event": [
 				{
 					"listen": "test",

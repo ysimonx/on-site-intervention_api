@@ -180,7 +180,7 @@ def post_intervention_values():
     num_chrono                  = request.json.get('num_chrono')
     indice                      = request.json.get('indice')
     assignee_user_id            = request.json.get('assignee_user_id')
-    
+    dict_of_custom_fields_values = request.json.get('custom_fields_values')
     
     _site=getByIdOrByName(obj=Site, id=site_id, tenant_id=None )
     
@@ -231,7 +231,8 @@ def post_intervention_values():
     #else:
     #    num_chrono = None
         
-   
+
+        
     interventionValues= InterventionValues.query.filter(InterventionValues.intervention_values_on_site_uuid == intervention_values_on_site_uuid).first()
     if interventionValues is None:
         # je vais chercher le max hashtag des interventionValues pour type d'intervention et pour un site donné (ainsi, ce compteur sera effectué par Site ...)
@@ -241,7 +242,9 @@ def post_intervention_values():
         else:
             max_id=_interventionValueMax.hashtag  
         
-  
+        if dict_of_custom_fields_values is None:
+            dict_of_custom_fields_values={}
+        
         interventionValues = InterventionValues(
                         intervention_values_on_site_uuid = intervention_values_on_site_uuid,
                         name = intervention_name, 
@@ -253,7 +256,8 @@ def post_intervention_values():
                         status=status,
                         num_chrono=num_chrono,
                         indice=indice,
-                        assignee_user_id=assignee_user_id
+                        assignee_user_id=assignee_user_id,
+                        dict_of_custom_fields_values=json.dumps(dict_of_custom_fields_values)
         )
         
         db.session.add(interventionValues)
@@ -291,7 +295,8 @@ def post_intervention_values():
             event=Event(object=interventionValues.__class__.__name__, object_id=interventionValues.id, action="status changed", value_before=old_status, value_after=status, description="update status {}".format(intervention_name))
             db.session.add(event)
 
-                
+        if dict_of_custom_fields_values is not None:        
+            interventionValues.dict_of_custom_fields_values=json.dumps(dict_of_custom_fields_values)
          
     db.session.commit()  
 
