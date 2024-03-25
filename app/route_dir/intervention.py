@@ -259,6 +259,7 @@ def post_intervention_values():
                         assignee_user_id=assignee_user_id,
                         dict_of_custom_fields_values=json.dumps(dict_of_custom_fields_values)
         )
+        db.session.commit()
         
         db.session.add(interventionValues)
         event=Event(object=interventionValues.__class__.__name__, object_id=interventionValues.id, action="create",  description="")
