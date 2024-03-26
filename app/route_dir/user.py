@@ -121,14 +121,10 @@ def reset_password():
     db.session.commit()
                         
     
-    msg = Message(subject='Password reset required for FIDWORK',
+    msg = Message(subject='Password reset required',
                   sender= Config.MAIL_FROM,
                   recipients=[_user.email],
                   charset='utf-8')
-    #msg = Message(subject='Password reset required for FIDWORK',
-    #              sender= Config.MAIL_FROM,
-    #               recipients=["yannick.simon@gmail.com"])
-    
     
     text = "here is your new password : %s" % password
     msg.body = text.encode('utf-8')
