@@ -140,16 +140,10 @@ config = {
                               "fields": {
                                     "1": { "field_name":"donneur-ordre",
                                                 "field_label":"donneur d'ordre",
-                                                "field_type":"list_from_mandatory_lists",
-                                                "field_on_site_uuid":"36448a1b-3f11-463a-bf60-7668f32da094",
-                                                "values":["donneur-ordre"]
+                                                "field_type":"user_from_role",
+                                                "field_on_site_uuid":"c49886e4-6729-47cf-9272-b0c54c6caf3d",
+                                                "values":["donneur d'ordre"]
                                     },
-                                    "2": { "field_name":"donneur-ordre-representant",
-                                                "field_label":"nom du représentant",
-                                                "field_type":"list_from_mandatory_lists",
-                                                "field_on_site_uuid":"9303ae9d-ac90-4a1c-bd11-123a8e94b462",
-                                                "values":["donneur-ordre-representant"]
-                                    }
                               }
                         },
                         "2": { "section_name" : "identification de la demande",
@@ -593,6 +587,7 @@ config = {
           "admin",
           "admin site",
           "site administrator",
+          "donneur d'ordre",
           "coordinateur échafaudage",
           "operator",
           "cost contrôleur",
