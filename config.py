@@ -114,7 +114,17 @@ config = {
                                     "Escalier",
                                     "Autre"
                               ] 
-                        },           
+                        },       
+                  "type-d-acces" :
+                         {
+                        "type": "fixed",
+                        "values": [
+                                    "Accès intérieur par trappes et échelles inclinées",
+                                    "Sapine d'acces extérieur trappes et échelles inclinées",
+                                    "Sapine d'acces extérieur par escalier",
+                                    "Accès extérieur par échelle < 4m"
+                              ] 
+                        }, 
                   "donneur-ordre": 
                         {
                         "type": "administrable_by_site",
@@ -315,6 +325,38 @@ config = {
                                            "field_type": "list_from_mandatory_lists",
                                            "field_on_site_uuid": "6887c05a-28b2-4caa-94ec-89ad455eda4d",
                                             "values":["elevation"]
+                                           },
+                                      "5": { "field_name":"dimension-echafaudage-ou-plancher",
+                                           "field_label":"dimensions echaufaudage ou plancher ?",
+                                           "field_type":"switch",
+                                           "field_on_site_uuid":"95cd67d3-fb22-4a30-931d-7cd0f3bfb21f",
+                                           "value_on": "echaufadage",
+                                           "value_off": "plancher"
+                                      },
+                                    "6": { "field_name":"charges-reparties-ou-ponctuelle",
+                                           "field_label":"charges réparties ou ponctuelles",
+                                           "field_type":"switch",
+                                           "field_on_site_uuid":"26bd134c-a4fb-49c5-b430-71dc8c7128db",
+                                           "value_on": "oui",
+                                           "value_off": "non"
+                                      },
+                                    "7": { "field_name":"stockage-sur-plancher-de-travail",
+                                           "field_label":"Stockage sur le plancher de travail",
+                                           "field_type":"switch",
+                                           "field_on_site_uuid":"2169dfb2-27f8-46c2-a681-3e43940d503b",
+                                           "value_on": "oui",
+                                           "value_off": "non"
+                                      },
+                                    "8": { "field_name":"nombre-de-travailleurs",
+                                           "field_label":"nombre de travailleurs",
+                                           "field_type":"integer",
+                                           "field_on_site_uuid":"81380fd5-7652-4e88-9af9-f03972a772a1"
+                                      },
+                                      "9": { "field_name": "type-d-acces",
+                                           "field_label": "Type d'accès",
+                                           "field_type": "list_from_mandatory_lists",
+                                           "field_on_site_uuid": "893f538a-5ff1-44a1-9ff0-5b0bd8d50ddb",
+                                            "values":["type-d-acces"]
                                            },
                               }
                         },
