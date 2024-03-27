@@ -1,7 +1,7 @@
 from .. import db, getByIdOrByName
 from ..model_dir.site import Site
 from ..model_dir.type_intervention import TypeIntervention, TypeInterventionSite
-from .mymixin import MyMixin
+from .mymixin import MyMixin, User
 import json
 from sqlalchemy.orm import declarative_base, relationship, backref
 import uuid
@@ -94,12 +94,11 @@ class InterventionValues(db.Model, MyMixin):
     fields_values               = db.relationship("FieldValue", viewonly=True)
     
     def to_dict(self):
-        current_app.logger.info(" - - - - - - - - - - - -")
-        current_app.logger.info(request.headers)
-        current_app.logger.info(request.headers.get('X-Forwarded-Host'))
+        host="https://{}".format(request.headers.get('X-Forwarded-Host'))
+        
         data={
             "id":self.id,
-            "feb_url":"https://{}{}".format(request.headers.get('X-Forwarded-Host'), url_for('backoffice.get_interventions_values_id', id=self.id)),
+            "feb_url":"{}{}".format(host, url_for('backoffice.get_interventions_values_id', id=self.id)),
             "site":self.site.name, 
             "type_intervention":self.type_intervention.name,
             "status":self.status,
@@ -133,6 +132,7 @@ class InterventionValues(db.Model, MyMixin):
                     
                     columns.append(field_name)
                     if fields_values["field_type"]=="user_from_role":
+                        columns.append("{}.company".format(field_name))
                         columns.append("{}.firstname".format(field_name))
                         columns.append("{}.lastname".format(field_name))
                         columns.append("{}.phone".format(field_name))
@@ -143,11 +143,14 @@ class InterventionValues(db.Model, MyMixin):
                         data[field_name] = value
                         if fields_values["field_type"]=="user_from_role":
                             if value != "":
-                                data["{}.fisrtname".format(field_name)]="prenom"
-                                data["{}.lastname".format(field_name)]="nom"
-                                data["{}.phone".format(field_name)]="phone"
-                                data["{}.email".format(field_name)]="@"
-                                print("ok")  
+                                _user = getByIdOrByName(obj=User, id=value)
+                                if _user is not None:
+                                    data["{}.company".format(field_name)]=_user.company.name
+                                    
+                                    data["{}.firstname".format(field_name)]=_user.firstname
+                                    data["{}.lastname".format(field_name)]=_user.lastname
+                                    data["{}.phone".format(field_name)]=str(_user.phone)
+                                    data["{}.email".format(field_name)]=_user.email
                     else:
                         data[field_name] = None
         result={

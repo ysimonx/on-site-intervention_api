@@ -498,31 +498,31 @@ config = {
                                                 "field_on_site_uuid":"b803d6ce-188f-46f9-be37-d482996a3da3",
                                                 "values":["echafaudage-nature-appuis"]
                                     },
-                                    "5": { "field_name": "longueur-echafaudage-visite",
+                                    "5": { "field_name": "visite-longueur-echafaudage",
                                            "field_label": "Longueur",
                                            "field_type": "list_from_mandatory_lists",
                                            "field_on_site_uuid": "3cd0c728-8e18-4b07-919c-957a0ea4181d",
                                             "values":["dimensions"]
                                      },
-                                    "6": { "field_name": "largeur-echafaudage-visite",
+                                    "6": { "field_name": "visite-largeur-echafaudage",
                                            "field_label": "Largeur",
                                            "field_type": "list_from_mandatory_lists",
                                            "field_on_site_uuid": "5fff33d7-0a2d-4a10-8f59-a8c511e26616",
                                             "values":["dimensions"]
                                      },
-                                     "7": { "field_name": "hauteur-echafaudage-visite",
+                                     "7": { "field_name": "visite-hauteur-echafaudage",
                                            "field_label": "Hauteur",
                                            "field_type": "list_from_mandatory_lists",
                                            "field_on_site_uuid": "0caa620c-6823-4c01-9774-aabb02359019",
                                             "values":["dimensions"]
                                      },
-                                     "8": { "field_name": "altitude-elevation-visite",
+                                     "8": { "field_name": "visite-altitude-elevation",
                                            "field_label": "Altitude/Elevation/Niveau",
                                            "field_type": "list_from_mandatory_lists",
                                            "field_on_site_uuid": "66a1a9d6-9d50-42b2-bfca-68068e7b0bf3",
                                             "values":["elevation"]
                                            },
-                                     "9": { "field_name":"planchers-travail-visite",
+                                     "9": { "field_name":"visite-planchers-travail",
                                            "field_label":"Nombre de planchers travail",
                                            "field_type":"list",
                                            "field_on_site_uuid":"e4b3e46c-0b90-412e-b6ed-e8c0087cff4d",
@@ -530,28 +530,28 @@ config = {
                                                "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"
                                             ] 
                                     },
-                                      "10": { "field_name":"planchers-acces-visite",
+                                      "10": { "field_name":"visite-planchers-acces",
                                            "field_label":"Nombre de planchers d'accès",
                                            "field_type":"list",
                                            "field_on_site_uuid":"313f56bb-ef39-4a62-ae72-cc494cb77c56",
                                            "values": [
                                                "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"
                                             ] 
-                                    }, "11": { "field_name":"conforme-notice-visite",
+                                    }, "11": { "field_name":"visite-conforme-notice",
                                            "field_label":"Conforme notice constructeur",
                                            "field_type":"switch",
                                            "field_on_site_uuid":"2158ecbb-b3f6-445e-b865-dc9df322bc3c",
                                            "value_on": "oui",
                                            "value_off": "non"
                                       },
-                                     "12": { "field_name":"marque-materiel-visite",
+                                     "12": { "field_name":"visite-marque-materiel",
                                            "field_label":"Marque matériel",
                                             "field_type": "list_from_mandatory_lists",
                                            "field_on_site_uuid": "7e6434b0-9594-421c-b0ab-0fa44ca84f6d",
                                             "values":["echafaudage-marque-materiel"]
                                            },
                                       
-                                     "13": { "field_name":"modification-prevoir-visite",
+                                     "13": { "field_name":"visite-modification-prevoir",
                                            "field_label":"Modifications à prévoir",
                                             "field_type":"switch",
                                            "field_on_site_uuid":"192aecba-ad91-4697-b65d-230338d88b2b",
@@ -559,13 +559,13 @@ config = {
                                            "value_off": "non"
                                            
                                       },
-                                      "14": { "field_name":"precisions-modification-prevoir-visite",
+                                      "14": { "field_name":"visite-precisions-modification-prevoir",
                                                 "field_label":"Oui : lesquelles ?",
                                                 "field_type":"text",
                                                 "field_on_site_uuid":"fb07dd35-57b3-447d-b819-7b0e6d3d8dd1",
                                                 "values":[]
                                     },
-                                       "15": { "field_name":"type-facturation-visite",
+                                       "15": { "field_name":"visite-type-facturation",
                                            "field_label":"Facturation",
                                             "field_type": "list_from_mandatory_lists",
                                            "field_on_site_uuid": "b19c7eb5-7518-4e72-ae01-5fa396db6559",
@@ -688,7 +688,7 @@ config = {
                                 "section_type" : "section type 4",
                                 "section_on_site_uuid": "c4e6b4b9-4b87-4e75-b873-8376acb6fb71",
                                  "fields": {
-                                       "1": { "field_name":"visit_pictures",
+                                       "1": { "field_name":"visite_pictures",
                                            "field_label":"pictures",
                                            "field_type":"gallery",
                                            "field_on_site_uuid":"8c5b89ff-62eb-42c7-a259-334bd4a33c79",
@@ -700,7 +700,7 @@ config = {
                               "section_type" : "section type 5",
                               "section_on_site_uuid": "10523e6f-da11-406e-a39d-4b7e00e1e125",
                               "fields": {
-                                    "1": { "field_name":"visit_comments",
+                                    "1": { "field_name":"visite_comments",
                                           "field_label":"comments",
                                           "field_type":"paragraph",
                                           "field_on_site_uuid":"25cd9145-cd6f-422d-aab7-a25f7ba23fd4",
