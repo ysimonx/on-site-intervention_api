@@ -138,7 +138,15 @@ config = {
                               [
                               
                               ]
-                        }
+                        },
+                  "dimensions": 
+                        {
+                        "type": "administrable_by_site",
+                        "values":
+                              [
+                              
+                              ]
+                  }
             },
             "forms": {
                 "1" :{"form_name":"besoin",
@@ -272,7 +280,32 @@ config = {
 
                               }
                         },
-                        "5": { "section_name" : "description",
+                         "5": { "section_name" : "description du besoin",
+                              "section_type" : "section type 2",
+                              "section_on_site_uuid": "70bcdf77-14b7-42b2-820c-f3ec82f1d27b",
+                              "fields": {
+                                    "1": { "field_name": "longueur-echafaudage-souhaite",
+                                           "field_label": "Longueur",
+                                           "field_type": "list_from_mandatory_lists",
+                                           "field_on_site_uuid": "c86dfbda-4574-4093-a7df-3986fa721304",
+                                            "values":["dimensions"]
+                                           },
+                                    "2": { "field_name": "largeur-echafaudage-souhaite",
+                                           "field_label": "Largeur",
+                                           "field_type": "list_from_mandatory_lists",
+                                           "field_on_site_uuid": "c86dfbda-4574-4093-a7df-3986fa721304",
+                                            "values":["dimensions"]
+                                           },
+                                    "3": { "field_name": "hauteur-echafaudage-souhaite",
+                                           "field_label": "Hauteur",
+                                           "field_type": "list_from_mandatory_lists",
+                                           "field_on_site_uuid": "176e5c64-a286-4fa9-a544-fbcc6f48abb5",
+                                            "values":["dimensions"]
+                                           },
+                              }
+                        },
+                         
+                        "6": { "section_name" : "description",
                               "section_type" : "section type 3",
                               "section_on_site_uuid": "219fa801-82f3-450b-97f1-9d2db8bf33af",
                               "fields": {
@@ -284,7 +317,7 @@ config = {
                               },
                               }
                         },
-                        "6": { "section_name" : "medias",
+                        "7": { "section_name" : "medias",
                                 "section_type" : "section type 4",
                                 "section_on_site_uuid": "e6391434-1e0e-48be-8b69-aa603cb99a9e",
                                  "fields": {
@@ -296,7 +329,7 @@ config = {
                                       },
                                  }
                          },
-                         "7": { "section_name" : "Schema",
+                         "8": { "section_name" : "Schema",
                                 "section_type" : "section type 5",
                                 "section_on_site_uuid": "32251e12-ab48-4477-871e-5c67352effaf",
                                  "fields": {
