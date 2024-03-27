@@ -125,22 +125,32 @@ config = {
                                     "Accès extérieur par échelle < 4m"
                               ] 
                         }, 
-                  "donneur-ordre": 
+                   "approvisionnement-materiaux" :
+                         {
+                        "type": "fixed",
+                        "values": [
+                                    "Aucun",
+                                    "Poulie <80kg",
+                                    "Treuil jusqu’à 200kg",
+                                    "Potence jusqu’à 500kg",
+                                    "Potence > 500kg",
+                                    "Monte materiaux>500kg",
+                                    "Goulotte à gravats"
+                              ] 
+                        }, 
+                  "protection-personnes-biens-ouvrages":
                         {
-                        "type": "administrable_by_site",
-                        "values":
-                              [
-                              
-                              ]
-                        },
-                  "donneur-ordre-representant": 
-                        {
-                        "type": "administrable_by_site",
-                        "values":
-                              [
-                              
-                              ]
-                        },
+                        "type": "fixed",
+                        "values": [
+                                   "Aucun",
+                                    "Filets micro-mailles",
+                                    "Bâches thermo",
+                                    "Bâches anti-feu",
+                                    "Bardage métallique vertical",
+                                    "Bardage métallique horizontal",
+                                    "Protection plastique  (Brid Guard)"
+                              ] 
+                        }, 
                   "entreprise-utilisatrice": 
                         {
                         "type": "administrable_by_site",
@@ -358,6 +368,18 @@ config = {
                                            "field_on_site_uuid": "893f538a-5ff1-44a1-9ff0-5b0bd8d50ddb",
                                             "values":["type-d-acces"]
                                            },
+                                      "10": { "field_name": "approvisionnement-materiaux",
+                                           "field_label": "approvisionnement materiaux",
+                                           "field_type": "list_from_mandatory_lists",
+                                           "field_on_site_uuid": "e24edb51-d00d-49f0-8941-5604de59c369",
+                                            "values":["approvisionnement-materiaux"]
+                                           },
+                                      "11": { "field_name": "protection-personnes-biens-ouvrages",
+                                           "field_label": "protection des personnes/biens/ouvrages",
+                                           "field_type": "list_from_mandatory_lists",
+                                           "field_on_site_uuid": "206ef5af-7700-43f1-90df-3aa475e510e0",
+                                            "values":["protection-personnes-biens-ouvrages"]
+                                           },
                               }
                         },
                          
@@ -406,21 +428,20 @@ config = {
                               "section_type" : "section type 1",
                               "section_on_site_uuid": "11b19f92-b590-44d5-b29c-4144b709bd9b",
                               "fields": {
-                              "1": { "field_name":"scaff_type",
-                                          "field_label":"type",
-                                          "field_type":"list_from_mandatory_lists",
-                                          "field_on_site_uuid":"e28cbc05-2f4b-46f5-acca-c147ae8a1db8",
-                                          "values":["scaffold_type"]
-                              },
+                                    "1": { "field_name":"scaff_type",
+                                                "field_label":"type",
+                                                "field_type":"list_from_mandatory_lists",
+                                                "field_on_site_uuid":"e28cbc05-2f4b-46f5-acca-c147ae8a1db8",
+                                                "values":["scaffold_type"]
+                                    },
                                     "2": { "field_name":"visit_date",
                                           "field_label":"visit Date",
                                           "field_type":"date",
                                           "field_on_site_uuid":"a1d5131d-d8bc-4783-8c0b-fb81f5e4a459",
                                           "default_value":"now"
-                                    
+                                    }
                               }
-                              }
-                              },
+                        },
                         "2": { "section_name" : "security",
                                 "section_type" : "section type 1",
                                 "section_on_site_uuid": "a706e588-b8f5-4b11-a711-ee1e7612bb6a",
