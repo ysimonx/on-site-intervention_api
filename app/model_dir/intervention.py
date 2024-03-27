@@ -110,7 +110,7 @@ class InterventionValues(db.Model, MyMixin):
            
         }
         columns=["id","feb_url", "site","type_intervention", "assignee_email", "registre", "place", "num_chrono", "indice", ] 
-         
+      
         dict_field_values={}
         for item in self.fields_values:
             dict_field_values[item.field_on_site_uuid]=item.value;
@@ -118,6 +118,29 @@ class InterventionValues(db.Model, MyMixin):
         site_id=self.site_id
         _site=getByIdOrByName(Site, site_id)
         
+        # alimentation des colonnes de l'emplacement
+        dict_of_lists_for_places = _site.dict_of_lists_for_places
+        if dict_of_lists_for_places is not None:
+            json_dict = json.loads(dict_of_lists_for_places)
+            for index, list_for_place in json_dict.items():
+                list_name=list_for_place['list_name']
+                #
+                columns.append(list_name)
+                #
+                text_place = self.place.place_json
+                if text_place is not None:
+                    try:
+                        place_json = json.loads(text_place)
+                        if list_name in place_json:
+                            #
+                            data[list_name]=place_json[list_name]
+                            #
+                    except:
+                        print("error")
+                
+
+            
+         
         type_intervention_id=site_id=self.type_intervention_id
         _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
 
