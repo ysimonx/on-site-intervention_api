@@ -456,7 +456,7 @@ def process_sites_interventions_templates(_site):
         _role = getByIdOrByName(
             obj=Role,
             id=role_name,
-            tenant_id=_site._tenant_id, 
+            tenant_id=_site.tenant_id, 
             site_id=_site.id)
         if _role is None:
             _role=Role(
