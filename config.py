@@ -222,7 +222,7 @@ config = {
                                     }
                               }
                         },
-                        "3": { "section_name" : "echafaudeur",
+                        "3": { "section_name" : "échafaudeur",
                               "section_type" : "section type 2",
                               "section_on_site_uuid": "a4396dc1-0091-4915-baed-75b70f5dc8dc",
                               "fields": {
@@ -331,10 +331,10 @@ config = {
                                             "values":["elevation"]
                                            },
                                       "5": { "field_name":"dimension-echafaudage-ou-plancher",
-                                           "field_label":"Dimensions echaufaudage ou plancher ?",
+                                           "field_label":"Dimensions échaufaudage ou plancher ?",
                                            "field_type":"switch",
                                            "field_on_site_uuid":"95cd67d3-fb22-4a30-931d-7cd0f3bfb21f",
-                                           "value_on": "echaufadage",
+                                           "value_on": "échaufadage",
                                            "value_off": "plancher"
                                       },
                                     "6": { "field_name":"charges-reparties-ou-ponctuelle",
