@@ -540,7 +540,7 @@ config = {
                                            "field_on_site_uuid": "7e6434b0-9594-421c-b0ab-0fa44ca84f6d",
                                             "values":["echafaudage-marque-materiel"]
                                            },
-                                      },
+                                      
                                      "13": { "field_name":"modification-prevoir-visite",
                                            "field_label":"Modifications à prévoir",
                                             "field_type":"switch",
@@ -553,7 +553,9 @@ config = {
                                                 "field_label":"Oui : lesquelles ?",
                                                 "field_type":"text",
                                                 "field_on_site_uuid":"fb07dd35-57b3-447d-b819-7b0e6d3d8dd1",
-                                                "values":[]},
+                                                "values":[]
+                                    }
+                              }
                                    
                               
                         },
@@ -562,87 +564,59 @@ config = {
                                 "section_on_site_uuid": "a706e588-b8f5-4b11-a711-ee1e7612bb6a",
                                  "fields": {
                                       
-                                      "1": { "field_name":"visit_obstruct_access",
-                                           "field_label":"obstructs access or emergency device",
+                                      "1": { "field_name":"securite-obstrue-acces-dispositif-urgence",
+                                           "field_label":"Obstrue un acces ou un dispositif d'urgence",
                                            "field_type":"switch",
                                            "field_on_site_uuid":"3ab35154-c63a-4bf4-b085-8d6a8aa74cbe",
                                            "value_on": "oui",
                                            "value_off": "non"
                                       },
                                       
-                                      "2": { "field_name":"visit_in_mobile_equipements_movement_area",
-                                           "field_label":"in mobile equipements movement area",
+                                      "2": { "field_name":"securite-zone-evolution-equipement-mobile",
+                                           "field_label":"Dans zone d'évolution d'un equipement mobile (palan, ascenceur,…)",
                                            "field_type":"switch",
                                            "field_on_site_uuid":"a5f14187-3704-47b2-b667-5000c37de47e",
                                            "value_on": "oui",
                                            "value_off": "non"
                                       },
                                       
-                                      "3": { "field_name":"visit_nearby_live_electric_network",
-                                           "field_label":"nearby live electric network",
+                                      "3": { "field_name":"securite-proximite-reseaux-haute-tension",
+                                           "field_label":"proximité directe de réseaux sous très haute tension",
                                            "field_type":"switch",
                                            "field_on_site_uuid":"ac96883f-6e96-4dd9-99cc-0669022b43aa",
                                            "value_on": "oui",
                                            "value_off": "non"
                                       },
-                                      
-                                      
-                                      
-                                 }
-                                },
-                        "3": { "section_name" : "dimensions",
-                                "section_type" : "section type 1",
-                                "section_on_site_uuid": "de3b8182-df35-4c6a-9aea-8d652efd8142",
-                                 "fields": {
-                                      "1": { "field_name":"scaff_charge_exploitation_prevue",
-                                           "field_label":"charge Exploit prévue",
-                                           "field_type":"list",
-                                           "field_on_site_uuid":"43f30456-0f0d-4fef-842c-01f869f85cdd",
-                                           "values": [
-                                               "Classe 3 (répartis 250kg/m2)",
-                                               "Classe 4 et 5 (300kg\/m2>répartis<450kg\/m2)",
-                                               "Classe 6 (450 Kg\/m2>répartis<600kg\/m2)",
-                                               "autre(à renseigner dans commentaire)", 
-                                               
-                                            ] 
-                                        },
-                                      "2": { "field_name":"visit_scaff_conforme_notice",
-                                           "field_label":"conforme notice",
+                                                                            
+                                    "4": { "field_name":"securite-proximite-reseaux-chimiques",
+                                           "field_label":"Proximité direct de réseaux chimiques dangereux",
                                            "field_type":"switch",
-                                           "field_on_site_uuid":"fb737b8d-db58-418f-a69f-b437539cdec6",
+                                           "field_on_site_uuid":"7b85e8be-b410-4ae7-bb8c-d71ebcb379d3",
                                            "value_on": "oui",
                                            "value_off": "non"
                                       },
-                                      "3": { "field_name":"visit_date_reception_prevue",
-                                           "field_label":"date réception prévue",
-                                           "field_type":"date",
-                                           "field_on_site_uuid":"4d83d71d-adfe-45f8-968c-5d9761f4c288",
-                                           "default_value":"j+15",
+                                     "5": { "field_name":"securite-presence-equipement-important",
+                                           "field_label":"Présence d'un équipement important",
+                                           "field_type":"switch",
+                                           "field_on_site_uuid":"640d84f5-30b9-4513-8cb9-bb0820ae0359",
+                                           "value_on": "oui",
+                                           "value_off": "non"
                                       },
-                                     "4": { "field_name": "visit_scaff_width",
-                                            "field_label": "longueur",
-                                           "field_type": "float",
-                                           "field_on_site_uuid":"8dd3f411-6f67-43c4-9d9d-1d420cc6bc68"
-                                           },
-                                     "5": { "field_name": "visit_scaff_depth",
-                                           "field_label": "largeur",
-                                           "field_type": "float",
-                                           "field_on_site_uuid":"0b1a49af-757f-4127-a0fb-f525d2f71f70"},
-                                     "6": { "field_name": "visit_scaff_height",
-                                            "field_label": "Hauteur",
-                                           "field_type": "float",
-                                           "field_on_site_uuid":"29c05fa8-c1d6-4026-bd4a-356a1e0eca7b"},
-                                      "7": { "field_name":"visit_scaff_nb_planchers_travail",
-                                           "field_label":"nombre de planchers travail",
-                                           "field_type":"list",
-                                           "field_on_site_uuid":"552460e5-b326-4cba-816c-e84202f1f83c",
-                                           "values": [
-                                               "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"
-                                            ] 
-                                    },
+                                       "6": { "field_name":"securite-unite-en-marque",
+                                           "field_label":"Unité en marche",
+                                           "field_type":"switch",
+                                           "field_on_site_uuid":"8f182dd2-b61d-4c43-8fb5-a89e1301c147",
+                                           "value_on": "oui",
+                                           "value_off": "non"
+                                      },
+                                      
+                                      
+                                      
+                                      
                                  }
                                 },
-                        "4": { "section_name" : "intervenants",
+                        
+                        "3": { "section_name" : "intervenants",
                                 "section_type" : "section type 3",
                                 "section_on_site_uuid": "b72ec40c-0194-47a0-9744-35137dde1e9d",
                                  "fields": {
