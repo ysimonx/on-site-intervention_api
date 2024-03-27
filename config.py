@@ -185,7 +185,7 @@ config = {
                               "section_on_site_uuid": "ef637435-30fe-4a3f-941f-f29a8df8f865",
                               "fields": {
                                     "1": { "field_name":"donneur-ordre",
-                                                "field_label":"donneur d'ordre",
+                                                "field_label":"Donneur d'ordre",
                                                 "field_type":"user_from_role",
                                                 "field_on_site_uuid":"c49886e4-6729-47cf-9272-b0c54c6caf3d",
                                                 "values":["donneur d'ordre"]
@@ -208,14 +208,14 @@ config = {
                                                 "field_on_site_uuid":"2f7b84e7-8d38-4544-9027-c9772089a5d0",
                                                 "values":[]
                                     },
-                                    "2": { "field_name":"date-mise-a-disposition",
-                                                "field_label":"mise à disposition souhaitée",
+                                    "3": { "field_name":"date-mise-a-disposition",
+                                                "field_label":"Mise à disposition souhaitée",
                                                 "field_type":"date",
                                                 "field_on_site_uuid":"10909dee-86da-459f-8094-ee3d199e1631",
                                                 "values":[]
                                     },
-                                    "3": { "field_name":"duree-mise-a-disposition",
-                                                "field_label":"durée de mise à disposition (jours)",
+                                    "4": { "field_name":"duree-mise-a-disposition",
+                                                "field_label":"Durée de mise à disposition (jours)",
                                                 "field_type":"integer",
                                                 "field_on_site_uuid":"34ea515d-0bff-4651-91e7-a7a24b243b6b",
                                                 "values":[]
@@ -227,7 +227,7 @@ config = {
                               "section_on_site_uuid": "a4396dc1-0091-4915-baed-75b70f5dc8dc",
                               "fields": {
                                     "1": { "field_name":"demande-echafaudeur",
-                                           "field_label":"échafaudeur",
+                                           "field_label":"Echafaudeur",
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"8a4bb1eb-af22-4ce1-91c4-4c3d89e14709",
                                            "values": ["échafaudeur"]
@@ -240,72 +240,66 @@ config = {
                               "fields": {
                                    
                                     "1": { "field_name":"entreprise-utilisatrice-1",
-                                                "field_label":"entreprise utilisatrice 1",
+                                                "field_label":"Entreprise utilisatrice 1",
                                                 "field_type":"list_from_mandatory_lists",
                                                 "field_on_site_uuid":"dd714f1d-0333-45d4-83ba-8955d5bf0cb5",
                                                 "values":["entreprise-utilisatrice"]
                                     },
                                     "2": { "field_name":"utilisation-1",
-                                                "field_label":"utilisation 1",
+                                                "field_label":"Utilisation 1",
                                                 "field_type":"list_from_mandatory_lists",
                                                 "field_on_site_uuid":"ed645d0a-ac24-4ffe-9fe1-b0591a7e1835",
                                                 "values":["utilisations"]
                                     },
                                     "3": { "field_name":"entreprise-utilisatrice-2",
-                                                "field_label":"entreprise utilisatrice 2",
+                                                "field_label":"Entreprise utilisatrice 2",
                                                 "field_type":"list_from_mandatory_lists",
                                                 "field_on_site_uuid":"3b494675-c3ba-4e60-a577-eceb1222291f",
                                                 "values":["entreprise-utilisatrice"]
                                     },
                                     "4": { "field_name":"utilisation-2",
-                                                "field_label":"utilisation 2",
+                                                "field_label":"Utilisation 2",
                                                 "field_type":"list_from_mandatory_lists",
                                                 "field_on_site_uuid":"34b2e441-647f-4cc2-a796-d865890c8c04",
                                                 "values":["utilisations"]
                                     },
                                     "5": { "field_name":"entreprise-utilisatrice-3",
-                                                "field_label":"entreprise utilisatrice 3",
+                                                "field_label":"Entreprise utilisatrice 3",
                                                 "field_type":"list_from_mandatory_lists",
                                                 "field_on_site_uuid":"7b6ec55c-d012-4219-bfbf-bafb7992ceec",
                                                 "values":["entreprise-utilisatrice"]
                                     },
                                     "6": { "field_name":"utilisation-3",
-                                                "field_label":"utilisation 3",
+                                                "field_label":"Utilisation 3",
                                                 "field_type":"list_from_mandatory_lists",
                                                 "field_on_site_uuid":"c242fe59-d17f-4796-bceb-c1c9963c8525",
                                                 "values":["utilisations"]
                                     },
                                     "7": { "field_name":"entreprise-utilisatrice-4",
-                                                "field_label":"entreprise utilisatrice 4",
+                                                "field_label":"Entreprise utilisatrice 4",
                                                 "field_type":"list_from_mandatory_lists",
                                                 "field_on_site_uuid":"b3c7b59f-0d5b-49b1-a3ad-931fb37ab536",
                                                 "values":["entreprise-utilisatrice"]
                                     },
                                     "8": { "field_name":"utilisation-4",
-                                                "field_label":"utilisation 4",
+                                                "field_label":"Utilisation 4",
                                                 "field_type":"list_from_mandatory_lists",
                                                 "field_on_site_uuid":"cc10c052-e0a4-4af3-bde0-2a9f9ab651c1",
                                                 "values":["utilisations"]
                                     },
                                     "9": { "field_name":"entreprise-utilisatrice-5",
-                                                "field_label":"entreprise utilisatrice 5",
+                                                "field_label":"Entreprise utilisatrice 5",
                                                 "field_type":"list_from_mandatory_lists",
                                                 "field_on_site_uuid":"a9792ace-543b-4866-92d0-2bb24fe4a72f",
                                                 "values":["entreprise-utilisatrice"]
                                     },
                                     "10": { "field_name":"utilisation-5",
-                                                "field_label":"utilisation 5",
+                                                "field_label":"Utilisation 5",
                                                 "field_type":"list_from_mandatory_lists",
                                                 "field_on_site_uuid":"bcccc812-a542-457d-a421-6548ef72acb7",
                                                 "values":["utilisations"]
                                     },
-                                    "11": { "field_name":"pmat",
-                                                "field_label":"pmat",
-                                                "field_type":"list_from_mandatory_lists",
-                                                "field_on_site_uuid":"f5c85e28-57b9-438a-a48c-563e8d0a9905",
-                                                "values":["pmat"]
-                                    },
-
+                                   
                               }
                         },
                          "5": { "section_name" : "description du besoin",
@@ -337,14 +331,14 @@ config = {
                                             "values":["elevation"]
                                            },
                                       "5": { "field_name":"dimension-echafaudage-ou-plancher",
-                                           "field_label":"dimensions echaufaudage ou plancher ?",
+                                           "field_label":"Dimensions echaufaudage ou plancher ?",
                                            "field_type":"switch",
                                            "field_on_site_uuid":"95cd67d3-fb22-4a30-931d-7cd0f3bfb21f",
                                            "value_on": "echaufadage",
                                            "value_off": "plancher"
                                       },
                                     "6": { "field_name":"charges-reparties-ou-ponctuelle",
-                                           "field_label":"charges réparties ou ponctuelles",
+                                           "field_label":"Charges réparties ou ponctuelles",
                                            "field_type":"switch",
                                            "field_on_site_uuid":"26bd134c-a4fb-49c5-b430-71dc8c7128db",
                                            "value_on": "oui",
@@ -368,7 +362,7 @@ config = {
                                                 "field_on_site_uuid":"20fd4811-02f4-4762-8a29-1a8754353dde",
                                                 "values":[]},
                                     "10": { "field_name":"nombre-de-travailleurs",
-                                           "field_label":"nombre de travailleurs",
+                                           "field_label":"Nombre de travailleurs",
                                            "field_type":"integer",
                                            "field_on_site_uuid":"81380fd5-7652-4e88-9af9-f03972a772a1"
                                       },
@@ -379,13 +373,13 @@ config = {
                                             "values":["type-d-acces"]
                                            },
                                       "12": { "field_name": "approvisionnement-materiaux",
-                                           "field_label": "approvisionnement materiaux",
+                                           "field_label": "Approvisionnement materiaux",
                                            "field_type": "list_from_mandatory_lists",
                                            "field_on_site_uuid": "e24edb51-d00d-49f0-8941-5604de59c369",
                                             "values":["approvisionnement-materiaux"]
                                            },
                                       "13": { "field_name": "protection-personnes-biens-ouvrages",
-                                           "field_label": "protection des personnes/biens/ouvrages",
+                                           "field_label": "Protection des personnes/biens/ouvrages",
                                            "field_type": "list_from_mandatory_lists",
                                            "field_on_site_uuid": "206ef5af-7700-43f1-90df-3aa475e510e0",
                                             "values":["protection-personnes-biens-ouvrages"]
