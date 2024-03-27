@@ -125,34 +125,22 @@ config = {
                 "1" :{"form_name":"besoin",
                       "form_on_site_uuid": "9f1f20e3-d3cd-4a58-97fc-2e42a4d7b736",
                       "sections": {
-                        "1": { "section_name" : "user",
+                        "1": { "section_name" : "Donneur d'ordre",
                               "section_type" : "section type 1",
                               "section_on_site_uuid": "ef637435-30fe-4a3f-941f-f29a8df8f865",
                               "fields": {
-                              "1": { "field_name":"contractor",
-                                          "field_label":"contractor",
+                              "1": { "field_name":"donneur-ordre",
+                                          "field_label":"donneur d'ordre",
                                           "field_type":"list_from_mandatory_lists",
                                           "field_on_site_uuid":"36448a1b-3f11-463a-bf60-7668f32da094",
-                                          "values":["contractor"]
+                                          "values":["donneur-ordre"]
                               },
-                              "2": { "field_name":"user_name",
-                                          "field_label":"name",
-                                          "field_type":"text",
+                              "2": { "field_name":"donneur-ordre-representant",
+                                          "field_label":"nom du représentant",
+                                          "field_type":"list_from_mandatory_lists",
                                           "field_on_site_uuid":"9303ae9d-ac90-4a1c-bd11-123a8e94b462",
-                                          "values":[]
+                                          "values":["donneur-ordre-representant"]
                               },
-                              "3": { "field_name":"user_phone",
-                                          "field_label":"telephone",
-                                          "field_type":"text",
-                                          "field_on_site_uuid":"6ab0e41c-7283-451f-a34c-a01f92ce3e61",
-                                          "values":[]
-                              },
-                              "4": { "field_name":"user_email",
-                                          "field_label":"email",
-                                          "field_type":"email",
-                                          "field_on_site_uuid":"fad83ca8-94e3-482f-93a6-aa28e18f0dcd",
-                                          "values":[]
-                              }
                               },
                         },
                         "2": { "section_name" : "specifications",
