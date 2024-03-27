@@ -112,7 +112,16 @@ config = {
                                     "Autre"
                               ] 
                         },
-                  "contractor": 
+                  
+                  "donneur-ordre": 
+                        {
+                        "type": "administrable_by_site",
+                        "values":
+                              [
+                              
+                              ]
+                        },
+                  "donneur-ordre-representant": 
                         {
                         "type": "administrable_by_site",
                         "values":
