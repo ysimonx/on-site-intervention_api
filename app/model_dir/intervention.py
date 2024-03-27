@@ -130,12 +130,24 @@ class InterventionValues(db.Model, MyMixin):
             for section, section_values in form_values["sections"].items():
                 for field, fields_values in section_values["fields"].items():
                     field_name=fields_values["field_name"]
+                    
                     columns.append(field_name)
-        
+                    if fields_values["field_type"]=="user_from_role":
+                        columns.append("{}.firstname".format(field_name))
+                        columns.append("{}.lastname".format(field_name))
+                        columns.append("{}.phone".format(field_name))
+                        columns.append("{}.email".format(field_name))
                     field_on_site_uuid=fields_values["field_on_site_uuid"]
                     if field_on_site_uuid in dict_field_values.keys():
                         value  = dict_field_values[field_on_site_uuid]
                         data[field_name] = value
+                        if fields_values["field_type"]=="user_from_role":
+                            if value != "":
+                                data["{}.fisrtname".format(field_name)]="prenom"
+                                data["{}.lastname".format(field_name)]="nom"
+                                data["{}.phone".format(field_name)]="phone"
+                                data["{}.email".format(field_name)]="@"
+                                print("ok")  
                     else:
                         data[field_name] = None
         result={

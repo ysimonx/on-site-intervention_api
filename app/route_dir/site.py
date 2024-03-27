@@ -228,8 +228,7 @@ def post_site_user(site_id):
     # je créé tous les roles nécessaires et supprime tous les roles attribués à ce user pour ce site 
     for role in _site.roles:
         current_app.logger.info("role %s",role.name)
-        _role = getByIdOrByName(
-            obj=Role, 
+        _role = getByIdOrByName(obj=Role, 
             id=role.name, 
             tenant_id=_tenant.id, 
             site_id=_site.id
@@ -252,8 +251,7 @@ def post_site_user(site_id):
 
     for role_name in roles:
         current_app.logger.info("role %s",role_name)
-        _role = getByIdOrByName(
-            obj=Role, 
+        _role = getByIdOrByName(obj=Role, 
             id=role_name, 
             tenant_id=_tenant.id, 
             site_id=_site.id
@@ -293,8 +291,7 @@ def rm_site_user(site_id):
     
     for role in _site.roles:
         current_app.logger.info("role %s",role.name)
-        _role = getByIdOrByName(
-            obj=Role, 
+        _role = getByIdOrByName(obj=Role, 
             id=role.name, 
             tenant_id=_tenant.id, 
             site_id=_site.id
@@ -401,8 +398,7 @@ def create_site():
     
     # j'ajoute tous les roles par defaut    
     for role_name in config["roles"]:
-        _role = getByIdOrByName(
-                            obj=Role, 
+        _role = getByIdOrByName(obj=Role, 
                             id=role_name, 
                             tenant_id=_tenant.id, 
                             site_id=_site.id
@@ -421,8 +417,7 @@ def create_site():
     
     roles=["admin", "site administrator"]
     for rolename in roles:
-        _role = getByIdOrByName(
-                                obj=Role, 
+        _role = getByIdOrByName(obj=Role, 
                                 id=rolename, 
                                 tenant_id=_tenant.id, 
                                 site_id=_site.id
@@ -453,8 +448,7 @@ def process_sites_interventions_templates(_site):
     roles = config["roles"]
     for role_name in roles:
         current_app.logger.info(role_name)
-        _role = getByIdOrByName(
-            obj=Role,
+        _role = getByIdOrByName(obj=Role,
             id=role_name,
             tenant_id=_site.tenant_id, 
             site_id=_site.id)

@@ -13,19 +13,19 @@ def get_role_list():
     return jsonify([item.to_json() for item in items])
 
 
-@app_file_role.route('/role', methods=['POST'])
-def create_user():
-    if not request.json:
-        abort(make_response(jsonify(error="no json provided in request"), 400))
-
-    role_name = request.json.get('name', None)
-    if role_name is None:
-        abort(make_response(jsonify(error="missing role_name parameter"), 400))
-     
-    role = Role(
-        name=role_name
-    )
-
-    db.session.add(role)
-    db.session.commit()
-    return jsonify(role.to_json()), 201
+    #@app_file_role.route('/role', methods=['POST'])
+    #def create_user():
+    # if not request.json:
+    #    abort(make_response(jsonify(error="no json provided in request"), 400))
+    #
+    # role_name = request.json.get('name', None)
+    # if role_name is None:
+    #    abort(make_response(jsonify(error="missing role_name parameter"), 400))
+    # 
+    #role = Role(
+    #    name=role_name
+    #)
+    #
+    #db.session.add(role)
+    # db.session.commit()
+    #return jsonify(role.to_json()), 201
