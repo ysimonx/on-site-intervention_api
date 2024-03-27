@@ -102,19 +102,42 @@ config = {
                                     "Not concerned"
                               ]
                         },
-                  "scaffold_type":
+                  "echafaudage-typologie":
+                         {
+                        "type": "fixed",
+                        "values": [
+                                   "Echafaudage de pieds",
+                                    "Echafaudage roulant",
+                                    "Echafaudage suspendu",
+                                    "Escalier ou acces sécurisé",
+                                    "Protections collectives",
+                                    "Balisage de protection",
+                                    "Autres"
+                              ] 
+                        },      
+                  "echafaudage-classe-de-service":
+                         {
+                        "type": "fixed",
+                        "values": [
+                                   "Classe 2=150Kg/m²",
+                                    "Classe 3=200Kg/m²",
+                                    "Classe 4=300Kg/m²",
+                                    "Classe 5=450Kg/m²",
+                                    "Classe 6=600Kg/m²"
+                              ] 
+                        }, 
+                  "echafaudage-nature-appuis":
                         {
                         "type": "fixed",
                         "values": [
-                                    "Fixe",
-                                    "Roulant",
-                                    "Balisage en dur",
-                                    "Protection", 
-                                    "Potence",
-                                    "Escalier",
-                                    "Autre"
+                                   "Béton",
+                                    "Caillebotis",
+                                    "Charpente métallique",
+                                    "Terrain naturel",
+                                    "Enrobé",
+                                    "Remblai"
                               ] 
-                        },       
+                        },
                   "type-d-acces" :
                          {
                         "type": "fixed",
@@ -428,22 +451,53 @@ config = {
                 "2" :{"form_name":"visite",
                       "form_on_site_uuid": "a81c475c-3b9d-40da-839d-56eeee06e85a",
                       "sections": {
-                        "1": { "section_name" : "techniques",
+                        "1": { "section_name" : "Caractéristiques de l'échafaudage",
                               "section_type" : "section type 1",
                               "section_on_site_uuid": "11b19f92-b590-44d5-b29c-4144b709bd9b",
                               "fields": {
-                                    "1": { "field_name":"scaff_type",
-                                                "field_label":"type",
-                                                "field_type":"list_from_mandatory_lists",
-                                                "field_on_site_uuid":"e28cbc05-2f4b-46f5-acca-c147ae8a1db8",
-                                                "values":["scaffold_type"]
-                                    },
-                                    "2": { "field_name":"visit_date",
-                                          "field_label":"visit Date",
+                                    "1": { "field_name":"visite-date",
+                                          "field_label":"Date visite",
                                           "field_type":"date",
-                                          "field_on_site_uuid":"a1d5131d-d8bc-4783-8c0b-fb81f5e4a459",
+                                          "field_on_site_uuid":"dbf12337-261a-49a2-a84e-8d7c366a9b94",
                                           "default_value":"now"
-                                    }
+                                    },
+                                    "2": { "field_name":"visite-typologie",
+                                                "field_label":"Typologie",
+                                                "field_type":"list_from_mandatory_lists",
+                                                "field_on_site_uuid":"245096d8-0ac2-46cb-97ae-242501ac0230",
+                                                "values":["echafaudage-typologie"]
+                                    },
+                                    "3": { "field_name":"visite-classe-service",
+                                                "field_label":"Classe de service",
+                                                "field_type":"list_from_mandatory_lists",
+                                                "field_on_site_uuid":"3d8c35a9-02e0-49d9-b568-f4b35d85b267",
+                                                "values":["echafaudage-classe-de-service"]
+                                    },
+                                     "4": { "field_name":"visite-nature-appuis",
+                                                "field_label":"Nature des appuis",
+                                                "field_type":"list_from_mandatory_lists",
+                                                "field_on_site_uuid":"b803d6ce-188f-46f9-be37-d482996a3da3",
+                                                "values":["echafaudage-nature-appuis"]
+                                    },
+                                    "5": { "field_name": "longueur-echafaudage-visite",
+                                           "field_label": "Longueur",
+                                           "field_type": "list_from_mandatory_lists",
+                                           "field_on_site_uuid": "3cd0c728-8e18-4b07-919c-957a0ea4181d",
+                                            "values":["dimensions"]
+                                     },
+                                    "6": { "field_name": "largeur-echafaudage-visite",
+                                           "field_label": "Largeur",
+                                           "field_type": "list_from_mandatory_lists",
+                                           "field_on_site_uuid": "5fff33d7-0a2d-4a10-8f59-a8c511e26616",
+                                            "values":["dimensions"]
+                                     },
+                                     "7": { "field_name": "hauteur-echafaudage-visite",
+                                           "field_label": "Hauteur",
+                                           "field_type": "list_from_mandatory_lists",
+                                           "field_on_site_uuid": "0caa620c-6823-4c01-9774-aabb02359019",
+                                            "values":["dimensions"]
+                                     },
+                                   
                               }
                         },
                         "2": { "section_name" : "security",
