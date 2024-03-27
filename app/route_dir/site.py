@@ -238,7 +238,7 @@ def post_site_user(site_id):
             current_app.logger.info("role exists %s", _role.name)
         else:
             _role = Role(
-                name=role_name, 
+                name=_role.name, 
                 tenant_id=_tenant.id,
                 site_id=_site.id
             )
@@ -453,9 +453,17 @@ def process_sites_interventions_templates(_site):
     roles = config["roles"]
     for role_name in roles:
         current_app.logger.info(role_name)
-        _role = Role.query.filter(Role.site_id == _site.id).filter(Role.name == role_name).first()
+        _role = getByIdOrByName(
+            obj=Role,
+            id=role_name,
+            tenant_id=_site._tenant_id, 
+            site_id=_site.id)
         if _role is None:
-            _role=Role(site_id=_site.id, name=role_name)
+            _role=Role(
+                site_id=_site.id,
+                name=role_name,
+                tenant_id=_site.tenant_id
+            )
             db.session.add(_role)
             current_app.logger.info("role {} added".format(role_name))
     db.session.commit()
