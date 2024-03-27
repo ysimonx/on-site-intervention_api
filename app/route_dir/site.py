@@ -448,6 +448,19 @@ def create_site():
     
 def process_sites_interventions_templates(_site):
     
+    # _roles = Role.query.filter(Role.site_id == _site.id).all()
+    
+    roles = config["roles"]
+    for role_name in roles:
+        current_app.logger.info(role_name)
+        _role = Role.query.filter(Role.site_id == _site.id).filter(Role.name == role_name).first()
+        if _role is None:
+            _role=Role(site_id=_site.id, name=role_name)
+            db.session.add(_role)
+            current_app.logger.info("role {} added".format(role_name))
+    db.session.commit()
+        
+        
     _types_intervention = config["types_interventions"]
     for type_intervention_name, item in _types_intervention.items():
         current_app.logger.info(type_intervention_name)
