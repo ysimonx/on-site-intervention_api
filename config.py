@@ -174,6 +174,15 @@ config = {
                                     "Protection plastique  (Brid Guard)"
                               ] 
                         }, 
+                  "echafaudage-marque-materiel" : 
+                         {
+                        "type": "fixed",
+                        "values": [
+                                   "LAYHER",
+                                    "PLETTAC",
+                                    "ENTREPOSE"
+                              ] 
+                        }, 
                   "entreprise-utilisatrice": 
                         {
                         "type": "administrable_by_site",
@@ -497,10 +506,58 @@ config = {
                                            "field_on_site_uuid": "0caa620c-6823-4c01-9774-aabb02359019",
                                             "values":["dimensions"]
                                      },
+                                     "8": { "field_name": "altitude-elevation-visite",
+                                           "field_label": "Altitude/Elevation/Niveau",
+                                           "field_type": "list_from_mandatory_lists",
+                                           "field_on_site_uuid": "66a1a9d6-9d50-42b2-bfca-68068e7b0bf3",
+                                            "values":["elevation"]
+                                           },
+                                     "9": { "field_name":"planchers-travail-visite",
+                                           "field_label":"Nombre de planchers travail",
+                                           "field_type":"list",
+                                           "field_on_site_uuid":"e4b3e46c-0b90-412e-b6ed-e8c0087cff4d",
+                                           "values": [
+                                               "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"
+                                            ] 
+                                    },
+                                      "10": { "field_name":"planchers-acces-visite",
+                                           "field_label":"Nombre de planchers d'accès",
+                                           "field_type":"list",
+                                           "field_on_site_uuid":"313f56bb-ef39-4a62-ae72-cc494cb77c56",
+                                           "values": [
+                                               "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"
+                                            ] 
+                                    }, "11": { "field_name":"conforme-notice-visite",
+                                           "field_label":"Conforme notice constructeur",
+                                           "field_type":"switch",
+                                           "field_on_site_uuid":"2158ecbb-b3f6-445e-b865-dc9df322bc3c",
+                                           "value_on": "oui",
+                                           "value_off": "non"
+                                      },
+                                     "12": { "field_name":"marque-materiel-visite",
+                                           "field_label":"Marque matériel",
+                                            "field_type": "list_from_mandatory_lists",
+                                           "field_on_site_uuid": "7e6434b0-9594-421c-b0ab-0fa44ca84f6d",
+                                            "values":["echafaudage-marque-materiel"]
+                                           },
+                                      },
+                                     "13": { "field_name":"modification-prevoir-visite",
+                                           "field_label":"Modifications à prévoir",
+                                            "field_type":"switch",
+                                           "field_on_site_uuid":"192aecba-ad91-4697-b65d-230338d88b2b",
+                                           "value_on": "oui",
+                                           "value_off": "non"
+                                           
+                                      },
+                                      "14": { "field_name":"precisions-modification-prevoir-visite",
+                                                "field_label":"Oui : lesquelles ?",
+                                                "field_type":"text",
+                                                "field_on_site_uuid":"fb07dd35-57b3-447d-b819-7b0e6d3d8dd1",
+                                                "values":[]},
                                    
-                              }
+                              
                         },
-                        "2": { "section_name" : "security",
+                        "2": { "section_name" : "Sécurité",
                                 "section_type" : "section type 1",
                                 "section_on_site_uuid": "a706e588-b8f5-4b11-a711-ee1e7612bb6a",
                                  "fields": {
