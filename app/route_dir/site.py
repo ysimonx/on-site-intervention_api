@@ -459,13 +459,15 @@ def process_sites_interventions_templates(_site):
             tenant_id=_site.tenant_id, 
             site_id=_site.id)
         if _role is None:
+            current_app.logger.info("ROLE for site {}, role {} not found for tenant_id {} ".format(_site.name, role_name, _site.tenant_id))
+            
             _role=Role(
                 site_id=_site.id,
                 name=role_name,
                 tenant_id=_site.tenant_id
             )
             db.session.add(_role)
-            current_app.logger.info("role {} added".format(role_name))
+            current_app.logger.info("ROLE  for site {},  role {} added for tenant_id {} ".format(_site.name, role_name, _site.tenant_id))
     db.session.commit()
         
         
