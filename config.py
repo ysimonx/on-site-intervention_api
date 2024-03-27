@@ -78,15 +78,18 @@ config = {
                         "type": "fixed",
                         "values":
                               [
-                                    "Acces sécurisé",
-                                    "Travaux de peinture",
-                                    "Travaux de métallurgie",
-                                    "Travaux de montage tuyauterie",
-                                    "Travaux d'isolation",
-                                    "Travaux électrique",
-                                    "Travaux de génie civil",
-                                    "Travaux d'inspection",
-                                    "Travaux d'instrumentation"
+                                    "Bardage, isolation par l'extérieur",
+                                    "Calorifuge",
+                                    "Désamiantage/déplombage ...",
+                                    "Electrique",
+                                    "Inspection/instrumentation",
+                                    "Levage",
+                                    "Maçonnerie lourde",
+                                    "Peinture/sablage",
+                                    "Renfort/soutient (dalle, tuyeauterie, etc.)",
+                                    "Tir radio",
+                                    "Tuyauterie",
+                                    "Autres (accès, ...)"
                               ]
                         },
                    "pmat":
@@ -111,8 +114,7 @@ config = {
                                     "Escalier",
                                     "Autre"
                               ] 
-                        },
-                  
+                        },           
                   "donneur-ordre": 
                         {
                         "type": "administrable_by_site",
@@ -122,6 +124,14 @@ config = {
                               ]
                         },
                   "donneur-ordre-representant": 
+                        {
+                        "type": "administrable_by_site",
+                        "values":
+                              [
+                              
+                              ]
+                        },
+                  "entreprise-utilisatrice": 
                         {
                         "type": "administrable_by_site",
                         "values":
@@ -159,7 +169,7 @@ config = {
                                     "2": { "field_name":"date-demande",
                                                 "field_label":"date de la demande",
                                                 "field_type":"date",
-                                                "field_on_site_uuid":"10909dee-86da-459f-8094-ee3d199e1631",
+                                                "field_on_site_uuid":"2f7b84e7-8d38-4544-9027-c9772089a5d0",
                                                 "values":[]
                                     },
                                     "2": { "field_name":"date-mise-a-disposition",
@@ -193,30 +203,49 @@ config = {
                               "section_on_site_uuid": "abc3514f-0fbf-4cd3-81a5-c35983f95f55",
                               "fields": {
                                    
-                                    "1": { "field_name":"action",
-                                                "field_label":"action",
+                                    "1": { "field_name":"entreprise-utilisatrice-1",
+                                                "field_label":"entreprise utilisatrice",
                                                 "field_type":"list_from_mandatory_lists",
-                                                "field_on_site_uuid":"8dce593a-d863-489f-8249-530a24d10512",
-                                                "values":["actions"]
+                                                "field_on_site_uuid":"dd714f1d-0333-45d4-83ba-8955d5bf0cb5",
+                                                "values":["entreprise-utilisatrice"]
                                     },
-                                    "2": { "field_name":"utilisation",
+                                    "2": { "field_name":"utilisation-1",
                                                 "field_label":"utilisation",
                                                 "field_type":"list_from_mandatory_lists",
-                                                "field_on_site_uuid":"82ab9a01-4672-4b35-8016-32e58d001b11",
+                                                "field_on_site_uuid":"ed645d0a-ac24-4ffe-9fe1-b0591a7e1835",
                                                 "values":["utilisations"]
                                     },
-                                    "3": { "field_name":"pmat",
+                                    "3": { "field_name":"entreprise-utilisatrice-2",
+                                                "field_label":"entreprise utilisatrice",
+                                                "field_type":"list_from_mandatory_lists",
+                                                "field_on_site_uuid":"3b494675-c3ba-4e60-a577-eceb1222291f",
+                                                "values":["entreprise-utilisatrice"]
+                                    },
+                                    "4": { "field_name":"utilisation-2",
+                                                "field_label":"utilisation",
+                                                "field_type":"list_from_mandatory_lists",
+                                                "field_on_site_uuid":"34b2e441-647f-4cc2-a796-d865890c8c04",
+                                                "values":["utilisations"]
+                                    },
+                                    "5": { "field_name":"entreprise-utilisatrice-3",
+                                                "field_label":"entreprise utilisatrice",
+                                                "field_type":"list_from_mandatory_lists",
+                                                "field_on_site_uuid":"7b6ec55c-d012-4219-bfbf-bafb7992ceec",
+                                                "values":["entreprise-utilisatrice"]
+                                    },
+                                    "6": { "field_name":"utilisation-3",
+                                                "field_label":"utilisation",
+                                                "field_type":"list_from_mandatory_lists",
+                                                "field_on_site_uuid":"c242fe59-d17f-4796-bceb-c1c9963c8525",
+                                                "values":["utilisations"]
+                                    },
+                                    "5": { "field_name":"pmat",
                                                 "field_label":"pmat",
                                                 "field_type":"list_from_mandatory_lists",
                                                 "field_on_site_uuid":"f5c85e28-57b9-438a-a48c-563e8d0a9905",
                                                 "values":["pmat"]
                                     },
-                                    "4": { "field_name":"numotp",
-                                                "field_label":"numotp",
-                                                "field_type":"list_from_mandatory_lists",
-                                                "field_on_site_uuid":"4c4549c7-a7b7-4491-abfd-0361db531e02",
-                                                "values":[]
-                                    },
+
                               }
                         },
                         "5": { "section_name" : "description",
