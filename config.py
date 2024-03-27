@@ -331,10 +331,10 @@ config = {
                                             "values":["elevation"]
                                            },
                                       "5": { "field_name":"dimension-echafaudage-ou-plancher",
-                                           "field_label":"Dimensions échaufaudage ou plancher ?",
+                                           "field_label":"Dimensions échafaudage ou plancher ?",
                                            "field_type":"switch",
                                            "field_on_site_uuid":"95cd67d3-fb22-4a30-931d-7cd0f3bfb21f",
-                                           "value_on": "échaufadage",
+                                           "value_on": "échafaudage",
                                            "value_off": "plancher"
                                       },
                                     "6": { "field_name":"charges-reparties-ou-ponctuelle",
