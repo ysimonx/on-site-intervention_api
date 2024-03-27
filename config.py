@@ -183,6 +183,16 @@ config = {
                                     "ENTREPOSE"
                               ] 
                         }, 
+                  "echafaudage-type-facturation":
+                         {
+                        "type": "fixed",
+                        "values": [
+                                   "Forfait",
+                                   "Régie",
+                                   "Bordereau"
+                                   
+                              ] 
+                        },
                   "entreprise-utilisatrice": 
                         {
                         "type": "administrable_by_site",
@@ -554,7 +564,14 @@ config = {
                                                 "field_type":"text",
                                                 "field_on_site_uuid":"fb07dd35-57b3-447d-b819-7b0e6d3d8dd1",
                                                 "values":[]
-                                    }
+                                    },
+                                       "15": { "field_name":"type-facturation-visite",
+                                           "field_label":"Facturation",
+                                            "field_type": "list_from_mandatory_lists",
+                                           "field_on_site_uuid": "b19c7eb5-7518-4e72-ae01-5fa396db6559",
+                                            "values":["echafaudage-type-facturation"]
+                                           }
+                                      
                               }
                                    
                               
@@ -616,50 +633,50 @@ config = {
                                  }
                                 },
                         
-                        "3": { "section_name" : "intervenants",
+                        "3": { "section_name" : "Contractualisation du présent cahier des charges",
                                 "section_type" : "section type 3",
                                 "section_on_site_uuid": "b72ec40c-0194-47a0-9744-35137dde1e9d",
                                  "fields": {
-                                       "1": { "field_name":"visit_user_scaffolder",
+                                       "1": { "field_name":"visite-echafaudeur",
                                            "field_label":"échafaudeur",
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"1481ef60-16f5-4090-94a4-daf787ae5926",
                                            "values": ["échafaudeur"]
                                       },
-                                       "2": { "field_name":"visit_signature_scaffolder",
+                                       "2": { "field_name":"visite-echafaudeur-signature",
                                            "field_label":"signature",
                                            "field_type":"signature",
                                            "field_on_site_uuid":"983287bb-62c3-42cf-86f2-f15d1b9b4204",
                                       },
-                                      "3": { "field_name":"visit_user_email",
-                                           "field_label":"user e-mail",
-                                           "field_type":"email",
-                                           "field_on_site_uuid":"aa141f92-4be6-4df9-83e0-81247b6c611b",
-                                           "values": []
-                                      },
-                                       "4": { "field_name":"visit_signature_user",
+                                      "3": { "field_name":"visite-donneur-ordre",
+                                                "field_label":"Donneur d'ordre",
+                                                "field_type":"user_from_role",
+                                                "field_on_site_uuid":"a1d672a5-b522-470e-a4ea-aca66c490ce4",
+                                                "values":["donneur d'ordre"]
+                                    },
+                                       "4": { "field_name":"visite-donneur-ordre-signature",
                                            "field_label":"signature User",
                                            "field_type":"signature",
                                            "field_on_site_uuid":"47afbe06-57a3-416e-8f39-42a4916bf97e",
                                       },
-                                        "5": { "field_name":"visit_user_building_coordinator",
+                                        "5": { "field_name":"visite-responsable-unite-fabrication",
                                            "field_label":"Responsable unité fabrication",
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"032dfe04-c8f0-4552-9cd1-248b272c7c15",
                                            "values": ["responsable unité fabrication"]
                                       },
-                                       "6": { "field_name":"visit_signature_building_coordinator",
+                                       "6": { "field_name":"visite-responsable-unite-fabrication-signature",
                                            "field_label":"signature",
                                            "field_type":"signature",
                                            "field_on_site_uuid":"853a16f2-7327-4317-aed4-ea8782556eb4",
                                       },
-                                       "7": { "field_name":"visit_user_hse_engineer",
+                                       "7": { "field_name":"visite-service-securite",
                                            "field_label":"service sécurité",
                                            "field_type":"user_from_role",
                                            "field_on_site_uuid":"5a3f72df-7599-48c4-8f51-8fa6127d3a5d",
                                            "values": ["service sécurité"]
                                       },
-                                       "8": { "field_name":"visit_signature_hse_engineer",
+                                       "8": { "field_name":"visite-service-securite-signature",
                                            "field_label":"signature",
                                            "field_type":"signature",
                                            "field_on_site_uuid":"a3963ed3-38a8-41da-8a23-01822ecf3311",
@@ -847,7 +864,6 @@ config = {
           "responsable unité fabrication",
           "service sécurité",                                     #Health and Safety Project Coordinator
           "inspecteur échafaudage",
-          "demandeur",
           "utilisateur"
       ]
 }
