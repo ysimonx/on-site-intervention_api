@@ -128,7 +128,7 @@ config = {
                               [
                               
                               ]
-                        },
+                        }
             },
             "forms": {
                 "1" :{"form_name":"besoin",
@@ -138,69 +138,94 @@ config = {
                               "section_type" : "section type 1",
                               "section_on_site_uuid": "ef637435-30fe-4a3f-941f-f29a8df8f865",
                               "fields": {
-                              "1": { "field_name":"donneur-ordre",
-                                          "field_label":"donneur d'ordre",
-                                          "field_type":"list_from_mandatory_lists",
-                                          "field_on_site_uuid":"36448a1b-3f11-463a-bf60-7668f32da094",
-                                          "values":["donneur-ordre"]
-                              },
-                              "2": { "field_name":"donneur-ordre-representant",
-                                          "field_label":"nom du représentant",
-                                          "field_type":"list_from_mandatory_lists",
-                                          "field_on_site_uuid":"9303ae9d-ac90-4a1c-bd11-123a8e94b462",
-                                          "values":["donneur-ordre-representant"]
-                              },
-                              },
+                                    "1": { "field_name":"donneur-ordre",
+                                                "field_label":"donneur d'ordre",
+                                                "field_type":"list_from_mandatory_lists",
+                                                "field_on_site_uuid":"36448a1b-3f11-463a-bf60-7668f32da094",
+                                                "values":["donneur-ordre"]
+                                    },
+                                    "2": { "field_name":"donneur-ordre-representant",
+                                                "field_label":"nom du représentant",
+                                                "field_type":"list_from_mandatory_lists",
+                                                "field_on_site_uuid":"9303ae9d-ac90-4a1c-bd11-123a8e94b462",
+                                                "values":["donneur-ordre-representant"]
+                                    }
+                              }
                         },
-                        "2": { "section_name" : "specifications",
+                        "2": { "section_name" : "identification de la demande",
                               "section_type" : "section type 2",
                               "section_on_site_uuid": "68bb7af3-d341-4a74-baa6-2b9a699404cc",
                               "fields": {
-                              "1": { "field_name":"feb",
-                                          "field_label":"feb",
-                                          "field_type":"text",
-                                          "field_on_site_uuid":"66ddbbdf-414b-4d53-acbc-392311fcc629",
-                                          "values":[]
-                              },
-                              "2": { "field_name":"date1stutil",
-                                          "field_label":"date 1s util",
-                                          "field_type":"date",
-                                          "field_on_site_uuid":"10909dee-86da-459f-8094-ee3d199e1631",
-                                          "values":[]
-                              },
-                              "3": { "field_name":"duration_in_days",
-                                          "field_label":"how many days",
-                                          "field_type":"integer",
-                                          "field_on_site_uuid":"34ea515d-0bff-4651-91e7-a7a24b243b6b",
-                                          "values":[]
-                              },
-                              "4": { "field_name":"action",
-                                          "field_label":"action",
-                                          "field_type":"list_from_mandatory_lists",
-                                          "field_on_site_uuid":"8dce593a-d863-489f-8249-530a24d10512",
-                                          "values":["actions"]
-                              },
-                              "5": { "field_name":"utilisation",
-                                          "field_label":"utilisation",
-                                          "field_type":"list_from_mandatory_lists",
-                                          "field_on_site_uuid":"82ab9a01-4672-4b35-8016-32e58d001b11",
-                                          "values":["utilisations"]
-                              },
-                              "6": { "field_name":"pmat",
-                                          "field_label":"pmat",
-                                          "field_type":"list_from_mandatory_lists",
-                                          "field_on_site_uuid":"f5c85e28-57b9-438a-a48c-563e8d0a9905",
-                                          "values":["pmat"]
-                              },
-                              "7": { "field_name":"numotp",
-                                          "field_label":"numotp",
-                                          "field_type":"list_from_mandatory_lists",
-                                          "field_on_site_uuid":"4c4549c7-a7b7-4491-abfd-0361db531e02",
-                                          "values":[]
-                              },
+                                    "1": { "field_name":"numero-permis-ot",
+                                                "field_label":"N°permis/d'OT",
+                                                "field_type":"text",
+                                                "field_on_site_uuid":"47fdf096-9e96-446a-afde-ab2beb81e5a1",
+                                                "values":[]
+                                    },
+                                    "2": { "field_name":"date-demande",
+                                                "field_label":"date de la demande",
+                                                "field_type":"date",
+                                                "field_on_site_uuid":"10909dee-86da-459f-8094-ee3d199e1631",
+                                                "values":[]
+                                    },
+                                    "2": { "field_name":"date-mise-a-disposition",
+                                                "field_label":"mise à disposition souhaitée",
+                                                "field_type":"date",
+                                                "field_on_site_uuid":"10909dee-86da-459f-8094-ee3d199e1631",
+                                                "values":[]
+                                    },
+                                    "3": { "field_name":"duree-mise-a-disposition",
+                                                "field_label":"durée de mise à disposition (jours)",
+                                                "field_type":"integer",
+                                                "field_on_site_uuid":"34ea515d-0bff-4651-91e7-a7a24b243b6b",
+                                                "values":[]
+                                    }
                               }
                         },
-                        "3": { "section_name" : "description",
+                        "3": { "section_name" : "echafaudeur",
+                              "section_type" : "section type 2",
+                              "section_on_site_uuid": "a4396dc1-0091-4915-baed-75b70f5dc8dc",
+                              "fields": {
+                                    "1": { "field_name":"demande-echafaudeur",
+                                           "field_label":"échafaudeur",
+                                           "field_type":"user_from_role",
+                                           "field_on_site_uuid":"8a4bb1eb-af22-4ce1-91c4-4c3d89e14709",
+                                           "values": ["échafaudeur"]
+                                      }
+                              }
+                        },
+                        "4": { "section_name" : "nature des opérations",
+                              "section_type" : "section type 2",
+                              "section_on_site_uuid": "abc3514f-0fbf-4cd3-81a5-c35983f95f55",
+                              "fields": {
+                                   
+                                    "1": { "field_name":"action",
+                                                "field_label":"action",
+                                                "field_type":"list_from_mandatory_lists",
+                                                "field_on_site_uuid":"8dce593a-d863-489f-8249-530a24d10512",
+                                                "values":["actions"]
+                                    },
+                                    "2": { "field_name":"utilisation",
+                                                "field_label":"utilisation",
+                                                "field_type":"list_from_mandatory_lists",
+                                                "field_on_site_uuid":"82ab9a01-4672-4b35-8016-32e58d001b11",
+                                                "values":["utilisations"]
+                                    },
+                                    "3": { "field_name":"pmat",
+                                                "field_label":"pmat",
+                                                "field_type":"list_from_mandatory_lists",
+                                                "field_on_site_uuid":"f5c85e28-57b9-438a-a48c-563e8d0a9905",
+                                                "values":["pmat"]
+                                    },
+                                    "4": { "field_name":"numotp",
+                                                "field_label":"numotp",
+                                                "field_type":"list_from_mandatory_lists",
+                                                "field_on_site_uuid":"4c4549c7-a7b7-4491-abfd-0361db531e02",
+                                                "values":[]
+                                    },
+                              }
+                        },
+                        "5": { "section_name" : "description",
                               "section_type" : "section type 3",
                               "section_on_site_uuid": "219fa801-82f3-450b-97f1-9d2db8bf33af",
                               "fields": {
@@ -212,7 +237,7 @@ config = {
                               },
                               }
                         },
-                        "4": { "section_name" : "medias",
+                        "6": { "section_name" : "medias",
                                 "section_type" : "section type 4",
                                 "section_on_site_uuid": "e6391434-1e0e-48be-8b69-aa603cb99a9e",
                                  "fields": {
@@ -224,7 +249,7 @@ config = {
                                       },
                                  }
                          },
-                         "5": { "section_name" : "Schema",
+                         "7": { "section_name" : "Schema",
                                 "section_type" : "section type 5",
                                 "section_on_site_uuid": "32251e12-ab48-4477-871e-5c67352effaf",
                                  "fields": {
