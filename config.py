@@ -146,7 +146,15 @@ config = {
                               [
                               
                               ]
-                  }
+                  },
+                  "elevation": 
+                        {
+                        "type": "administrable_by_site",
+                        "values":
+                              [
+                              
+                              ]
+                  },
             },
             "forms": {
                 "1" :{"form_name":"besoin",
@@ -301,6 +309,12 @@ config = {
                                            "field_type": "list_from_mandatory_lists",
                                            "field_on_site_uuid": "176e5c64-a286-4fa9-a544-fbcc6f48abb5",
                                             "values":["dimensions"]
+                                           },
+                                    "4": { "field_name": "altitude-elevation-souhaite",
+                                           "field_label": "Altitude/Elevation/Niveau",
+                                           "field_type": "list_from_mandatory_lists",
+                                           "field_on_site_uuid": "6887c05a-28b2-4caa-94ec-89ad455eda4d",
+                                            "values":["elevation"]
                                            },
                               }
                         },
