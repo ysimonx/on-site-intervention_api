@@ -140,6 +140,8 @@ class InterventionValues(db.Model, MyMixin):
                     field_on_site_uuid=fields_values["field_on_site_uuid"]
                     if field_on_site_uuid in dict_field_values.keys():
                         value  = dict_field_values[field_on_site_uuid]
+                        value = value.replace('\r', '')
+                        value = value.replace('\n', ' - ')
                         data[field_name] = value
                         if fields_values["field_type"]=="user_from_role":
                             if value != "":
