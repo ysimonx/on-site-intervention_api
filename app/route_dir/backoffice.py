@@ -69,7 +69,8 @@ def get_interventions_values_id(id):
     if _type_intervention_site is None:
         abort(make_response(jsonify(error="_type_intervention_site is not found"), 404))
 
-    filename_input='/Users/ysimonx/Developpement/on_site_intervention_api/app/static/assets/scaffolding_request_sandbox_input.xlsx'
+    filename_input='/Users/ysimonx/Developpement/on_site_intervention_api/app/static/feb/scaffolding_request_sandbox_input.xlsx'
+    filename_input = os.path.join(current_app.root_path, 'static/febs/', 'scaffolding_request_sandbox_input.xlsx')
     print(filename_input)
     filename_output = '/tmp/scaffolding_request_sandbox_output_{}.xlsx'.format(_intervention_values.name)
 
