@@ -83,6 +83,7 @@ def get_intervention_values_csv():
             if value is None:
                 value=""
             column = key.replace("-","_")
+            column=column.replace(" ","_")
             column = unidecode(str(column))
             dict_converted[column]=unidecode(str(value))
             
@@ -90,6 +91,7 @@ def get_intervention_values_csv():
         columns_converted=[]
         for column in columns:
             column=column.replace("-","_")
+            column=column.replace(" ","_")
             column = unidecode(str(column))
             columns_converted.append(column)
             

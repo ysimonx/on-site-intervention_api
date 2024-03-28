@@ -7,6 +7,7 @@ import numpy
 import os
 import datetime
 from config import config
+from unidecode import unidecode
 
 
 from ..model_dir.intervention import Intervention, InterventionValues
@@ -73,8 +74,25 @@ def get_interventions_values_id(id):
     print(filename_input)
     filename_output = '/tmp/scaffolding_request_sandbox_output_{}.xlsx'.format(_intervention_values.name)
 
-    dict_values = _intervention_values.to_dict()
-    # print(dict)
+    dict_column_values = _intervention_values.to_dict()
+    dict_converted={}
+    
+    dict_values = dict_column_values["data"]
+    
+    # conversion sans accents des colonnes et valeurs (excel aime pas)
+    for key, value in dict_values.items():
+        if value is not None and str(value).startswith("<svg"):
+            value="yes"
+        if value is None:
+            value=""
+        column = key.replace("-","_")
+        column = column.replace(" ","_")
+        column = unidecode(str(column))
+        dict_converted[column]=unidecode(str(value))
+            
+    
+    print("___________")
+    print(dict_converted)
     
     wb = load_workbook(filename_input)
     cells = wb.defined_names
@@ -82,8 +100,11 @@ def get_interventions_values_id(id):
     xlw = XLWrap(wb, filename_output)
     # xlw["num_registre"] = _intervention_values.name
     for cell_name, values in cells.items():
-        if cell_name in dict_values:
-            xlw[cell_name] = dict_values[cell_name]
+        
+        print(cell_name)
+        if cell_name in dict_converted:
+            print("it's a MATCH")
+            xlw[cell_name] = dict_converted[cell_name]
             
     date = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S.%f")
 
