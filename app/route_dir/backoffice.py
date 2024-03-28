@@ -85,7 +85,8 @@ def get_interventions_values_id(id):
             value="yes"
         if value is None:
             value=""
-        column = key.replace("-","_")
+        column=key.strip()
+        column = column.replace("-","_")
         column = column.replace(" ","_")
         column = unidecode(str(column))
         dict_converted[column]=unidecode(str(value))
