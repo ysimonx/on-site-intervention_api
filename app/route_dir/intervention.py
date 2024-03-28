@@ -83,14 +83,14 @@ def get_intervention_values_csv():
             if value is None:
                 value=""
             column = key.replace("-","_")
-            column = unidecode(str(key))
+            column = unidecode(str(column))
             dict_converted[column]=unidecode(str(value))
             
         # conversion sans accents des noms des colonnes (excel aime pas)
         columns_converted=[]
         for column in columns:
             column=column.replace("-","_")
-            column = unidecode(str(key))
+            column = unidecode(str(column))
             columns_converted.append(column)
             
         data.append(dict_converted)
