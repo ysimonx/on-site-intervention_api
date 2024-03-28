@@ -94,8 +94,30 @@ class InterventionValues(db.Model, MyMixin):
     fields_values               = db.relationship("FieldValue", viewonly=True)
     
     def to_dict(self):
+        
+        #
+        # initialisation des variables
+        # 
+        site_id=self.site_id
+        _site=getByIdOrByName(Site, site_id)
+        
         host="https://{}".format(request.headers.get('X-Forwarded-Host'))
         
+        type_intervention_id=self.type_intervention_id
+        _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
+        _type_intervention_site = TypeInterventionSite.query.get((_type_intervention.id,_site.id))
+        
+        dict_field_values={}
+        for item in self.fields_values:
+            dict_field_values[item.field_on_site_uuid]=item.value;
+          
+        dict_of_lists_for_places = _site.dict_of_lists_for_places
+        
+        dictTemplate=json.loads(_type_intervention_site.template_text)
+        
+        #
+        # alimentation des données générales de l'intervention
+        #
         data={
             "id":self.id,
             "feb_url":"{}{}".format(host, url_for('backoffice.get_interventions_values_id', id=self.id)),
@@ -107,19 +129,13 @@ class InterventionValues(db.Model, MyMixin):
             "place": self.place.name,
             "num_chrono":self.num_chrono,
             "indice":self.indice,
-           
         }
         columns=["id","feb_url", "site","type_intervention", "assignee_email", "registre", "place", "num_chrono", "indice", ] 
       
-        dict_field_values={}
-        for item in self.fields_values:
-            dict_field_values[item.field_on_site_uuid]=item.value;
-            
-        site_id=self.site_id
-        _site=getByIdOrByName(Site, site_id)
-        
+        #
         # alimentation des colonnes de l'emplacement
-        dict_of_lists_for_places = _site.dict_of_lists_for_places
+        #
+        
         if dict_of_lists_for_places is not None:
             json_dict = json.loads(dict_of_lists_for_places)
             for index, list_for_place in json_dict.items():
@@ -137,17 +153,11 @@ class InterventionValues(db.Model, MyMixin):
                             #
                     except:
                         print("error")
-                
-
-            
-         
-        type_intervention_id=site_id=self.type_intervention_id
-        _type_intervention=getByIdOrByName(TypeIntervention, type_intervention_id)
-
-        _type_intervention_site = TypeInterventionSite.query.get((_type_intervention.id,_site.id))
-        
+   
+        #
         # alimentation des données du formulaire "standard" (cfece dans le cas d'echaf)
-        dictTemplate=json.loads(_type_intervention_site.template_text)
+        #
+       
         for form, form_values in dictTemplate["forms"].items():
             for section, section_values in form_values["sections"].items():
                 for field, fields_values in section_values["fields"].items():
@@ -179,24 +189,29 @@ class InterventionValues(db.Model, MyMixin):
                     else:
                         data[field_name] = None
         
+        #
         # alimentation des custom fields
         # les colonnes
-        
+        print("- - - - - - - - - custom fields - - - - - - - - - - - - -")
+        print(self.dict_of_custom_fields_values)
         if _type_intervention_site is not None:
             if _type_intervention_site.dict_of_custom_fields is not None:
                 if _type_intervention_site.dict_of_custom_fields != "":
                     json_type_intervention_site = json.loads(_type_intervention_site.dict_of_custom_fields)
                     forms = json_type_intervention_site["forms"]
                     for key_form, dict_form in forms.items():
-                        # print(dict_form)
                         dict_custom_fields=dict_form["custom_fields"]
                         for index_field, dict_fields in dict_custom_fields.items():
-                            # print("----")
-                            # print(dict_fields)
                             code=dict_fields["code"].strip()
+                            print( )
                             print(code)
                             columns.append(code)
-                        
+                            if self.dict_of_custom_fields_values is not None:
+                                if self.dict_of_custom_fields_values != "":
+                                    json_custom_fields_values = json.loads(self.dict_of_custom_fields_values)
+                                    if code in json_custom_fields_values:
+                                        data[code]=json_custom_fields_values[code]
+                                        print("->match avec {}".format(code))
         
         result={
             "columns": columns,
@@ -204,6 +219,7 @@ class InterventionValues(db.Model, MyMixin):
         }
         
         return result       
+        
         
         
     def to_json(self):
