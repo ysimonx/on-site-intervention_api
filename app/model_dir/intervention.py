@@ -146,7 +146,7 @@ class InterventionValues(db.Model, MyMixin):
 
         _type_intervention_site = TypeInterventionSite.query.get((_type_intervention.id,_site.id))
         
-        
+        # alimentation des données du formulaire "standard" (cfece dans le cas d'echaf)
         dictTemplate=json.loads(_type_intervention_site.template_text)
         for form, form_values in dictTemplate["forms"].items():
             for section, section_values in form_values["sections"].items():
@@ -178,6 +178,26 @@ class InterventionValues(db.Model, MyMixin):
                                     data["{}.email".format(field_name)]=_user.email
                     else:
                         data[field_name] = None
+        
+        # alimentation des custom fields
+        # les colonnes
+        
+        if _type_intervention_site is not None:
+            if _type_intervention_site.dict_of_custom_fields is not None:
+                if _type_intervention_site.dict_of_custom_fields != "":
+                    json_type_intervention_site = json.loads(_type_intervention_site.dict_of_custom_fields)
+                    forms = json_type_intervention_site["forms"]
+                    for key_form, dict_form in forms.items():
+                        # print(dict_form)
+                        dict_custom_fields=dict_form["custom_fields"]
+                        for index_field, dict_fields in dict_custom_fields.items():
+                            # print("----")
+                            # print(dict_fields)
+                            code=dict_fields["code"].strip()
+                            print(code)
+                            columns.append(code)
+                        
+        
         result={
             "columns": columns,
             "data": data
