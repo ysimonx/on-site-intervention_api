@@ -180,10 +180,10 @@ class InterventionValues(db.Model, MyMixin):
                             if value != "":
                                 _user = getByIdOrByName(obj=User, id=value)
                                 if _user is not None:
-                                    data["{}.company".format(field_name)]=_user.company.name
+                                    data["{}.company".format(field_name)]=_user.company.name.upper()
                                     
                                     data["{}.firstname".format(field_name)]=_user.firstname
-                                    data["{}.lastname".format(field_name)]=_user.lastname
+                                    data["{}.lastname".format(field_name)]=_user.lastname.upper()
                                     data["{}.phone".format(field_name)]=str(_user.phone)
                                     data["{}.email".format(field_name)]=_user.email
                     else:
