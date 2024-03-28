@@ -69,8 +69,7 @@ def get_interventions_values_id(id):
     if _type_intervention_site is None:
         abort(make_response(jsonify(error="_type_intervention_site is not found"), 404))
 
-    # filename_input='/Users/ysimonx/Developpement/on_site_intervention_api/app/static/assets/scaffolding_request_sandbox.xlsx'
-    filename_input=os.path.join(current_app.root_path, 'static/assets/scaffolding_request_sandbox.xlsx')
+    filename_input='/Users/ysimonx/Developpement/on_site_intervention_api/app/static/assets/scaffolding_request_sandbox_input.xlsx'
     print(filename_input)
     filename_output = '/tmp/scaffolding_request_sandbox_output_{}.xlsx'.format(_intervention_values.name)
 
@@ -91,10 +90,7 @@ def get_interventions_values_id(id):
         column = unidecode(str(column))
         dict_converted[column]=unidecode(str(value))
             
-    
-    print("___________")
-    print(dict_converted)
-    
+
     wb = load_workbook(filename_input)
     cells = wb.defined_names
     
@@ -104,8 +100,18 @@ def get_interventions_values_id(id):
         
         print(cell_name)
         if cell_name in dict_converted:
-            print("it's a MATCH")
-            xlw[cell_name] = dict_converted[cell_name]
+            print("it's a MATCH for {}".format(cell_name))
+            try:
+                value =  dict_converted[cell_name]
+                if len(value) > 0:
+                    xlw[cell_name] = dict_converted[cell_name]
+                else:
+                    xlw[cell_name] = " "
+                
+            except:
+                print("zarb")
+        else:
+            xlw[cell_name] = " " # valeur par defaut
             
     date = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S.%f")
 
