@@ -140,8 +140,9 @@ class InterventionValues(db.Model, MyMixin):
             json_dict = json.loads(dict_of_lists_for_places)
             for index, list_for_place in json_dict.items():
                 list_name=list_for_place['list_name']
+                
                 #
-                columns.append(list_name)
+                columns.append(list_name.trim())
                 #
                 text_place = self.place.place_json
                 if text_place is not None:
@@ -149,7 +150,7 @@ class InterventionValues(db.Model, MyMixin):
                         place_json = json.loads(text_place)
                         if list_name in place_json:
                             #
-                            data[list_name]=place_json[list_name]
+                            data[list_name.trim()]=place_json[list_name]
                             #
                     except:
                         print("error")
