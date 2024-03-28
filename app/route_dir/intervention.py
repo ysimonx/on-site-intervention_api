@@ -76,13 +76,13 @@ def get_intervention_values_csv():
         donnees=dict_columns_data["data"]
         dict_converted={}
         
-        # conversion sans accents des valeurs (excel aime pas)
+        # conversion sans accents des colonnes et valeurs (excel aime pas)
         for key, value in donnees.items():
             if value is not None and str(value).startswith("<svg"):
                 value="yes"
             if value is None:
                 value=""
-            dict_converted[key]=unidecode(str(value))
+            dict_converted[unidecode(str(key))]=unidecode(str(value))
             
         # conversion sans accents des noms des colonnes (excel aime pas)
         columns_converted=[]
