@@ -87,6 +87,7 @@ def get_intervention_values_csv():
         # conversion sans accents des noms des colonnes (excel aime pas)
         columns_converted=[]
         for column in columns:
+            column=column.replace("-","_")
             columns_converted.append(unidecode(str(column)))
             
         data.append(dict_converted)

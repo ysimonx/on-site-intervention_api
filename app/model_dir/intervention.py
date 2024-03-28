@@ -213,6 +213,7 @@ class InterventionValues(db.Model, MyMixin):
                                         data[code]=json_custom_fields_values[code]
                                         print("->match avec {}".format(code))
         
+        
         result={
             "columns": columns,
             "data": data

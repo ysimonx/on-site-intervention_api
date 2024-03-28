@@ -73,10 +73,18 @@ def get_interventions_values_id(id):
     print(filename_input)
     filename_output = '/tmp/scaffolding_request_sandbox_output_{}.xlsx'.format(_intervention_values.name)
 
+    dict_values = _intervention_values.to_dict()
+    # print(dict)
+    
     wb = load_workbook(filename_input)
+    cells = wb.defined_names
+    
     xlw = XLWrap(wb, filename_output)
-    xlw["num_registre"] = _intervention_values.name
-
+    # xlw["num_registre"] = _intervention_values.name
+    for cell_name, values in cells.items():
+        if cell_name in dict_values:
+            xlw[cell_name] = dict_values[cell_name]
+            
     date = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S.%f")
 
     download_name="feb_{}_{}.xlsx".format(_intervention_values.name, date)
