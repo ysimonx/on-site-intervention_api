@@ -76,6 +76,7 @@ def get_intervention_values_csv():
         donnees=dict_columns_data["data"]
         dict_converted={}
         
+        # conversion sans accents des valeurs (excel aime pas)
         for key, value in donnees.items():
             if value is not None and str(value).startswith("<svg"):
                 value="yes"
@@ -83,10 +84,14 @@ def get_intervention_values_csv():
                 value=""
             dict_converted[key]=unidecode(str(value))
             
+        # conversion sans accents des noms des colonnes (excel aime pas)
+        columns_converted=[]
+        for column in columns:
+            columns_converted.append(unidecode(str(column)))
             
         data.append(dict_converted)
 
-    df = pd.DataFrame(data, columns=columns)
+    df = pd.DataFrame(data, columns=columns_converted)
     S=df.to_csv(index=True, na_rep="", index_label="n", quoting=csv.QUOTE_ALL, sep=";") 
     resp = make_response(S)
     
